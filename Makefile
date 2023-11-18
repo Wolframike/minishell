@@ -6,14 +6,17 @@
 #    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/18 15:59:22 by misargsy         ###   ########.fr        #
+#    Updated: 2023/11/18 18:57:42 by misargsy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -I./includes -I./libft/includes
 RLFLAGS = -lreadline
 
-SRCS =	main.c
+BUILTIN =	srcs/builtin/bi_echo.c\
+			srcs/builtin/bi_exit.c
+
+SRCS =	srcs/main.c $(BUILTIN)
 
 NAME = minishell
 LIBFT = libft.a
@@ -42,7 +45,7 @@ valgrind: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
 	@echo "$(BLUE)Compiling minishell... $(RESET)"
-	@cc $(FLAGS) $(RLFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	cc $(FLAGS) $(RLFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 	@echo "$(CHECK) $(RESET)"
 	@clear
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:11:41 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/18 17:26:07 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/18 18:22:34 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ typedef struct s_token
 {
 	char			*word;
 	t_token_type	type;
-	t_token			*prev;
-	t_token			*next;
+	struct s_token	*prev;
+	struct s_token	*next;
 }	t_token;
 
-typedef struct	s_dataz
+typedef struct s_data
 {
 	t_token	*token;
 }	t_data;
