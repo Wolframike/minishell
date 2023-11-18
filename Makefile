@@ -3,17 +3,22 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
+#    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/18 15:59:22 by misargsy         ###   ########.fr        #
+#    Updated: 2023/11/18 20:01:46 by knishiok         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror  -I includes -I libft/includes
 RLFLAGS = -lreadline
 
-SRCS =	main.c
+LEXER = srcs/lexer/lexer_utils.c \
+	srcs/lexer/lexer.c \
+	srcs/main.c \
+	srcs/utils/errors.c
+
+SRCS = srcs/main.c $(LEXER)
 
 NAME = minishell
 LIBFT = libft.a
@@ -42,7 +47,7 @@ valgrind: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
 	@echo "$(BLUE)Compiling minishell... $(RESET)"
-	@cc $(FLAGS) $(RLFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	@cc $(FLAGS) $(INC) $(RLFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 	@echo "$(CHECK) $(RESET)"
 	@clear
 
@@ -53,7 +58,7 @@ $(LIBFT):
 	@echo "$(CHECK) $(RESET)"
 
 %.o: %.c
-	@cc $(FLAGS) -c $< -o $@
+	@cc $(FLAGS) $(INC) -c $< -o $@
 
 clean:
 	@echo "$(BLUE)Removing objects and libraries... $(RESET)"
