@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 00:53:33 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/11 19:13:59 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/18 15:57:07 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ char	*ft_strnstr(const char *big, const char *little, size_t len);
 int		ft_atoi(const char *str);
 void	*ft_calloc(size_t n, size_t size);
 char	*ft_strdup(const char *str);
+char	*ft_strndup(const char *src, size_t n);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
 char	*ft_strjoin(const char *s1, const char *s2);;
 char	*ft_strtrim(const char *s1, const char *set);
