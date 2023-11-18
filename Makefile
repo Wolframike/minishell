@@ -6,16 +6,14 @@
 #    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/15 15:22:42 by misargsy         ###   ########.fr        #
+#    Updated: 2023/11/18 15:59:22 by misargsy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 FLAGS = -Wall -Wextra -Werror
 RLFLAGS = -lreadline
 
-SRCS =	minishell.c\
-		get_path.c\
-		error.c
+SRCS =	main.c
 
 NAME = minishell
 LIBFT = libft.a
