@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.h                                            :+:      :+:    :+:   */
+/*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/18 17:11:41 by knishiok          #+#    #+#             */
+/*   Created: 2023/11/18 19:08:20 by knishiok          #+#    #+#             */
+/*   Updated: 2023/11/18 19:26:38 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXER_H
-# define LEXER_H
+#ifndef ERROR_H
+# define ERROR_H
 
 # include "type.h"
-# include "error.h"
 
-bool	is_space(char c);
-void	skip_spaces(char **line);
-bool	is_metacharacter(char c);
-bool	corresponds(char *line, const char *metastr);
-
-void	tokenize(t_data *data, char *line);
+void	set_allocation_error(t_data *data, t_token *token);
+void	set_syntax_error(t_data *data);
 
 #endif

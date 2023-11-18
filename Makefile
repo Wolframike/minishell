@@ -3,20 +3,25 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
+#    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/18 18:57:42 by misargsy         ###   ########.fr        #
+#    Updated: 2023/11/18 20:01:46 by knishiok         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS = -Wall -Wextra -Werror -I./includes -I./libft/includes
+FLAGS = -Wall -Wextra -Werror  -I includes -I libft/includes
 RLFLAGS = -lreadline
+
+LEXER = srcs/lexer/lexer_utils.c \
+	srcs/lexer/lexer.c \
+	srcs/main.c \
+	srcs/utils/errors.c
 
 BUILTIN =	srcs/builtin/bi_echo.c\
 			srcs/builtin/bi_exit.c
 
-SRCS =	srcs/main.c $(BUILTIN)
+SRCS = srcs/main.c $(LEXER) $(BUILTIN)
 
 NAME = minishell
 LIBFT = libft.a
@@ -56,7 +61,7 @@ $(LIBFT):
 	@echo "$(CHECK) $(RESET)"
 
 %.o: %.c
-	@cc $(FLAGS) -c $< -o $@
+	@cc $(FLAGS) $(INC) -c $< -o $@
 
 clean:
 	@echo "$(BLUE)Removing objects and libraries... $(RESET)"
