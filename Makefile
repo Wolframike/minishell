@@ -18,7 +18,10 @@ LEXER = srcs/lexer/lexer_utils.c \
 	srcs/main.c \
 	srcs/utils/errors.c
 
-SRCS = srcs/main.c $(LEXER)
+BUILTIN =	srcs/builtin/bi_echo.c\
+			srcs/builtin/bi_exit.c
+
+SRCS = srcs/main.c $(LEXER) $(BUILTIN)
 
 NAME = minishell
 LIBFT = libft.a
@@ -47,7 +50,7 @@ valgrind: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
 	@echo "$(BLUE)Compiling minishell... $(RESET)"
-	@cc $(FLAGS) $(INC) $(RLFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	cc $(FLAGS) $(RLFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 	@echo "$(CHECK) $(RESET)"
 	@clear
 
