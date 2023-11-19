@@ -3,9 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:22:28 by knishiok          #+#    #+#             */
+/*   Updated: 2023/11/19 16:15:26 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +74,10 @@ static t_token	*parse_word(t_data *data, char **line)
 
 void	tokenize(t_data *data, char *line)
 {
-	t_token	*head;
+	t_token	head;
 	t_token	*cur;
 
-	cur = ft_calloc(1, sizeof(t_token));
-	head = cur;
+	cur = &head;
 	while (*line)
 	{
 		skip_spaces(&line);
@@ -85,16 +85,18 @@ void	tokenize(t_data *data, char *line)
 		{
 			cur->next = parse_metacharacters(&line);
 			if (cur->next == NULL)
-				return (set_allocation_error(data, head));
+				return (set_allocation_error(data, head.next));
+			cur->next->prev = cur;
 			cur = cur->next;
 		}
 		else
 		{
 			cur->next = parse_word(data, &line);
 			if (cur->next == NULL)
-				return (set_allocation_error(data, head));
+				return (set_allocation_error(data, head.next));
+			cur->next->prev = cur;
 			cur = cur->next;
 		}
 	}
-	data->token = head->next;
+	data->token = head.next;
 }
