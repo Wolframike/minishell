@@ -6,14 +6,14 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:57:35 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/18 19:29:48 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/19 21:33:23 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TYPE_H
 # define TYPE_H
 
-# include "../libft/includes/libft.h"
+# include "libft.h"
 # include <stdbool.h>
 
 typedef enum e_token_type
@@ -26,8 +26,15 @@ typedef enum e_token_type
 	TK_APPEND,
 	TK_PIPE,
 	TK_WORD,
-	TK_EOF,
+	TK_EOL,
 }	t_token_type;
+
+typedef struct s_list
+{
+	struct s_list	*prev;
+	struct s_list	*next;
+	void			*value;
+}	t_list;
 
 typedef struct s_token
 {
