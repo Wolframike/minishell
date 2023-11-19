@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:38:14 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/19 15:16:49 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/19 15:55:04 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	bi_exit(t_token *token, bool parent)
 		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 		exit(EXIT_SEGV);
 	}
-	if (token->next != NULL && token->next->type == TK_WORD)
+	if (can_go_next(token))
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 		return (EXIT_INVAL);

@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.h                                          :+:      :+:    :+:   */
+/*   bi_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/18 17:14:09 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/19 16:13:54 by misargsy         ###   ########.fr       */
+/*   Created: 2023/11/19 15:21:39 by misargsy          #+#    #+#             */
+/*   Updated: 2023/11/19 15:22:01 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTIN_H
-# define BUILTIN_H
+#include "builtin.h"
 
-# include "lexer.h"
-# include "libft.h"
-# include "type.h"
-# include <stdbool.h>
-# include <sys/errno.h>
-# include <string.h>
+int	bi_pwd(void)
+{
+	char	*pwd;
 
-bool	can_go_next(t_token *token);
-int		bi_echo(t_token *token);
-int		bi_exit(t_token *token, bool parent);
-int		bi_pwd(void);
-
-#endif
+	pwd = getcwd(NULL, 0);
+	if (pwd == NULL)
+	{
+		ft_putstr_fd("minishell: pwd: ", STDERR_FILENO);
+		ft_putstr_fd(strerror(errno), STDERR_FILENO);
+		ft_putchar_fd('\n', STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
+	ft_putendl_fd(pwd, STDOUT_FILENO);
+	free(pwd);
+	return (EXIT_SUCCESS);
+}
