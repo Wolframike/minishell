@@ -3,23 +3,24 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
+#    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/18 20:01:46 by knishiok         ###   ########.fr        #
+#    Updated: 2023/11/19 15:55:37 by misargsy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 FLAGS = -Wall -Wextra -Werror  -I includes -I libft/includes
 RLFLAGS = -lreadline
 
-LEXER = srcs/lexer/lexer_utils.c \
-	srcs/lexer/lexer.c \
-	srcs/main.c \
-	srcs/utils/errors.c
+LEXER =		srcs/lexer/lexer_utils.c \
+			srcs/lexer/lexer.c \
+			srcs/utils/errors.c
 
-BUILTIN =	srcs/builtin/bi_echo.c\
-			srcs/builtin/bi_exit.c
+BUILTIN =	srcs/builtin/bi_util.c\
+			srcs/builtin/bi_echo.c\
+			srcs/builtin/bi_exit.c\
+			srcs/builtin/bi_pwd.c\
 
 SRCS = srcs/main.c $(LEXER) $(BUILTIN)
 
