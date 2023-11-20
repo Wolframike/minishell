@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:22:28 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/20 14:04:25 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/20 21:17:51 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ static t_token	*parse_metacharacters(const char **line)
 
 static t_token	*parse_word(t_data *data, const char **line)
 {
-	char	*head;
-	char	*tmp;
-	char	quote;
+	const char	*head;
+	const char	*tmp;
+	char		quote;
 
 	head = *line;
 	tmp = *line;
