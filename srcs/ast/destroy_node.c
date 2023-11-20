@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.h                                            :+:      :+:    :+:   */
+/*   destroy_ast_node.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/18 17:11:41 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/20 21:26:22 by knishiok         ###   ########.fr       */
+/*   Created: 2023/11/20 14:33:38 by knishiok          #+#    #+#             */
+/*   Updated: 2023/11/21 00:16:12 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXER_H
-# define LEXER_H
+#include "ast.h"
 
-# include "type.h"
-# include "error.h"
+void	destroy_redir(t_redir *redir)
+{
+	if (redir == NULL)
+		return ;
+	free(redir->filename);
+	free(redir);
+}
 
-bool	is_space(const char c);
-void	skip_spaces(const char **line);
-bool	is_metacharacter(const char c);
-bool	corresponds(const char *line, const char *metastr);
-
-void	tokenize(t_state *data, const char *line);
-
-#endif
+void	destroy_ast_node(t_ast_node *node)
+{
+	if (node == NULL)
+		return ;
+	free(node->left);
+	free(node->right);
+	ft_lstclear(&node->command, free);
+	ft_lstclear(&node->redir, (void (*)(void *))destroy_redir);
+	free(node);
+}

@@ -3,26 +3,39 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
+#    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/19 15:55:37 by misargsy         ###   ########.fr        #
+#    Updated: 2023/11/21 04:20:43 by knishiok         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS = -Wall -Wextra -Werror  -I includes -I libft/includes
+FLAGS = -Wall -Wextra -Werror  -I includes -I libft
 RLFLAGS = -lreadline
 
 LEXER =		srcs/lexer/lexer_utils.c \
 			srcs/lexer/lexer.c \
 			srcs/utils/errors.c
 
+AST = 		srcs/ast/create_node.c \
+			srcs/ast/destroy_node.c
+
+PARSER = 	srcs/parser/parser.c \
+			srcs/parser/parse_and_or.c \
+			srcs/parser/parse_simple_command.c \
+			srcs/parser/parse_io_file.c \
+			srcs/parser/parse_pipeline.c \
+			srcs/parser/parse_cmd_suffix.c \
+			srcs/parser/parse_word.c \
+			srcs/parser/consume.c \
+			srcs/parser/puts.c
+
 BUILTIN =	srcs/builtin/bi_util.c\
 			srcs/builtin/bi_echo.c\
 			srcs/builtin/bi_exit.c\
 			srcs/builtin/bi_pwd.c\
 
-SRCS = srcs/main.c $(LEXER) $(BUILTIN)
+SRCS = srcs/main.c $(LEXER) $(AST) $(PARSER) $(BUILTIN)
 
 NAME = minishell
 LIBFT = libft.a
