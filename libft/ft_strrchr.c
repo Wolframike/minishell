@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_cmd_suffix.c                                 :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/20 14:11:14 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/20 18:06:42 by knishiok         ###   ########.fr       */
+/*   Created: 2023/09/20 11:26:15 by knishiok          #+#    #+#             */
+/*   Updated: 2023/09/24 22:27:45 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "libft.h"
 
-t_ast_node	*parse_word_cmd_suffix(t_token *token)
+char	*ft_strrchr(const char *s, int c)
 {
-	t_ast_node	*res;
-	char		*command;
+	char	*ret;
+	int		i;
+	char	c1;
 
-	res = new_ast_node(AST_CMD);
-	command = parse_word(token);
-	if (!add_command(res, command))
+	ret = NULL;
+	i = -1;
+	c1 = (char)c;
+	while (s[++i])
 	{
-		destroy_node(res);
-		free(command);
-		return (NULL);
+		if (s[i] == c1)
+			ret = (char *)(s + i);
 	}
-	
+	if (c == 0 && s[i] == 0)
+		ret = (char *)(s + i);
+	return (ret);
 }

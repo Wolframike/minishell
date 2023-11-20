@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_heredoc.c                                    :+:      :+:    :+:   */
+/*   ft_min.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/20 16:58:43 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/20 16:59:34 by knishiok         ###   ########.fr       */
+/*   Created: 2023/10/29 14:33:02 by knishiok          #+#    #+#             */
+/*   Updated: 2023/10/29 14:33:33 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "libft.h"
 
-t_redir	*parse_heredoc(t_token *token)
+int	ft_min(int a, int b)
 {
-	
+	if (a > b)
+		return (b);
+	return (a);
 }

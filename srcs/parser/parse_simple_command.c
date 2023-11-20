@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:37 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/20 16:26:20 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/20 17:40:34 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ t_ast_node	*parse_simple_command(t_token *token)
 			return (NULL);
 	}
 	if (token->type == TK_WORD)
-		return (parse_cmd_suffix(token, redir));
+	{
+		res = parse_word_cmd_suffix(token);
+		res->redir = redir;
+		return (res);
+	}
 	return (NULL);
 }

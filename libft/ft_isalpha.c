@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_heredoc.c                                    :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/20 16:58:43 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/20 16:59:34 by knishiok         ###   ########.fr       */
+/*   Created: 2023/09/20 09:51:30 by knishiok          #+#    #+#             */
+/*   Updated: 2023/09/24 22:27:03 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "libft.h"
 
-t_redir	*parse_heredoc(t_token *token)
+int	ft_isalpha(int c)
 {
-	
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
 }

@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_cmd_suffix.c                                 :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/20 14:11:14 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/20 18:06:42 by knishiok         ###   ########.fr       */
+/*   Created: 2023/09/20 22:11:54 by knishiok          #+#    #+#             */
+/*   Updated: 2023/09/24 22:27:03 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "libft.h"
 
-t_ast_node	*parse_word_cmd_suffix(t_token *token)
+void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
-	t_ast_node	*res;
-	char		*command;
+	t_list	*cur;
+	t_list	*next;
 
-	res = new_ast_node(AST_CMD);
-	command = parse_word(token);
-	if (!add_command(res, command))
+	if (lst == NULL || del == NULL)
+		return ;
+	cur = *lst;
+	while (cur)
 	{
-		destroy_node(res);
-		free(command);
-		return (NULL);
+		next = cur->next;
+		del(cur->content);
+		free(cur);
+		cur = next;
 	}
-	
+	*lst = NULL;
 }

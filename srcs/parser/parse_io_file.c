@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:26 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/20 16:46:23 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/20 16:55:55 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,4 @@ t_list	*parse_io_files(t_token *token)
 		ft_lstadd_back(res, redir);
 	}
 	return (res);
-}
-
-t_ast_node	*parse_io_files(t_token *token)
-{
-	
 }
