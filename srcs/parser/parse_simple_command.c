@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parse_simple_command.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/19 21:22:51 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/20 14:05:00 by knishiok         ###   ########.fr       */
+/*   Created: 2023/11/20 13:58:09 by knishiok          #+#    #+#             */
+/*   Updated: 2023/11/20 14:06:41 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-t_ast_node	parse(t_data *data, char *line)
-{
-	
-}
+// t_ast_node	parse_simple_command()
+// {
+
+// }
