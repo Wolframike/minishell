@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/20 14:10:47 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/20 14:47:55 by knishiok         ###   ########.fr       */
+/*   Created: 2023/11/18 17:11:41 by knishiok          #+#    #+#             */
+/*   Updated: 2023/11/20 21:26:22 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 # include "type.h"
 # include "error.h"
 
-bool	is_space(char c);
-void	skip_spaces(char **line);
-bool	is_metacharacter(char c);
-bool	corresponds(char *line, const char *metastr);
+bool	is_space(const char c);
+void	skip_spaces(const char **line);
+bool	is_metacharacter(const char c);
+bool	corresponds(const char *line, const char *metastr);
 
 void	tokenize(t_state *data, const char *line);
 
