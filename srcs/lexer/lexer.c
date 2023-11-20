@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:22:28 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/20 14:04:25 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/20 14:47:55 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static t_token	*parse_metacharacters(const char **line)
 	return (create_token(word, types[i]));
 }
 
-static t_token	*parse_word(t_data *data, const char **line)
+static t_token	*parse_word(t_state *data, const char **line)
 {
 	char	*head;
 	char	*tmp;
@@ -72,7 +72,7 @@ static t_token	*parse_word(t_data *data, const char **line)
 	return (create_token(ft_substr(head, 0, tmp - head), TK_WORD));
 }
 
-void	tokenize(t_data *data, const char *line)
+void	tokenize(t_state *data, const char *line)
 {
 	t_token	head;
 	t_token	*cur;

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_cmd_suffix.c                                 :+:      :+:    :+:   */
+/*   destroy_node.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/20 14:11:14 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/20 16:26:44 by knishiok         ###   ########.fr       */
+/*   Created: 2023/11/20 14:33:38 by knishiok          #+#    #+#             */
+/*   Updated: 2023/11/20 14:37:14 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "ast.h"
 
-t_ast_node	*parse_cmd_suffix(t_token *token, t_list *redir)
+void	destory_ast_node(t_ast_node *node)
 {
 	
 }
