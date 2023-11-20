@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:22:28 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/19 16:15:26 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/20 14:04:25 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static t_token	*create_token(char *word, int type)
 	return (new_token);
 }
 
-static t_token	*parse_metacharacters(char **line)
+static t_token	*parse_metacharacters(const char **line)
 {
 	const char	*ops[] = {"&&", "||", "|", "<<", ">>", "<", ">"};
 	const int	types[] = {TK_AND, TK_OR, TK_PIPE, TK_IN,
@@ -45,7 +45,7 @@ static t_token	*parse_metacharacters(char **line)
 	return (create_token(word, types[i]));
 }
 
-static t_token	*parse_word(t_data *data, char **line)
+static t_token	*parse_word(t_data *data, const char **line)
 {
 	char	*head;
 	char	*tmp;
@@ -72,7 +72,7 @@ static t_token	*parse_word(t_data *data, char **line)
 	return (create_token(ft_substr(head, 0, tmp - head), TK_WORD));
 }
 
-void	tokenize(t_data *data, char *line)
+void	tokenize(t_data *data, const char *line)
 {
 	t_token	head;
 	t_token	*cur;
