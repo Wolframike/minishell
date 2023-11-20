@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:22:28 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/20 21:25:57 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/21 05:01:47 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static t_token	*create_token(char *word, int type)
 static t_token	*parse_metacharacters(const char **line)
 {
 	const char	*ops[] = {"&&", "||", "|", "<<", ">>", "<", ">"};
-	const int	types[] = {TK_AND, TK_OR, TK_PIPE, TK_IN,
-		TK_OUT, TK_HEREDOC, TK_APPEND};
+	const int	types[] = {TK_AND, TK_OR, TK_PIPE, TK_HEREDOC,
+		TK_APPEND, TK_IN, TK_OUT};
 	size_t		i;
 	char		*word;
 

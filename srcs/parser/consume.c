@@ -3,38 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   consume.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:14:12 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/20 15:48:48 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/21 05:04:13 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-void	destory_token(t_token *token)
+void	destroy_token(t_token **token)
 {
-	free(token->next);
-	free(token->prev);
-	free(token->word);
+	if (*token == NULL)
+		return ;
+	free((*token)->word);
+	(*token)->word = NULL;
+	free(*token);
+	*token = NULL;
+}
+
+void	eat_token(t_token **token)
+{
+	t_token	*del_token;
+
+	del_token = *token;
+	*token = (*token)->next;
+	destroy_token(&del_token);
 }
 
 bool	consume_token(t_token **token, t_token_type type)
 {
 	t_token	*del_token;
 
+	if (token == NULL || *token == NULL)
+		return (false);
 	if ((*token)->type == type)
 	{
 		del_token = *token;
 		*token = (*token)->next;
-		destory_token(del_token);
+		destroy_token(&del_token);
 		return (true);
 	}
 	return (false);
 }
 
-bool	is_redirect(t_token *token)
+bool	is_redir(t_token *token)
 {
+	if (token == NULL)
+		return (false);
 	return ((token->type == TK_IN)
 		|| (token->type == TK_OUT)
 		|| (token->type == TK_APPEND)
