@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 21:24:10 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/19 21:36:06 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/21 01:42:27 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,11 @@ typedef enum e_redir_type
 	REDIR_APPEND,
 	REDIR_HEREDOC,
 }	t_redir_type;
+
+typedef struct s_redir
+{
+	t_redir_type	type;
+	char			*filename;
+}	t_redir;
 
 #endif

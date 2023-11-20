@@ -6,23 +6,29 @@
 #    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/19 15:55:37 by misargsy         ###   ########.fr        #
+#    Updated: 2023/11/21 02:06:41 by misargsy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS = -Wall -Wextra -Werror  -I includes -I libft/includes
+FLAGS = -Wall -Wextra -Werror -I includes -I libft
 RLFLAGS = -lreadline
 
 LEXER =		srcs/lexer/lexer_utils.c \
 			srcs/lexer/lexer.c \
-			srcs/utils/errors.c
+			srcs/utils/errors.c \
 
-BUILTIN =	srcs/builtin/bi_util.c\
-			srcs/builtin/bi_echo.c\
-			srcs/builtin/bi_exit.c\
-			srcs/builtin/bi_pwd.c\
+BUILTIN =	srcs/builtin/bi_util.c \
+			srcs/builtin/bi_echo.c \
+			srcs/builtin/bi_exit.c \
+			srcs/builtin/bi_pwd.c \
 
-SRCS = srcs/main.c $(LEXER) $(BUILTIN)
+EXEC =		srcs/exec/execute.c \
+			srcs/exec/exec_pipeline.c \
+			srcs/exec/set_redir.c \
+			srcs/exec/ft_execvp.c \
+			srcs/exec/exec_error.c \
+
+SRCS = srcs/main.c $(LEXER) $(BUILTIN) $(EXEC)
 
 NAME = minishell
 LIBFT = libft.a

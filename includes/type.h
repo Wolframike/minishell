@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:57:35 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/19 21:33:23 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/21 01:41:59 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,6 @@ typedef enum e_token_type
 	TK_EOL,
 }	t_token_type;
 
-typedef struct s_list
-{
-	struct s_list	*prev;
-	struct s_list	*next;
-	void			*value;
-}	t_list;
-
 typedef struct s_token
 {
 	char			*word;
@@ -44,20 +37,22 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_data
+typedef struct s_state
 {
 	t_token	*token;
 	int		status;
 	bool	sys_error;
-}	t_data;
+}	t_state;
 
-enum e_exit_code
+typedef enum e_exit_code
 {
-	EIXT_BUILTIN = 2,
+	EXIT_OK = EXIT_SUCCESS,
+	EXIT_KO = EXIT_FAILURE,
+	EXIT_BUILTIN = 2,
 	EXIT_EXEC = 126,
 	EXIT_NOENT,
 	EXIT_INVAL,
 	EXIT_SEGV = 255
-};
+}	t_exit_code;
 
 #endif
