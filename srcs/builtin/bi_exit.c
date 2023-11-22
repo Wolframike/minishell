@@ -6,13 +6,13 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:38:14 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/19 15:55:04 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/22 16:10:44 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-static bool	is_number(char *arg)
+static bool	isnumber(char *arg)
 {
 	if (*arg == '-' || *arg == '+')
 		arg++;
@@ -25,7 +25,7 @@ static bool	is_number(char *arg)
 	return (true);
 }
 
-static bool	is_overflow(char *arg)
+static bool	isoverflow(char *arg)
 {
 	long	excode;
 	long	prev;
@@ -42,23 +42,23 @@ static bool	is_overflow(char *arg)
 	return (false);
 }
 
-int	bi_exit(t_token *token, bool parent)
+int	bi_exit(t_list *args, bool parent)
 {
 	if (parent)
 		ft_putstr_fd("exit\n", STDERR_FILENO);
-	if (token->type != TK_WORD)
+	if (args == NULL)
 		exit(EXIT_SUCCESS);
-	if (!is_number(token->word) || is_overflow(token->word))
+	if (!isnumber(args->content) || isoverflow(args->content))
 	{
 		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
-		ft_putstr_fd(token->word, STDERR_FILENO);
+		ft_putstr_fd(args->content, STDERR_FILENO);
 		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 		exit(EXIT_SEGV);
 	}
-	if (can_go_next(token))
+	if (args->next != NULL)
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 		return (EXIT_INVAL);
 	}
-	exit(ft_atoi(token->word) % 256);
+	exit(ft_atoi(args->content) % 256);
 }

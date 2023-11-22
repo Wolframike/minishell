@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.h                                          :+:      :+:    :+:   */
+/*   parse_word.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/18 17:14:09 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/22 16:10:21 by misargsy         ###   ########.fr       */
+/*   Created: 2023/11/20 17:00:45 by knishiok          #+#    #+#             */
+/*   Updated: 2023/11/21 06:14:35 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTIN_H
-# define BUILTIN_H
+#include "parser.h"
 
-# include "lexer.h"
-# include "libft.h"
-# include "type.h"
-# include <stdbool.h>
-# include <sys/errno.h>
-# include <string.h>
+char	*parse_word(t_token **token)
+{
+	char	*res;
 
-int		bi_echo(t_list *args);
-int		bi_exit(t_list *args, bool parent);
-int		bi_pwd(void);
-
-#endif
+	if (*token == NULL || (*token)->word == NULL
+		|| (*token)->type != TK_WORD)
+		return (NULL);
+	res = ft_strdup((*token)->word);
+	if (res == NULL)
+		return (NULL);
+	consume_token(token, TK_WORD);
+	return (res);
+}

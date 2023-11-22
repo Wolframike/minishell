@@ -6,7 +6,7 @@
 #    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/21 02:06:41 by misargsy         ###   ########.fr        #
+#    Updated: 2023/11/22 16:27:00 by misargsy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,18 +17,30 @@ LEXER =		srcs/lexer/lexer_utils.c \
 			srcs/lexer/lexer.c \
 			srcs/utils/errors.c \
 
-BUILTIN =	srcs/builtin/bi_util.c \
-			srcs/builtin/bi_echo.c \
+AST = 		srcs/ast/create_node.c \
+			srcs/ast/destroy_node.c \
+
+PARSER = 	srcs/parser/parser.c \
+			srcs/parser/parse_and_or.c \
+			srcs/parser/parse_simple_command.c \
+			srcs/parser/parse_io_file.c \
+			srcs/parser/parse_pipeline.c \
+			srcs/parser/parse_cmd_suffix.c \
+			srcs/parser/parse_word.c \
+			srcs/parser/consume.c \
+			srcs/parser/puts.c \
+
+BUILTIN =	srcs/builtin/bi_echo.c \
 			srcs/builtin/bi_exit.c \
 			srcs/builtin/bi_pwd.c \
 
-EXEC =		srcs/exec/execute.c \
-			srcs/exec/exec_pipeline.c \
-			srcs/exec/set_redir.c \
-			srcs/exec/ft_execvp.c \
+EXECUTE =	srcs/exec/execute.c \
 			srcs/exec/exec_error.c \
+			srcs/exec/exec_pipeline.c \
+			srcs/exec/ft_execvp.c \
+			srcs/exec/set_redir.c \
 
-SRCS = srcs/main.c $(LEXER) $(BUILTIN) $(EXEC)
+SRCS = srcs/main.c $(LEXER) $(AST) $(PARSER) $(BUILTIN) $(EXECUTE)
 
 NAME = minishell
 LIBFT = libft.a

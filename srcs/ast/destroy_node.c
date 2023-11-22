@@ -1,18 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bi_util.c                                          :+:      :+:    :+:   */
+/*   destroy_node.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/19 15:52:56 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/19 15:54:24 by misargsy         ###   ########.fr       */
+/*   Created: 2023/11/22 15:54:16 by misargsy          #+#    #+#             */
+/*   Updated: 2023/11/22 15:54:19 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "ast.h"
 
-bool	can_go_next(t_token *token)
+void	destroy_redir(t_redir *redir)
 {
-	return (token->next != NULL && token->next->type == TK_WORD);
+	if (redir == NULL)
+		return ;
+	free(redir->filename);
+	free(redir);
+}
+
+void	destroy_ast_node(t_ast_node *node)
+{
+	if (node == NULL)
+		return ;
+	free(node->left);
+	free(node->right);
+	ft_lstclear(&node->command, free);
+	ft_lstclear(&node->redir, (void (*)(void *))destroy_redir);
+	free(node);
 }

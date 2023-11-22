@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:22:28 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/20 21:17:51 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/21 05:01:47 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static t_token	*create_token(char *word, int type)
 static t_token	*parse_metacharacters(const char **line)
 {
 	const char	*ops[] = {"&&", "||", "|", "<<", ">>", "<", ">"};
-	const int	types[] = {TK_AND, TK_OR, TK_PIPE, TK_IN,
-		TK_OUT, TK_HEREDOC, TK_APPEND};
+	const int	types[] = {TK_AND, TK_OR, TK_PIPE, TK_HEREDOC,
+		TK_APPEND, TK_IN, TK_OUT};
 	size_t		i;
 	char		*word;
 
@@ -45,7 +45,7 @@ static t_token	*parse_metacharacters(const char **line)
 	return (create_token(word, types[i]));
 }
 
-static t_token	*parse_word(t_data *data, const char **line)
+static t_token	*parse_word(t_state *data, const char **line)
 {
 	const char	*head;
 	const char	*tmp;
@@ -72,7 +72,7 @@ static t_token	*parse_word(t_data *data, const char **line)
 	return (create_token(ft_substr(head, 0, tmp - head), TK_WORD));
 }
 
-void	tokenize(t_data *data, const char *line)
+void	tokenize(t_state *data, const char *line)
 {
 	t_token	head;
 	t_token	*cur;
