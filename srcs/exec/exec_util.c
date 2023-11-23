@@ -1,38 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   exec_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/23 20:00:15 by misargsy         ###   ########.fr       */
+/*   Created: 2023/11/23 12:15:01 by misargsy          #+#    #+#             */
+/*   Updated: 2023/11/23 20:28:26 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
 #include "execute.h"
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdio.h>
 
-int	main(void)
+t_exit_code	exec_non_bi(const char *command, t_list *args)
 {
-	char		*line;
-	t_state		data;
-	t_ast_node	*node;
+	pid_t	pid;
+	int		status;
+	char	**argv;
 
-	rl_outstream = stderr;
-	while (true)
+	pid = fork();
+	if (pid < 0)
+		return (operation_failed("fork"), EXIT_KO);
+	if (pid == 0)
 	{
-		line = readline("\x1b[31mMINISHELL>>\x1b[0m ");
-		if (line == NULL)
-			break ;
-		node = parse(&data, line);
-		execute(node);
-		destroy_ast_node(node);
-		add_history(line);
-		free(line);
+		argv = t_list_to_char_arr(command, args);
+		ft_execvp(command, argv);
+		free2darr(argv);
+		return (execvp_failed(command));
 	}
-	exit(EXIT_SUCCESS);
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	return (EXIT_KO);
 }

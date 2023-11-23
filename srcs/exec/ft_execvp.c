@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:55:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/22 20:31:56 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:31:21 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static char	*get_full_path(const char *cmd)
 
 	path = NULL;
 	path_env = ft_split(getenv("PATH"), ':');
+	if (path_env == NULL)
+		return (errno = ENOENT, NULL);
 	i = 0;
 	while (path_env[i] != NULL)
 	{
@@ -55,7 +57,11 @@ int	ft_execvp(const char *file, char *const argv[])
 	if (ft_strchr(file, '/') == NULL)
 		full_path = get_full_path(file);
 	else
+	{
+		if (access(file, X_OK) < 0)
+			return (errno = ENOENT, -1);
 		full_path = ft_strdup(file);
+	}
 	if (full_path == NULL)
 		return (-1);
 	return (execve(full_path, argv, environ));

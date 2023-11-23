@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:34:44 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/22 20:32:14 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/23 19:29:01 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,8 @@ t_exit_code	execvp_failed(const char *command);
 
 //execute.c
 t_exit_code	execute(t_ast_node *root);
+
+//exec_util.c
+t_exit_code	exec_non_bi(const char *command, t_list *args);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 01:28:00 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/22 19:42:01 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:33:20 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,19 @@ void	operation_failed(const char *operation)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd((char *)operation, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
 	ft_putstr_fd(strerror(errno), STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
 t_exit_code	execvp_failed(const char *command)
 {
 	if (errno == ENOENT)
 	{
-		command_not_found(command);
+		if (ft_strchr(command, '/') == NULL)
+			command_not_found(command);
+		else
+			operation_failed(command);
 		return (EXIT_NOENT);
 	}
 	else if (errno == ENOMEM)

@@ -6,33 +6,11 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:35:17 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/22 20:43:41 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/23 20:52:11 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
-
-static t_exit_code	exec_non_bi(const char *command, t_list *args)
-{
-	pid_t	pid;
-	int		status;
-	char	**argv;
-
-	pid = fork();
-	if (pid < 0)
-		return (EXIT_KO);
-	if (pid == 0)
-	{
-		argv = t_list_to_char_arr(command, args);
-		ft_execvp(command, argv);
-		free2darr(argv);
-		return (execvp_failed(command));
-	}
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (EXIT_KO);
-}
 
 static t_exit_code	exec_simple_command(t_ast_node *root)
 {
@@ -60,12 +38,14 @@ static	t_exit_code	exec_simple_command_wrapper(t_ast_node *root)
 	int	in;
 	int	out;
 
+	fd[0] = STDIN_FILENO;
+	fd[1] = STDOUT_FILENO;
+	in = dup(STDIN_FILENO);
+	out = dup(STDOUT_FILENO);
 	if (!set_redir(root->redir, &fd))
 		return (EXIT_KO);
 	if (root->command == NULL)
 		return (EXIT_OK);
-	in = dup(STDIN_FILENO);
-	out = dup(STDOUT_FILENO);
 	dup2(fd[0], STDIN_FILENO);
 	dup2(fd[1], STDOUT_FILENO);
 	exit_code = exec_simple_command(root);
@@ -73,8 +53,10 @@ static	t_exit_code	exec_simple_command_wrapper(t_ast_node *root)
 	dup2(out, STDOUT_FILENO);
 	close(in);
 	close(out);
-	close(fd[0]);
-	close(fd[1]);
+	if (fd[0] != STDIN_FILENO)
+		close(fd[0]);
+	if (fd[1] != STDOUT_FILENO)
+		close(fd[1]);
 	return (exit_code);
 }
 
@@ -86,15 +68,13 @@ t_exit_code	execute(t_ast_node *root)
 		return (exec_simple_command_wrapper(root));
 	else if (root->type == AST_AND)
 	{
-		if (execute(root->left) == EXIT_KO)
-			return (execute(root->right));
+		;// TODO
 	}
 	else if (root->type == AST_OR)
 	{
-		if (execute(root->left) == EXIT_KO)
-			return (execute(root->right));
+		;// TODO
 	}
-	// else if (root->type == AST_PIPE)
-	// 	return (exec_pipeline(root));
+	else if (root->type == AST_PIPE)
+		return (exec_pipeline(root));
 	return (EXIT_OK);
 }

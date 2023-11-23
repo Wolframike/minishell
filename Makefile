@@ -6,7 +6,7 @@
 #    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/22 16:27:00 by misargsy         ###   ########.fr        #
+#    Updated: 2023/11/23 12:15:18 by misargsy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ BUILTIN =	srcs/builtin/bi_echo.c \
 			srcs/builtin/bi_pwd.c \
 
 EXECUTE =	srcs/exec/execute.c \
+			srcs/exec/exec_util.c \
 			srcs/exec/exec_error.c \
 			srcs/exec/exec_pipeline.c \
 			srcs/exec/ft_execvp.c \

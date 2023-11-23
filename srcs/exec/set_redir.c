@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 02:06:23 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/22 20:16:56 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/23 16:35:39 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,41 +53,30 @@ static bool	open_redir_file(char *filename, t_redir_type type, int *fd)
 	return (true);
 }
 
-static void	overwrite_fd(t_redir_type *type, int (*fd)[2], int fd_tmp)
-{
-	if (*type == REDIR_IN)
-	{
-		if ((*fd)[0] != STDIN_FILENO)
-			close((*fd)[0]);
-		(*fd)[0] = fd_tmp;
-	}
-	else
-	{
-		if ((*fd)[1] != STDOUT_FILENO)
-			close((*fd)[1]);
-		(*fd)[1] = fd_tmp;
-	}
-}
-
 bool	set_redir(t_list *redirects, int (*fd)[2])
 {
 	t_redir	*redir;
 	int		fd_tmp;
 
-	(*fd)[0] = STDIN_FILENO;
-	(*fd)[1] = STDOUT_FILENO;
 	while (redirects != NULL)
 	{
 		redir = redirects->content;
 		if (!open_redir_file(redir->filename, redir->type, &fd_tmp))
 		{
-			if ((*fd)[0] != STDIN_FILENO)
-				close((*fd)[0]);
-			if ((*fd)[1] != STDOUT_FILENO)
-				close((*fd)[1]);
+			close((*fd)[0]);
+			close((*fd)[1]);
 			return (false);
 		}
-		overwrite_fd(&redir->type, fd, fd_tmp);
+		if (redir->type == REDIR_IN)
+		{
+			close((*fd)[0]);
+			(*fd)[0] = fd_tmp;
+		}
+		else
+		{
+			close((*fd)[1]);
+			(*fd)[1] = fd_tmp;
+		}
 		redirects = redirects->next;
 	}
 	return (true);
