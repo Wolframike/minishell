@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:19:09 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/22 20:48:22 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/24 18:41:36 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ int	bi_echo(t_list *args)
 	if (args == NULL)
 	{
 		ft_putchar_fd('\n', STDOUT_FILENO);
-		return (EXIT_SUCCESS);
+		return (EXIT_OK);
 	}
 	nl = nl_option(args->content);
 	while (nl_option(args->content))
 	{
 		if (args->next == NULL)
-			return (EXIT_SUCCESS);
+			return (EXIT_OK);
 		args = args->next;
 	}
 	while (true)
@@ -56,5 +56,5 @@ int	bi_echo(t_list *args)
 	}
 	if (!nl)
 		ft_putchar_fd('\n', STDOUT_FILENO);
-	return (EXIT_SUCCESS);
+	return (EXIT_OK);
 }

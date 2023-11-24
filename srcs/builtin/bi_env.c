@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bi_pwd.c                                           :+:      :+:    :+:   */
+/*   bi_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/19 15:21:39 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/24 18:41:52 by misargsy         ###   ########.fr       */
+/*   Created: 2023/11/24 18:30:37 by misargsy          #+#    #+#             */
+/*   Updated: 2023/11/24 18:42:28 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-int	bi_pwd(void)
+int	bi_env(void)
 {
-	char	*pwd;
+	size_t	i;
 
-	pwd = getcwd(NULL, 0);
-	if (pwd == NULL)
+	if (environ == NULL)
+		return (EXIT_OK);
+	i = 0;
+	while (environ[i] != NULL)
 	{
-		ft_putstr_fd("minishell: pwd: ", STDERR_FILENO);
-		ft_putstr_fd(strerror(errno), STDERR_FILENO);
-		ft_putchar_fd('\n', STDERR_FILENO);
-		return (EXIT_KO);
+		ft_putstr_fd(environ[i], STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
+		i++;
 	}
-	ft_putendl_fd(pwd, STDOUT_FILENO);
-	free(pwd);
 	return (EXIT_OK);
 }

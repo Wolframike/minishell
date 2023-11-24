@@ -6,7 +6,7 @@
 #    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/23 12:15:18 by misargsy         ###   ########.fr        #
+#    Updated: 2023/11/24 23:16:49 by misargsy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,15 @@ PARSER = 	srcs/parser/parser.c \
 			srcs/parser/consume.c \
 			srcs/parser/puts.c \
 
-BUILTIN =	srcs/builtin/bi_echo.c \
-			srcs/builtin/bi_exit.c \
+BUILTIN =	srcs/builtin/bi_error.c \
+			srcs/builtin/bi_echo.c \
+			srcs/builtin/bi_cd.c \
+			srcs/builtin/bi_cd_util.c \
 			srcs/builtin/bi_pwd.c \
+			srcs/builtin/bi_export.c \
+			srcs/builtin/bi_unset.c \
+			srcs/builtin/bi_env.c \
+			srcs/builtin/bi_exit.c \
 
 EXECUTE =	srcs/exec/execute.c \
 			srcs/exec/exec_util.c \

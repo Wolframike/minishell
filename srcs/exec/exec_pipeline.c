@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 01:11:55 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/23 20:49:06 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/24 20:32:09 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@ static void	exec_simple_command_for_pipeline(t_ast_node *root)
 {
 	if (ft_strcmp(root->command->content, "echo") == 0)
 		exit(bi_echo(root->command->next));
-	// if (ft_strcmp(root->command->content, "cd") == 0)
-	// 	return (bi_cd(root->command->next));
+	if (ft_strcmp(root->command->content, "cd") == 0)
+		exit (bi_cd(root->command->next));
 	if (ft_strcmp(root->command->content, "pwd") == 0)
 		exit(bi_pwd());
 	// if (ft_strcmp(root->command->content, "export") == 0)
 	// 	exit(bi_export(root->command->next));
-	// if (ft_strcmp(root->command->content, "unset") == 0)
-	// 	exit(bi_unset(root->command->next));
-	// if (ft_strcmp(root->command->content, "env") == 0)
-	// 	exit(bi_env(root->command->next));
+	if (ft_strcmp(root->command->content, "unset") == 0)
+		exit(bi_unset(root->command->next));
+	if (ft_strcmp(root->command->content, "env") == 0)
+		exit(bi_env());
 	if (ft_strcmp(root->command->content, "exit") == 0)
 		exit(bi_exit(root->command->next, false));
 	exit(exec_non_bi(root->command->content, root->command->next));

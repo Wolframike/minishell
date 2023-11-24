@@ -1,30 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bi_pwd.c                                           :+:      :+:    :+:   */
+/*   bi_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/19 15:21:39 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/24 18:41:52 by misargsy         ###   ########.fr       */
+/*   Created: 2023/11/24 20:18:54 by misargsy          #+#    #+#             */
+/*   Updated: 2023/11/24 23:25:42 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
+#include <dirent.h>
 
-int	bi_pwd(void)
+int	bi_cd(t_list *args)
 {
-	char	*pwd;
-
-	pwd = getcwd(NULL, 0);
-	if (pwd == NULL)
+	if (args == NULL)
 	{
-		ft_putstr_fd("minishell: pwd: ", STDERR_FILENO);
-		ft_putstr_fd(strerror(errno), STDERR_FILENO);
-		ft_putchar_fd('\n', STDERR_FILENO);
-		return (EXIT_KO);
+		if (!move_to_envvar("HOME"))
+			return (EXIT_KO);
+		return (EXIT_OK);
 	}
-	ft_putendl_fd(pwd, STDOUT_FILENO);
-	free(pwd);
-	return (EXIT_OK);
+	if (ft_strcmp(args->content, "-") == 0)
+	{
+		if (!move_to_envvar("OLDPWD"))
+			return (EXIT_KO);
+		return (EXIT_OK);
+	}
+	else
+	{
+		if (!move_to_path(args->content))
+			return (EXIT_KO);
+		return (EXIT_OK);
+	}
 }

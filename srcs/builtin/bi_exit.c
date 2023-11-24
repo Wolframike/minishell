@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:38:14 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/23 20:48:42 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/24 18:33:45 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	bi_exit(t_list *args, bool parent)
 	}
 	if (args->next != NULL)
 	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
+		too_many_arguments("exit");
 		return (EXIT_INVAL);
 	}
 	exit(ft_atoi(args->content) % 256);
