@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:58:43 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/21 03:17:00 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/21 06:05:51 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_redir	*parse_heredoc(t_token *token)
 
 	if (!consume_token(&token, TK_HEREDOC))
 		return (NULL);
-	delimiter = parse_word(&token);	
+	delimiter = parse_word(&token);
 	if (delimiter == NULL)
 		return (NULL);
 	fd = open("");

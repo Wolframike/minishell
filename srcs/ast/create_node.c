@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:23:24 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/21 05:49:29 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/21 06:04:44 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ bool	add_command(t_ast_node *node, char *command)
 
 	if (node == NULL || command == NULL)
 		return (false);
-	// if (node->command == NULL)
-	// 	node->command = ft_lstnew(NULL);
 	val_lst = ft_lstnew(command);
 	if (val_lst == NULL)
 		return (false);
@@ -31,10 +29,7 @@ bool	add_redir(t_ast_node *node, t_list *redir)
 {
 	if (node == NULL || redir == NULL)
 		return (false);
-	// if (node->redir == NULL)
-	// 	node->redir = redir;
-	// else
-		ft_lstadd_back(&(node->redir), redir);
+	ft_lstadd_back(&(node->redir), redir);
 	return (true);
 }
 
