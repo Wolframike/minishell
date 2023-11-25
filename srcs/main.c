@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/25 16:09:41 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/25 19:01:45 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ int	main(void)
 		if (line == NULL)
 			break ;
 		node = parse(&data, line);
+		print_tokens(data.token);
+		if (node == NULL)
+			continue ;
 		print_node(node);
 		execute(node);
 		destroy_ast_node(node);

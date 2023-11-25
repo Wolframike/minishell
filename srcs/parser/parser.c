@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:42 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/21 05:15:06 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/25 19:03:40 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ t_ast_node	*parse(t_state *data, char *line)
 	t_ast_node	*res;
 
 	tokenize(data, line);
-	token = data->token;
-	if (token == NULL)
+	if (data->token == NULL)
 		return (NULL);
+	token = data->token;
 	res = parse_and_or(&token);
+	destroy_token(&(data->token));
 	if (token != NULL)
 	{
-		destroy_token(&token);
 		destroy_ast_node(res);
 		return (NULL);
 	}
