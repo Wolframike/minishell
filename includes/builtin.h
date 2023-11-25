@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:14:09 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/19 16:13:54 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/24 23:24:17 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,21 @@
 # include <sys/errno.h>
 # include <string.h>
 
-bool	can_go_next(t_token *token);
-int		bi_echo(t_token *token);
-int		bi_exit(t_token *token, bool parent);
+extern char	**environ;
+
+int		bi_echo(t_list *args);
+
+bool	move_to_envvar(char *varname);
+bool	move_to_path(char *path);
+int		bi_cd(t_list *args);
+
+
 int		bi_pwd(void);
+int		bi_export(t_list *args);
+int		bi_unset(t_list *args);
+int		bi_env(void);
+int		bi_exit(t_list *args, bool parent);
+
+void	too_many_arguments(char *command);
 
 #endif

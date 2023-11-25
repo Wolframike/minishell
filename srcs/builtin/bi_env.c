@@ -1,32 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   destroy_node.c                                     :+:      :+:    :+:   */
+/*   bi_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/22 15:54:16 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/22 15:54:19 by misargsy         ###   ########.fr       */
+/*   Created: 2023/11/24 18:30:37 by misargsy          #+#    #+#             */
+/*   Updated: 2023/11/24 18:42:28 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ast.h"
+#include "builtin.h"
 
-void	destroy_redir(t_redir *redir)
+int	bi_env(void)
 {
-	if (redir == NULL)
-		return ;
-	free(redir->filename);
-	free(redir);
-}
+	size_t	i;
 
-void	destroy_ast_node(t_ast_node *node)
-{
-	if (node == NULL)
-		return ;
-	free(node->left);
-	free(node->right);
-	ft_lstclear(&node->command, free);
-	ft_lstclear(&node->redir, (void (*)(void *))destroy_redir);
-	free(node);
+	if (environ == NULL)
+		return (EXIT_OK);
+	i = 0;
+	while (environ[i] != NULL)
+	{
+		ft_putstr_fd(environ[i], STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
+		i++;
+	}
+	return (EXIT_OK);
 }

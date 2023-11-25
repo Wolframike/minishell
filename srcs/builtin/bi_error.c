@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   destroy_node.c                                     :+:      :+:    :+:   */
+/*   bi_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/22 15:54:16 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/22 15:54:19 by misargsy         ###   ########.fr       */
+/*   Created: 2023/11/24 18:32:44 by misargsy          #+#    #+#             */
+/*   Updated: 2023/11/24 20:55:29 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ast.h"
+#include "builtin.h"
 
-void	destroy_redir(t_redir *redir)
+void	too_many_arguments(char *command)
 {
-	if (redir == NULL)
-		return ;
-	free(redir->filename);
-	free(redir);
-}
-
-void	destroy_ast_node(t_ast_node *node)
-{
-	if (node == NULL)
-		return ;
-	free(node->left);
-	free(node->right);
-	ft_lstclear(&node->command, free);
-	ft_lstclear(&node->redir, (void (*)(void *))destroy_redir);
-	free(node);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(command, STDERR_FILENO);
+	ft_putstr_fd(": too many arguments\n", STDERR_FILENO);
 }

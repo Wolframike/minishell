@@ -1,32 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   destroy_node.c                                     :+:      :+:    :+:   */
+/*   bi_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/22 15:54:16 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/22 15:54:19 by misargsy         ###   ########.fr       */
+/*   Created: 2023/11/24 20:18:54 by misargsy          #+#    #+#             */
+/*   Updated: 2023/11/24 23:25:42 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ast.h"
+#include "builtin.h"
+#include <dirent.h>
 
-void	destroy_redir(t_redir *redir)
+int	bi_cd(t_list *args)
 {
-	if (redir == NULL)
-		return ;
-	free(redir->filename);
-	free(redir);
-}
-
-void	destroy_ast_node(t_ast_node *node)
-{
-	if (node == NULL)
-		return ;
-	free(node->left);
-	free(node->right);
-	ft_lstclear(&node->command, free);
-	ft_lstclear(&node->redir, (void (*)(void *))destroy_redir);
-	free(node);
+	if (args == NULL)
+	{
+		if (!move_to_envvar("HOME"))
+			return (EXIT_KO);
+		return (EXIT_OK);
+	}
+	if (ft_strcmp(args->content, "-") == 0)
+	{
+		if (!move_to_envvar("OLDPWD"))
+			return (EXIT_KO);
+		return (EXIT_OK);
+	}
+	else
+	{
+		if (!move_to_path(args->content))
+			return (EXIT_KO);
+		return (EXIT_OK);
+	}
 }

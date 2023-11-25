@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:21:39 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/19 15:22:01 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/24 18:41:52 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ int	bi_pwd(void)
 		ft_putstr_fd("minishell: pwd: ", STDERR_FILENO);
 		ft_putstr_fd(strerror(errno), STDERR_FILENO);
 		ft_putchar_fd('\n', STDERR_FILENO);
-		return (EXIT_FAILURE);
+		return (EXIT_KO);
 	}
 	ft_putendl_fd(pwd, STDOUT_FILENO);
 	free(pwd);
-	return (EXIT_SUCCESS);
+	return (EXIT_OK);
 }

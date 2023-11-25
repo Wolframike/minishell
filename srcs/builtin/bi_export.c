@@ -1,18 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bi_util.c                                          :+:      :+:    :+:   */
+/*   bi_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/19 15:52:56 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/19 15:54:24 by misargsy         ###   ########.fr       */
+/*   Created: 2023/11/24 19:11:52 by misargsy          #+#    #+#             */
+/*   Updated: 2023/11/24 19:26:49 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-bool	can_go_next(t_token *token)
-{
-	return (token->next != NULL && token->next->type == TK_WORD);
-}
+int	bi_export(t_list *args);

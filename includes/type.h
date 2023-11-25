@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:57:35 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/20 16:08:06 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/21 06:10:40 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,15 @@ typedef struct s_state
 	bool	sys_error;
 }	t_state;
 
-enum e_exit_code
+typedef enum e_exit_code
 {
-	EIXT_BUILTIN = 2,
+	EXIT_OK = EXIT_SUCCESS,
+	EXIT_KO = EXIT_FAILURE,
+	EXIT_BUILTIN = 2,
 	EXIT_EXEC = 126,
 	EXIT_NOENT,
 	EXIT_INVAL,
 	EXIT_SEGV = 255
-};
+}	t_exit_code;
 
 #endif
