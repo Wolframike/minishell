@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:10:39 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/22 16:03:18 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/25 15:49:42 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,15 @@ void		destroy_ast_node(t_ast_node *node);
 bool		is_redir(t_token *token);
 void		eat_token(t_token **token);
 bool		consume_token(t_token **token, t_token_type type);
+void		destroy_token(t_token **token);
+void		destroy_redir(t_redir *redir);
+void		destroy_ast_node(t_ast_node *node);
+bool		is_redir(t_token *token);
+void		eat_token(t_token **token);
+bool		consume_token(t_token **token, t_token_type type);
 
+bool		add_command(t_ast_node *node, char *command);
+bool		add_redir(t_ast_node *node, t_list *redir);
 bool		add_command(t_ast_node *node, char *command);
 bool		add_redir(t_ast_node *node, t_list *redir);
 t_ast_node	*new_ast_node(t_ast_type type,
@@ -66,7 +74,11 @@ t_ast_node	*parse_and_or(t_token **token);
 t_ast_node	*parse_pipeline(t_token **token);
 t_ast_node	*parse_simple_command(t_token **token);
 bool		parse_cmd_suffix(t_token **token, t_ast_node *node);
+bool		parse_cmd_suffix(t_token **token, t_ast_node *node);
 t_ast_node	*parse_word_cmd_suffix(t_token **token);
+t_list		*parse_io_file(t_token **token);
+t_list		*parse_io_files(t_token **token);
+char		*parse_word(t_token **token);
 t_list		*parse_io_file(t_token **token);
 t_list		*parse_io_files(t_token **token);
 char		*parse_word(t_token **token);
