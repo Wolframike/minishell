@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 02:06:23 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/23 16:35:39 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/25 19:02:13 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,22 @@ static bool	access_redir_file(char *filename, t_redir_type type)
 {
 	bool	permission;
 
+	permission = true;
 	if (type == REDIR_IN)
 	{
-		permission = access(filename, F_OK);
+		permission = access(filename, F_OK) == 0;
 		if (!permission)
 			return (operation_failed(filename), permission);
-		permission = access(filename, R_OK);
+		permission = access(filename, R_OK) == 0;
 		if (!permission)
 			return (permission_denied(filename), permission);
 	}
 	if (type == REDIR_OUT || type == REDIR_APPEND)
 	{
-		permission = access(filename, W_OK);
+		permission = access(filename, F_OK) < 0;
+		if (permission)
+			return (permission);
+		permission = access(filename, W_OK) == 0;
 		if (!permission)
 			return (permission_denied(filename), permission);
 	}
@@ -62,19 +66,17 @@ bool	set_redir(t_list *redirects, int (*fd)[2])
 	{
 		redir = redirects->content;
 		if (!open_redir_file(redir->filename, redir->type, &fd_tmp))
-		{
-			close((*fd)[0]);
-			close((*fd)[1]);
-			return (false);
-		}
+			return (close((*fd)[0]), close((*fd)[1]), false);
 		if (redir->type == REDIR_IN)
 		{
-			close((*fd)[0]);
+			if ((*fd)[0] != STDIN_FILENO)
+				close((*fd)[0]);
 			(*fd)[0] = fd_tmp;
 		}
 		else
 		{
-			close((*fd)[1]);
+			if ((*fd)[1] != STDOUT_FILENO)
+				close((*fd)[1]);
 			(*fd)[1] = fd_tmp;
 		}
 		redirects = redirects->next;
