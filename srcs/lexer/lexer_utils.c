@@ -6,11 +6,22 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:41:20 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/21 05:01:56 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/25 19:06:32 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
+
+void	destroy_token(t_token **token)
+{
+	if (*token == NULL)
+		return ;
+	free((*token)->word);
+	(*token)->word = NULL;
+	destroy_token(&(*token)->next);
+	free(*token);
+	*token = NULL;
+}
 
 bool	is_space(const char c)
 {

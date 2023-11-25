@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:26 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/25 15:36:11 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/25 18:16:34 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,9 @@ t_list	*parse_io_file(t_token **token)
 	t_list	*res;
 	t_redir	*redir;
 
-	if (is_redir(*token))
+	if ((*token)->type == TK_HEREDOC)
+		redir = parse_heredoc(token);
+	else if (is_redir(*token))
 		redir = parse_io_file_helper(token);
 	else
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 16:42:20 by knishiok          #+#    #+#             */
-/*   Updated: 2023/09/24 22:27:03 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/25 18:28:00 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,5 @@ void	ft_putstr_fd(char *s, int fd)
 {
 	if (s == NULL)
 		return ;
-	while (*s)
-		write (fd, s++, 1);
+	write (fd, s, ft_strlen(s));
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_utils.c                                      :+:      :+:    :+:   */
+/*   print_utils_parser.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 15:42:55 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/25 15:43:09 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/25 16:49:22 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	print_redir_list(t_list *list)
 	if (redir->filename == NULL)
 		return ;
 	printf("Redirection filename: %s\n", redir->filename);
+	print_redir_list(list->next);
 }
 
 void	print_node(t_ast_node *node)
@@ -57,7 +58,7 @@ void	print_node(t_ast_node *node)
 	}
 	if (node->redir != NULL)
 	{
-		// printf("Redirection list: ");
+		printf("Redirection list: ");
 		print_redir_list(node->redir);
 	}
 	puts("==========================");

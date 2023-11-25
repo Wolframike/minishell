@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
+#    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/25 16:09:17 by misargsy         ###   ########.fr        #
+#    Updated: 2023/11/25 18:17:46 by knishiok         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ PARSER = 	srcs/parser/parser.c \
 			srcs/parser/parse_and_or.c \
 			srcs/parser/parse_simple_command.c \
 			srcs/parser/parse_io_file.c \
+			srcs/parser/parse_heredoc.c \
 			srcs/parser/parse_pipeline.c \
 			srcs/parser/parse_cmd_suffix.c \
 			srcs/parser/parse_word.c \
@@ -48,7 +49,8 @@ ERRORS =	srcs/error/general_errors.c \
 			srcs/error/bi_errors.c \
 			srcs/error/exec_errors.c \
 
-TESTS = 	tests/parser/print_utils.c \
+TESTS = 	tests/parser/print_utils_parser.c \
+			tests/lexer/print_utils_lexer.c \
 
 SRCS = srcs/main.c $(LEXER) $(AST) $(PARSER) $(BUILTIN) $(EXECUTE) $(ERRORS) $(TESTS)
 
