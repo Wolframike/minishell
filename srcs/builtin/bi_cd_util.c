@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 23:16:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/24 23:41:21 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/25 15:27:51 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,14 @@ static void	set_oldpwd(void)
 	//incomplete
 }
 
-static bool	file_name_too_long(char *path)
+static bool	file_name_check(char *path)
 {
 	size_t	len;
 	char	*tmp;
 
 	if (ft_strlen(path) > PATH_MAX)
 	{
-		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
-		ft_putstr_fd(path, STDERR_FILENO);
-		ft_putstr_fd(": File name too long\n", STDERR_FILENO);
+		file_name_too_long("cd", path);
 		return (true);
 	}
 	len = 0;
@@ -53,9 +51,7 @@ static bool	file_name_too_long(char *path)
 			len++;
 		if (len > NAME_MAX)
 		{
-			ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
-			ft_putstr_fd(path, STDERR_FILENO);
-			ft_putstr_fd(": File name too long\n", STDERR_FILENO);
+			file_name_too_long("cd", path);
 			return (true);
 		}
 		tmp++;
@@ -72,21 +68,17 @@ bool	move_to_envvar(char *varname)
 		ft_putstr_fd(" not set\n", STDERR_FILENO);
 		return (false);
 	}
-	if (file_name_too_long(getenv(varname)))
+	if (file_name_check(getenv(varname)))
 		return (false);
 	if (!dir_exists(getenv(varname)))
 	{
-		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
-		ft_putstr_fd(getenv(varname), STDERR_FILENO);
-		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		no_such_file_or_directory("cd", getenv(varname));
 		return (false);
 	}
 	set_oldpwd();
 	if (chdir(getenv(varname)) < 0)
 	{
-		ft_putstr_fd("minishell: chdir: ", STDERR_FILENO);
-		ft_putstr_fd(strerror(errno), STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
+		operation_failed("chdir");
 		return (false);
 	}
 	return (true);
@@ -94,21 +86,17 @@ bool	move_to_envvar(char *varname)
 
 bool	move_to_path(char *path)
 {
-	if (file_name_too_long(path))
+	if (file_name_check(path))
 		return (false);
 	if (!dir_exists(path))
 	{
-		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
-		ft_putstr_fd(path, STDERR_FILENO);
-		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		no_such_file_or_directory("cd", path);
 		return (false);
 	}
 	set_oldpwd();
 	if (chdir(path) < 0)
 	{
-		ft_putstr_fd("minishell: chdir: ", STDERR_FILENO);
-		ft_putstr_fd(strerror(errno), STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
+		operation_failed("chdir");
 		return (false);
 	}
 	return (true);
