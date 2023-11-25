@@ -6,7 +6,7 @@
 #    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/24 23:16:49 by misargsy         ###   ########.fr        #
+#    Updated: 2023/11/25 16:09:17 by misargsy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,6 @@ RLFLAGS = -lreadline
 
 LEXER =		srcs/lexer/lexer_utils.c \
 			srcs/lexer/lexer.c \
-			srcs/utils/errors.c \
 
 AST = 		srcs/ast/create_node.c \
 			srcs/ast/destroy_node.c \
@@ -28,10 +27,8 @@ PARSER = 	srcs/parser/parser.c \
 			srcs/parser/parse_cmd_suffix.c \
 			srcs/parser/parse_word.c \
 			srcs/parser/consume.c \
-			srcs/parser/puts.c \
 
-BUILTIN =	srcs/builtin/bi_error.c \
-			srcs/builtin/bi_echo.c \
+BUILTIN =	srcs/builtin/bi_echo.c \
 			srcs/builtin/bi_cd.c \
 			srcs/builtin/bi_cd_util.c \
 			srcs/builtin/bi_pwd.c \
@@ -42,12 +39,18 @@ BUILTIN =	srcs/builtin/bi_error.c \
 
 EXECUTE =	srcs/exec/execute.c \
 			srcs/exec/exec_util.c \
-			srcs/exec/exec_error.c \
 			srcs/exec/exec_pipeline.c \
 			srcs/exec/ft_execvp.c \
 			srcs/exec/set_redir.c \
 
-SRCS = srcs/main.c $(LEXER) $(AST) $(PARSER) $(BUILTIN) $(EXECUTE)
+ERRORS =	srcs/error/general_errors.c \
+			srcs/error/lexer_errors.c \
+			srcs/error/bi_errors.c \
+			srcs/error/exec_errors.c \
+
+TESTS = 	tests/parser/print_utils.c \
+
+SRCS = srcs/main.c $(LEXER) $(AST) $(PARSER) $(BUILTIN) $(EXECUTE) $(ERRORS) $(TESTS)
 
 NAME = minishell
 LIBFT = libft.a

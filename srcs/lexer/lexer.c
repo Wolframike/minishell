@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:22:28 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/21 05:01:47 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/25 16:12:48 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	tokenize(t_state *data, const char *line)
 			cur->next->prev = cur;
 			cur = cur->next;
 		}
-		else
+		else if (*line)
 		{
 			cur->next = parse_word(data, &line);
 			if (cur->next == NULL)
