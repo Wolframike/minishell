@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:09 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/21 05:57:38 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/21 06:05:20 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ t_ast_node	*parse_and_or(t_token **token)
 {
 	t_ast_node	*res;
 
-	// syntax error
 	if ((*token)->type == TK_AND || (*token)->type == TK_OR)
 		return (NULL);
 	res = parse_pipeline(token);
@@ -74,9 +73,8 @@ t_ast_node	*parse_and_or(t_token **token)
 			if (res == NULL)
 				return (NULL);
 		}
-		// ここに該当したらsyntax error
 		else
-			break;
+			break ;
 	}
 	return (res);
 }

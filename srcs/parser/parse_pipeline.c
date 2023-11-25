@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:32 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/21 05:15:46 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/21 06:05:25 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_ast_node	*parse_pipeline(t_token **token)
 {
 	t_ast_node	*res;
 	t_ast_node	*r_node;
-	
+
 	res = parse_simple_command(token);
 	while (token != NULL && (res != NULL && res->type != TK_EOL)
 		&& consume_token(token, TK_PIPE))

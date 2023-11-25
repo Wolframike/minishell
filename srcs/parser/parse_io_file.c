@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:26 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/21 05:13:10 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/25 15:36:11 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static t_redir	*parse_io_file_helper(t_token **token)
 {
 	t_redir_type	type;
-	char		*filename;
+	char			*filename;
 
 	if ((*token)->type == TK_IN)
 		type = REDIR_IN;
@@ -25,7 +25,7 @@ static t_redir	*parse_io_file_helper(t_token **token)
 		type = REDIR_APPEND;
 	else
 		return (NULL);
-	eat_token(token);
+	*token = (*token)->next;
 	filename = parse_word(token);
 	if (filename == NULL)
 		return (NULL);
@@ -37,9 +37,6 @@ t_list	*parse_io_file(t_token **token)
 	t_list	*res;
 	t_redir	*redir;
 
-	// if (token->type == TK_HEREDOC)
-	// 	redir = parse_heredoc(token);
-	// else if (is_redir(token))
 	if (is_redir(*token))
 		redir = parse_io_file_helper(token);
 	else
