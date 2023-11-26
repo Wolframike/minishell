@@ -6,7 +6,7 @@
 #    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/26 18:14:03 by knishiok         ###   ########.fr        #
+#    Updated: 2023/11/26 19:03:31 by knishiok         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ UTILS =		srcs/utils/free.c \
 TESTS = 	tests/parser/print_utils_parser.c \
 			tests/lexer/print_utils_lexer.c \
 
-SRCS = tests/expand/main.c $(LEXER) $(AST) $(PARSER) $(EXPAND) $(BUILTIN) $(EXECUTE) $(ERRORS) $(ENV) $(UTILS) $(TESTS)
+SRCS = srcs/main.c $(LEXER) $(AST) $(PARSER) $(EXPAND) $(BUILTIN) $(EXECUTE) $(ERRORS) $(ENV) $(UTILS) $(TESTS)
 
 NAME = minishell
 LIBFT = libft.a
