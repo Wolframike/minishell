@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 19:21:31 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/26 21:19:07 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	main(int argc, char **argv, char **envp)
 		if (node == NULL)
 			continue ;
 		execute(node, &config);
+		wait(NULL);
 		destroy_ast_node(node);
 		add_history(line);
 		free(line);

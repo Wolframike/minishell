@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:55:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 18:51:53 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/26 20:09:46 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	**t_list_to_array(const char *command, t_list *lst)
 	char	**arr;
 	size_t	i;
 
-	arr = malloc(sizeof(char *) * (ft_lstsize(lst) + 2));
+	arr = (char **)malloc(sizeof(char *) * (ft_lstsize(lst) + 2));
 	if (arr == NULL)
 		return (NULL);
 	i = 0;

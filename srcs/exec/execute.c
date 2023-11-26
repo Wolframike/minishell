@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:35:17 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 19:08:55 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/26 20:58:26 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,5 @@ t_exit_code	execute(t_ast_node *root, t_exec *config)
 	}
 	else if (root->type == AST_PIPE)
 		return (exec_pipeline(root, config));
-	//wait
 	return (EXIT_OK);
 }
