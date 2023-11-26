@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/20 09:55:58 by knishiok          #+#    #+#              #
-#    Updated: 2023/11/20 16:06:53 by knishiok         ###   ########.fr        #
+#    Updated: 2023/11/26 12:23:46 by misargsy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,7 @@ SRCS = ft_atoi.c \
 	ft_split.c \
 	ft_strchr.c \
 	ft_strdup.c \
+	ft_strndup.c \
 	ft_striteri.c \
 	ft_strjoin.c \
 	ft_strlcat.c \

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
+#    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/25 18:17:46 by knishiok         ###   ########.fr        #
+#    Updated: 2023/11/26 12:51:49 by misargsy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,10 +49,16 @@ ERRORS =	srcs/error/general_errors.c \
 			srcs/error/bi_errors.c \
 			srcs/error/exec_errors.c \
 
+ENV =		srcs/env/init_destroy.c \
+			srcs/env/manipulation.c \
+			srcs/env/set_env.c \
+
+UTILS =		srcs/utils/free.c \
+
 TESTS = 	tests/parser/print_utils_parser.c \
 			tests/lexer/print_utils_lexer.c \
 
-SRCS = srcs/main.c $(LEXER) $(AST) $(PARSER) $(BUILTIN) $(EXECUTE) $(ERRORS) $(TESTS)
+SRCS = srcs/main.c $(LEXER) $(AST) $(PARSER) $(BUILTIN) $(EXECUTE) $(ERRORS) $(ENV) $(UTILS) $(TESTS)
 
 NAME = minishell
 LIBFT = libft.a
