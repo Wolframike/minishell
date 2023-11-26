@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 23:16:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/25 15:27:51 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/26 19:01:47 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,17 @@ static	bool	dir_exists(char *path)
 	return (true);
 }
 
-static void	set_oldpwd(void)
+static bool	set_oldpwd(t_exec *config)
 {
-	ft_putstr_fd("Set OLDPWD, not implemented yet\n", STDERR_FILENO);
-	return ;
-	//incomplete
+	char	*oldpwd;
+
+	oldpwd = getcwd(NULL, 0);
+	if (oldpwd == NULL)
+		return (operation_failed("getcwd"), false);
+	if (!set_env(config->env, "OLDPWD", oldpwd))
+		return (operation_failed("malloc"), false);
+	free(oldpwd);
+	return (true);
 }
 
 static bool	file_name_check(char *path)
@@ -59,32 +65,36 @@ static bool	file_name_check(char *path)
 	return (false);
 }
 
-bool	move_to_envvar(char *varname)
+bool	move_to_envvar(t_exec *config, char *varname)
 {
-	if (getenv(varname) == NULL)
+	char	*path;
+
+	path = get_env(config->env, varname);
+	if (path == NULL)
 	{
 		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
 		ft_putstr_fd(varname, STDERR_FILENO);
 		ft_putstr_fd(" not set\n", STDERR_FILENO);
 		return (false);
 	}
-	if (file_name_check(getenv(varname)))
-		return (false);
-	if (!dir_exists(getenv(varname)))
+	if (!dir_exists(path))
 	{
-		no_such_file_or_directory("cd", getenv(varname));
+		no_such_file_or_directory("cd", path);
 		return (false);
 	}
-	set_oldpwd();
-	if (chdir(getenv(varname)) < 0)
+	path = ft_strdup(path);
+	set_oldpwd(config);
+	if (chdir(path) < 0)
 	{
 		operation_failed("chdir");
+		free(path);
 		return (false);
 	}
+	free(path);
 	return (true);
 }
 
-bool	move_to_path(char *path)
+bool	move_to_path(t_exec *config, char *path)
 {
 	if (file_name_check(path))
 		return (false);
@@ -93,7 +103,7 @@ bool	move_to_path(char *path)
 		no_such_file_or_directory("cd", path);
 		return (false);
 	}
-	set_oldpwd();
+	set_oldpwd(config);
 	if (chdir(path) < 0)
 	{
 		operation_failed("chdir");

@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:14:09 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 12:00:26 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:56:40 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,25 @@
 # include "libft.h"
 # include "type.h"
 # include "error.h"
+# include "execute.h"
 # include <stdbool.h>
 # include <sys/errno.h>
 # include <string.h>
 
-extern char	**environ;
+typedef struct s_exec	t_exec;
 
 int		bi_echo(t_list *args);
 
-bool	move_to_envvar(char *varname);
-bool	move_to_path(char *path);
-int		bi_cd(t_list *args);
+bool	move_to_envvar(t_exec *config, char *varname);
+bool	move_to_path(t_exec *config, char *path);
+int		bi_cd(t_list *args, t_exec *config);
 
 int		bi_pwd(void);
-int		bi_export(t_list *args);
-int		bi_unset(t_list *args);
-int		bi_env(void);
+int		bi_export(t_list *args, t_exec *config);
+int		bi_unset(t_list *args, t_exec *config);
+int		bi_env(t_exec *config);
 int		bi_exit(t_list *args, bool parent);
+
+bool	is_valid_identifier(char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 11:59:58 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 12:55:15 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/26 18:21:15 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	destroy_env_node(t_env *env);
 
 char	**env_to_array(t_env *env);
 void	unset_env(t_env **env, char *key);
-bool	set_env(t_env **env, char *key, char *value);
+bool	set_env(t_env *env, char *key, char *value);
 char	*get_env(t_env *env, char *key);
 
 #endif
