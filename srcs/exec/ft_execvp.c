@@ -6,21 +6,11 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:55:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/23 20:31:21 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/26 12:30:08 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
-
-void	free2darr(char **arr)
-{
-	size_t	i;
-
-	i = 0;
-	while (arr[i] != NULL)
-		free(arr[i++]);
-	free(arr);
-}
 
 static char	*get_full_path(const char *cmd)
 {

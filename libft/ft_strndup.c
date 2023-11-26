@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.h                                            :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/18 17:11:41 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/26 12:00:37 by misargsy         ###   ########.fr       */
+/*   Created: 2023/11/26 12:23:59 by misargsy          #+#    #+#             */
+/*   Updated: 2023/11/26 12:56:27 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXER_H
-# define LEXER_H
+#include "libft.h"
 
-# include "type.h"
-# include "error.h"
+char	*ft_strndup(char *src, size_t len)
+{
+	size_t		i;
+	char		*res;
 
-void	destroy_token(t_token **token);
-bool	is_space(const char c);
-void	skip_spaces(const char **line);
-bool	is_metacharacter(const char c);
-bool	corresponds(const char *line, const char *metastr);
-
-void	tokenize(t_state *data, const char *line);
-
-void	print_tokens(t_token *token);
-
-#endif
+	res = (char *)malloc(sizeof(char) * (len + 1));
+	if (res == NULL)
+		return (NULL);
+	i = 0;
+	while (src[i] && i < len)
+	{
+		res[i] = src[i];
+		i++;
+	}
+	res[i] = '\0';
+	return (res);
+}

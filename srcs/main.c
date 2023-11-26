@@ -6,12 +6,13 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/25 19:29:40 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/26 13:30:32 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "execute.h"
+#include "env.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stdio.h>

@@ -1,29 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.h                                            :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/18 17:11:41 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/26 12:00:37 by misargsy         ###   ########.fr       */
+/*   Created: 2023/11/26 12:30:33 by misargsy          #+#    #+#             */
+/*   Updated: 2023/11/26 12:32:15 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXER_H
-# define LEXER_H
+#ifndef UTILS_H
+# define UTILS_H
 
-# include "type.h"
-# include "error.h"
+# include <stdlib.h>
 
-void	destroy_token(t_token **token);
-bool	is_space(const char c);
-void	skip_spaces(const char **line);
-bool	is_metacharacter(const char c);
-bool	corresponds(const char *line, const char *metastr);
-
-void	tokenize(t_state *data, const char *line);
-
-void	print_tokens(t_token *token);
+void	free2darr(char **arr);
 
 #endif

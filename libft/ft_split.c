@@ -3,32 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 13:40:19 by knishiok          #+#    #+#             */
-/*   Updated: 2023/09/25 17:37:20 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/26 12:55:49 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-static char	*ft_strndup(char *src, int len)
-{
-	int		i;
-	char	*res;
-
-	res = (char *)malloc(sizeof(char) * (len + 1));
-	if (res == NULL)
-		return (NULL);
-	i = 0;
-	while (src[i] && i < len)
-	{
-		res[i] = src[i];
-		i++;
-	}
-	res[i] = '\0';
-	return (res);
-}
 
 static int	split_word(char const *s, char c, char **result)
 {

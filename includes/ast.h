@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:10:39 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/25 19:06:37 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/26 12:00:23 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,4 +74,5 @@ t_list		*parse_io_file(t_token **token);
 void		print_command_list(t_list *list);
 void		print_node(t_ast_node *node);
 void		print_redir_list(t_list *list);
+
 #endif

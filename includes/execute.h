@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:34:44 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/23 19:29:01 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/26 12:41:32 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "builtin.h"
 # include "ast.h"
 # include "type.h"
+# include "utils.h"
 # include <fcntl.h>
 
 # define PERMS 0644
@@ -30,7 +31,6 @@ extern char	**environ;
 //ft_execvp.c
 int			ft_execvp(const char *file, char *const argv[]);
 char		**t_list_to_char_arr(const char *command, t_list *lst);
-void		free2darr(char **arr);
 
 //exec_pipeline.c
 t_exit_code	exec_pipeline(t_ast_node *root);
