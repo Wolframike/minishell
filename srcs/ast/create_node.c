@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:23:24 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/21 06:04:44 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/26 18:23:11 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ t_redir	*new_redir(t_redir_type type, char *filename)
 		return (NULL);
 	res->type = type;
 	res->filename = filename;
+	res->expanded = NULL;
 	return (res);
 }

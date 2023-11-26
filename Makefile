@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
+#    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/26 12:51:49 by misargsy         ###   ########.fr        #
+#    Updated: 2023/11/26 18:14:03 by knishiok         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,9 @@ PARSER = 	srcs/parser/parser.c \
 			srcs/parser/parse_cmd_suffix.c \
 			srcs/parser/parse_word.c \
 			srcs/parser/consume.c \
+
+EXPAND =	srcs/expand/expand.c \
+			srcs/expand/split_into_list.c \
 
 BUILTIN =	srcs/builtin/bi_echo.c \
 			srcs/builtin/bi_cd.c \
@@ -58,7 +61,7 @@ UTILS =		srcs/utils/free.c \
 TESTS = 	tests/parser/print_utils_parser.c \
 			tests/lexer/print_utils_lexer.c \
 
-SRCS = srcs/main.c $(LEXER) $(AST) $(PARSER) $(BUILTIN) $(EXECUTE) $(ERRORS) $(ENV) $(UTILS) $(TESTS)
+SRCS = tests/expand/main.c $(LEXER) $(AST) $(PARSER) $(EXPAND) $(BUILTIN) $(EXECUTE) $(ERRORS) $(ENV) $(UTILS) $(TESTS)
 
 NAME = minishell
 LIBFT = libft.a

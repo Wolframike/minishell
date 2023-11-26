@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:10:39 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/26 12:00:23 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/26 14:19:41 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_redir
 {
 	t_redir_type	type;
 	char			*filename;
+	char			*expanded;
 }	t_redir;
 
 void		destroy_redir(t_redir *redir);

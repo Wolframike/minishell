@@ -6,12 +6,11 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 15:14:12 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/25 19:06:21 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/26 18:10:43 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
 
 bool	consume_token(t_token **token, t_token_type type)
 {
