@@ -5,39 +5,25 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 18:23:49 by knishiok         ###   ########.fr       */
+/*   Created: 2023/11/26 18:06:20 by knishiok          #+#    #+#             */
+/*   Updated: 2023/11/26 18:18:00 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
-#include "execute.h"
-#include "env.h"
-#include <readline/readline.h>
-#include <readline/history.h>
+#include "expand.h"
 #include <stdio.h>
 
-int	main(void)
+int main(int argc, char **argv, char **envp)
 {
-	char		*line;
-	t_state		data;
-	t_ast_node	*node;
+	(void)argc;
+	(void)argv;
+	t_env *env = env_init(envp);
+	t_list *lst1;
 
-	rl_outstream = stderr;
-	data.env = env_init(environ);
-	while (true)
-	{
-		line = readline("\x1b[31mMINISHELL>>\x1b[0m ");
-		if (line == NULL)
-			break ;
-		node = parse(&data, line);
-		if (node == NULL)
-			continue ;
-		print_node(node);
-		execute(node);
-		destroy_ast_node(node);
-		add_history(line);
-		free(line);
-	}
-	exit(EXIT_SUCCESS);
+	char *input1 = ft_strdup("123\'$PWD\'\n\"$HOME\"\n$TERM\n");
+	lst1 = expand_variable_list(input1, env);
+	free(input1);
+	print_command_list(lst1);
+	ft_lstclear(&lst1, free);
+	env_destroy(env);
 }

@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:22:28 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/25 19:00:05 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/26 18:13:08 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void	tokenize(t_state *data, const char *line)
 			cur->next = parse_metacharacters(&line);
 			if (cur->next == NULL)
 				return (set_allocation_error(data, head.next));
-			cur->next->prev = cur;
 			cur = cur->next;
 		}
 		else if (*line)
@@ -95,7 +94,6 @@ void	tokenize(t_state *data, const char *line)
 			cur->next = parse_word(data, &line);
 			if (cur->next == NULL)
 				return (set_allocation_error(data, head.next));
-			cur->next->prev = cur;
 			cur = cur->next;
 		}
 	}
