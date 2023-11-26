@@ -6,29 +6,29 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 01:11:55 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/25 18:57:40 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/26 19:00:59 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-static void	exec_simple_command_for_pipeline(t_ast_node *root)
+static void	exec_simple_command_for_pipeline(t_ast_node *root, t_exec *config)
 {
 	if (ft_strcmp(root->command->content, "echo") == 0)
 		exit(bi_echo(root->command->next));
 	if (ft_strcmp(root->command->content, "cd") == 0)
-		exit (bi_cd(root->command->next));
+		exit (bi_cd(root->command->next, config));
 	if (ft_strcmp(root->command->content, "pwd") == 0)
 		exit(bi_pwd());
 	// if (ft_strcmp(root->command->content, "export") == 0)
-	// 	exit(bi_export(root->command->next));
+	// 	exit(bi_export(root->command->next, config));
 	if (ft_strcmp(root->command->content, "unset") == 0)
-		exit(bi_unset(root->command->next));
+		exit(bi_unset(root->command->next, config));
 	if (ft_strcmp(root->command->content, "env") == 0)
-		exit(bi_env());
+		exit(bi_env(config));
 	if (ft_strcmp(root->command->content, "exit") == 0)
 		exit(bi_exit(root->command->next, false));
-	exit(exec_non_bi(root->command->content, root->command->next));
+	exit(exec_non_bi(root->command->content, root->command->next, config));
 }
 
 static bool	create_pipeline_list(t_ast_node *root, t_list **head)
@@ -53,7 +53,7 @@ static bool	create_pipeline_list(t_ast_node *root, t_list **head)
 	return (true);
 }
 
-static bool	pipe_loop(t_ast_node *ast, bool last)
+static bool	pipe_loop(t_ast_node *ast, t_exec *config, bool last)
 {
 	pid_t	pid;
 	int		fd[2];
@@ -75,13 +75,13 @@ static bool	pipe_loop(t_ast_node *ast, bool last)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 		close(fd[0]);
-		exec_simple_command_for_pipeline(ast);
+		exec_simple_command_for_pipeline(ast, config);
 	}
 	dup2(fd[0], STDIN_FILENO);
 	return (close(fd[0]), close(fd[1]), true);
 }
 
-static bool	exec_pipeline_list(t_list *head)
+static bool	exec_pipeline_list(t_list *head, t_exec *config)
 {
 	t_ast_node	*ast;
 	int			in;
@@ -90,7 +90,7 @@ static bool	exec_pipeline_list(t_list *head)
 	while (head != NULL)
 	{
 		ast = head->content;
-		if (!pipe_loop(ast, head->next == NULL))
+		if (!pipe_loop(ast, config, head->next == NULL))
 			return (false);
 		head = head->next;
 	}
@@ -98,7 +98,7 @@ static bool	exec_pipeline_list(t_list *head)
 	return (true);
 }
 
-t_exit_code	exec_pipeline(t_ast_node *root)
+t_exit_code	exec_pipeline(t_ast_node *root, t_exec *config)
 {
 	t_list	*head;
 
@@ -109,7 +109,7 @@ t_exit_code	exec_pipeline(t_ast_node *root)
 		ft_lstclear(&head, NULL);
 		return (operation_failed("malloc"), EXIT_KO);
 	}
-	if (!exec_pipeline_list(head))
+	if (!exec_pipeline_list(head, config))
 	{
 		ft_lstclear(&head, NULL);
 		return (EXIT_KO);

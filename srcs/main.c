@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 18:34:31 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/26 19:21:31 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,24 @@
 #include <readline/history.h>
 #include <stdio.h>
 
-int	main(void)
+static void	initialize(t_exec *config, char **envp)
+{
+	rl_instream = stdin;
+	rl_outstream = stdout;
+	config->env = env_init(envp);
+	config->exit_code = EXIT_OK;
+}
+
+int	main(int argc, char **argv, char **envp)
 {
 	char		*line;
+	t_exec		config;
 	t_state		data;
 	t_ast_node	*node;
 
-	rl_outstream = stderr;
-	data.env = env_init(environ);
+	(void)argc;
+	(void)argv;
+	initialize(&config, envp);
 	while (true)
 	{
 		line = readline("\x1b[31mMINISHELL>>\x1b[0m ");
@@ -33,8 +43,7 @@ int	main(void)
 		node = parse(&data, line);
 		if (node == NULL)
 			continue ;
-		//print_node(node);
-		execute(node);
+		execute(node, &config);
 		destroy_ast_node(node);
 		add_history(line);
 		free(line);

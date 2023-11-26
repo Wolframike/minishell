@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
+#    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/26 19:03:31 by knishiok         ###   ########.fr        #
+#    Updated: 2023/11/26 19:21:08 by misargsy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ BUILTIN =	srcs/builtin/bi_echo.c \
 			srcs/builtin/bi_unset.c \
 			srcs/builtin/bi_env.c \
 			srcs/builtin/bi_exit.c \
+			srcs/builtin/bi_util.c \
 
 EXECUTE =	srcs/exec/execute.c \
 			srcs/exec/exec_util.c \

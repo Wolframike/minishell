@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:07:40 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 13:05:15 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/26 15:16:03 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ t_env	*env_init(char **envp)
 
 	i = 0;
 	env = NULL;
+	if (envp == NULL)
+		return (NULL);
 	while (envp[i] != NULL)
 	{
 		new = create_env_node(envp[i]);

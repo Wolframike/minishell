@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:08:01 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 12:51:12 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/26 18:24:28 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	**env_to_array(t_env *env)
 	if (arr == NULL)
 		return (NULL);
 	i = 0;
-	while (env != NULL)
+	while (env != NULL && env->value != NULL)
 	{
 		arr[i] = ft_strjoin(env->key, "=");
 		if (arr[i] == NULL)
@@ -51,22 +51,29 @@ char	**env_to_array(t_env *env)
 
 void	unset_env(t_env **env, char *key)
 {
+	t_env	*prev;
+	t_env	*next;
 	t_env	*tmp;
+	size_t	i;
 
 	tmp = *env;
+	i = 0;
 	while (tmp != NULL)
 	{
 		if (ft_strcmp(tmp->key, key) == 0)
 		{
-			if (tmp->prev == NULL)
-				*env = tmp->next;
-			else
-				tmp->prev->next = tmp->next;
-			if (tmp->next != NULL)
-				tmp->next->prev = tmp->prev;
+			prev = tmp->prev;
+			next = tmp->next;
+			if (prev != NULL)
+				prev->next = next;
+			if (next != NULL)
+				next->prev = prev;
 			destroy_env_node(tmp);
+			if (i == 0)
+				*env = next;
 			return ;
 		}
+		i++;
 		tmp = tmp->next;
 	}
 }
