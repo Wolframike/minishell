@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 18:23:49 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/26 18:34:31 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main(void)
 		node = parse(&data, line);
 		if (node == NULL)
 			continue ;
-		print_node(node);
+		//print_node(node);
 		execute(node);
 		destroy_ast_node(node);
 		add_history(line);

@@ -6,11 +6,27 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 17:35:08 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/26 18:20:29 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/26 19:00:30 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
+
+void	set_res(t_list **res, char *line)
+{
+	char	*str;
+
+	*res = NULL;
+	if (*line == '\0')
+	{
+		str = ft_strdup("");
+		if (str == NULL)
+			return (operation_failed("malloc"));
+		*res = ft_lstnew(str);
+		if (*res == NULL)
+			return (operation_failed("malloc"));
+	}
+}
 
 static t_list	*split_line_to_list(char *line)
 {
@@ -19,7 +35,7 @@ static t_list	*split_line_to_list(char *line)
 	char	*word_start;
 	char	*chunk;
 
-	res = NULL;
+	set_res(&res, line);
 	while (*line)
 	{
 		if (ft_strchr(" \n\t", *line) == NULL)
