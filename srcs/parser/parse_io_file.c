@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:26 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/27 18:02:23 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:33:05 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ static t_redir	*parse_io_file_helper(t_token **token)
 	return (new_redir(type, filename));
 }
 
-t_list	*parse_io_file(t_token **token)
+t_list	*parse_io_file(t_token **token, t_state *data)
 {
 	t_list	*res;
 	t_redir	*redir;
 
 	if ((*token)->type == TK_HEREDOC)
-		redir = parse_heredoc(token);
+		redir = parse_heredoc(token, data);
 	else if (is_redir(*token))
 		redir = parse_io_file_helper(token);
 	else
@@ -51,7 +51,7 @@ t_list	*parse_io_file(t_token **token)
 	return (res);
 }
 
-t_list	*parse_io_files(t_token **token)
+t_list	*parse_io_files(t_token **token, t_state *data)
 {
 	t_list	*res;
 	t_list	*redir;
@@ -59,7 +59,7 @@ t_list	*parse_io_files(t_token **token)
 	res = NULL;
 	while (is_redir(*token))
 	{
-		redir = parse_io_file(token);
+		redir = parse_io_file(token, data);
 		if (redir == NULL)
 		{
 			ft_lstclear(&res, free);
