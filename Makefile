@@ -3,16 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
+#    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/26 19:21:08 by misargsy         ###   ########.fr        #
+#    Updated: 2023/11/27 18:30:56 by knishiok         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS = -Wall -Wextra -Werror -I includes -I libft
-RLFLAGS = -lreadline
-
+FLAGS = -Wall -Wextra -Werror -I includes -I libft -I ~/.brew/opt/readline/include
+RLFLAGS = -lreadline -L ~/.brew/opt/readline/lib 
 LEXER =		srcs/lexer/lexer_utils.c \
 			srcs/lexer/lexer.c \
 
@@ -31,6 +30,9 @@ PARSER = 	srcs/parser/parser.c \
 
 EXPAND =	srcs/expand/expand.c \
 			srcs/expand/split_into_list.c \
+
+SIGNAL =	srcs/signal/signal.c \
+			srcs/signal/signal_handler.c \
 
 BUILTIN =	srcs/builtin/bi_echo.c \
 			srcs/builtin/bi_cd.c \
@@ -62,7 +64,7 @@ UTILS =		srcs/utils/free.c \
 TESTS = 	tests/parser/print_utils_parser.c \
 			tests/lexer/print_utils_lexer.c \
 
-SRCS = srcs/main.c $(LEXER) $(AST) $(PARSER) $(EXPAND) $(BUILTIN) $(EXECUTE) $(ERRORS) $(ENV) $(UTILS) $(TESTS)
+SRCS = srcs/main.c $(LEXER) $(AST) $(PARSER) $(EXPAND) $(SIGNAL) $(BUILTIN) $(EXECUTE) $(ERRORS) $(ENV) $(UTILS) $(TESTS)
 
 NAME = minishell
 LIBFT = libft.a
