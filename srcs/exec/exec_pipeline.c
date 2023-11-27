@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 01:11:55 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 21:15:47 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/27 15:30:47 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,7 @@ static bool	create_pipeline_list(t_ast_node *root, t_list **head)
 {
 	t_list	*new;
 
-	(*head) = ft_lstnew(root->right);
-	if ((*head) == NULL)
-		return (false);
-	while (root->left->type == AST_PIPE)
+	while (root->type == AST_PIPE)
 	{
 		new = ft_lstnew(root->right);
 		if (new == NULL)
@@ -27,7 +24,7 @@ static bool	create_pipeline_list(t_ast_node *root, t_list **head)
 		ft_lstadd_front(head, new);
 		root = root->left;
 	}
-	new = ft_lstnew(root->left);
+	new = ft_lstnew(root);
 	if (new == NULL)
 		return (false);
 	ft_lstadd_front(head, new);
@@ -86,6 +83,7 @@ t_exit_code	exec_pipeline(t_ast_node *root, t_exec *config)
 
 	if (root == NULL)
 		return (EXIT_OK);
+	head = NULL;
 	if (!create_pipeline_list(root, &head))
 	{
 		ft_lstclear(&head, NULL);

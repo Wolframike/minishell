@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:14:09 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 17:56:40 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/27 17:39:13 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@
 # include "type.h"
 # include "error.h"
 # include "execute.h"
+# include "expand.h"
 # include <stdbool.h>
 # include <sys/errno.h>
 # include <string.h>
 
 typedef struct s_exec	t_exec;
 
-int		bi_echo(t_list *args);
+int		bi_echo(t_list *args, t_exec *config);
 
 bool	move_to_envvar(t_exec *config, char *varname);
 bool	move_to_path(t_exec *config, char *path);

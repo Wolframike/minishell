@@ -6,13 +6,13 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:38:14 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/24 18:33:45 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:26:54 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-static bool	isnumber(char *arg)
+static bool	isnum(char *arg)
 {
 	if (*arg == '-' || *arg == '+')
 		arg++;
@@ -48,7 +48,7 @@ int	bi_exit(t_list *args, bool parent)
 		ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (args == NULL)
 		exit(EXIT_SUCCESS);
-	if (!isnumber(args->content) || isoverflow(args->content))
+	if (!isnum(args->content) || isoverflow(args->content))
 	{
 		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 		ft_putstr_fd(args->content, STDERR_FILENO);

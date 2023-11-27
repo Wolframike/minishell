@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
+#    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/27 18:30:56 by knishiok         ###   ########.fr        #
+#    Updated: 2023/11/27 19:19:31 by misargsy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS = -Wall -Wextra -Werror -I includes -I libft -I ~/.brew/opt/readline/include
-RLFLAGS = -lreadline -L ~/.brew/opt/readline/lib 
+FLAGS = -Wall -Wextra -Werror -I includes -I libft -I$(shell brew --prefix readline)/include
+RLFLAGS = -lreadline -L $(shell brew --prefix readline)/lib
 LEXER =		srcs/lexer/lexer_utils.c \
 			srcs/lexer/lexer.c \
 
