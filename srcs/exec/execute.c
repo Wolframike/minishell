@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:35:17 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 20:58:26 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/27 17:39:06 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static t_exit_code	exec_simple_command(t_ast_node *root, t_exec *config)
 {
 	if (ft_strcmp(root->command->content, "echo") == 0)
-		return (bi_echo(root->command->next));
+		return (bi_echo(root->command->next, config));
 	if (ft_strcmp(root->command->content, "cd") == 0)
 		return (bi_cd(root->command->next, config));
 	if (ft_strcmp(root->command->content, "pwd") == 0)

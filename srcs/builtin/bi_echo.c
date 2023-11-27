@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:19:09 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/24 18:41:36 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:01:53 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,12 @@ static bool	nl_option(char *arg)
 	return (true);
 }
 
-int	bi_echo(t_list *args)
+int	bi_echo(t_list *args, t_exec *config)
 {
 	bool	nl;
 
 	if (args == NULL)
-	{
-		ft_putchar_fd('\n', STDOUT_FILENO);
-		return (EXIT_OK);
-	}
+		return (ft_putchar_fd('\n', STDOUT_FILENO), EXIT_OK);
 	nl = nl_option(args->content);
 	while (nl_option(args->content))
 	{
@@ -46,6 +43,8 @@ int	bi_echo(t_list *args)
 			return (EXIT_OK);
 		args = args->next;
 	}
+	if (!expand_command_list(&args, config->env))
+		return (EXIT_KO);
 	while (true)
 	{
 		ft_putstr_fd(args->content, STDOUT_FILENO);

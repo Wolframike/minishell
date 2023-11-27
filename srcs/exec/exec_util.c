@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 12:15:01 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/27 19:00:36 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:30:13 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
-#include "sig.h"
 
 static void	exec_non_bi_in_pipeline(const char *command, t_list *args,
 		t_exec *config)
@@ -19,6 +18,11 @@ static void	exec_non_bi_in_pipeline(const char *command, t_list *args,
 	char	**argv;
 	char	**envp;
 
+	if (!expand_command_list(&args, config->env))
+	{
+		operation_failed("malloc");
+		exit(EXIT_KO);
+	}
 	argv = t_list_to_array(command, args);
 	envp = env_to_array(config->env);
 	if ((argv == NULL) || (envp == NULL))
@@ -38,7 +42,7 @@ static void	exec_non_bi_in_pipeline(const char *command, t_list *args,
 void	exec_in_pipeline(t_ast_node *root, t_exec *config)
 {
 	if (ft_strcmp(root->command->content, "echo") == 0)
-		exit(bi_echo(root->command->next));
+		exit(bi_echo(root->command->next, config));
 	if (ft_strcmp(root->command->content, "cd") == 0)
 		exit(bi_cd(root->command->next, config));
 	if (ft_strcmp(root->command->content, "pwd") == 0)
@@ -50,7 +54,7 @@ void	exec_in_pipeline(t_ast_node *root, t_exec *config)
 	if (ft_strcmp(root->command->content, "env") == 0)
 		exit(bi_env(config));
 	if (ft_strcmp(root->command->content, "exit") == 0)
-		exit(bi_exit(root->command->next, true));
+		exit(bi_exit(root->command->next, false));
 	else
 		exec_non_bi_in_pipeline(root->command->content,
 			root->command->next, config);
@@ -65,6 +69,8 @@ t_exit_code	exec_non_bi(const char *command, t_list *args, t_exec *config)
 	pid = fork();
 	if (pid < 0)
 		return (operation_failed("fork"), EXIT_KO);
+	if (!expand_command_list(&args, config->env))
+		return (operation_failed("malloc"), EXIT_KO);
 	if (pid == 0)
 	{
 		argv = t_list_to_array(command, args);

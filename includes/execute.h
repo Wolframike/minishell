@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:34:44 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 21:11:51 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:24:57 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include "type.h"
 # include "utils.h"
 # include "env.h"
+# include "sig.h"
+# include "expand.h"
 # include <fcntl.h>
 
 # define PERMS 0644
