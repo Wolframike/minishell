@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:58:43 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/25 18:52:14 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:15:34 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	start_heredoc(char *delimiter, int fd)
 	pid = fork();
 	if (pid == 0)
 	{
+		set_heredoc_child_handler();
 		while (true)
 		{
 			line = readline("> ");
@@ -43,7 +44,7 @@ static void	start_heredoc(char *delimiter, int fd)
 		close(fd);
 		exit(EXIT_OK);
 	}
-	while (waitpid(pid, &status, 0) == -1)
+	if (waitpid(pid, &status, 0) == -1)
 		waitpid(pid, &status, 0);
 }
 
@@ -64,6 +65,10 @@ t_redir	*parse_heredoc(t_token **token)
 	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, PERMS);
 	if (fd == -1)
 		return (NULL);
+	set_heredoc_handler();
 	start_heredoc(delimiter, fd);
-	return (new_redir(REDIR_IN, filename));
+	if (g_signal == 0)
+		return (new_redir(REDIR_IN, filename));
+	else
+		return (NULL);
 }

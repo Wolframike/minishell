@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   exec_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 12:15:01 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 21:15:10 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:00:36 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
+#include "sig.h"
 
 static void	exec_non_bi_in_pipeline(const char *command, t_list *args,
 		t_exec *config)

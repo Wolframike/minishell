@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:26 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/25 18:16:34 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:02:23 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ t_list	*parse_io_file(t_token **token)
 	else if (is_redir(*token))
 		redir = parse_io_file_helper(token);
 	else
+		return (NULL);
+	if (redir == NULL)
 		return (NULL);
 	res = ft_lstnew(redir);
 	if (res == NULL)
