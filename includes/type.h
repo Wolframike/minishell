@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:57:35 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/26 18:13:19 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/27 21:49:53 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "libft.h"
 # include "env.h"
+# include <term.h>
+# include <termios.h>
 # include <stdbool.h>
 
 typedef enum e_token_type
@@ -39,10 +41,11 @@ typedef struct s_token
 
 typedef struct s_state
 {
-	t_token	*token;
-	t_env	*env;
-	int		status;
-	bool	sys_error;
+	struct termios	*termconf;
+	t_token			*token;
+	t_env			*env;
+	int				status;
+	bool			sys_error;
 }	t_state;
 
 typedef enum e_exit_code

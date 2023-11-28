@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:38:14 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 16:45:09 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 20:30:19 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static bool	isoverflow(char *arg)
 
 int	bi_exit(t_list *args, bool parent, t_exec *config)
 {
+	set_term_config(NULL, 2);
 	if (!expand_command_list(&args, config->env))
 		return (operation_failed("malloc"), EXIT_KO);
 	if (parent)

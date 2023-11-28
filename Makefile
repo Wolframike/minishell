@@ -6,12 +6,12 @@
 #    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/27 19:49:07 by knishiok         ###   ########.fr        #
+#    Updated: 2023/11/28 22:59:59 by knishiok         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS = -Wall -Wextra -Werror -I includes -I libft -I $(shell brew --prefix readline)/include
-RLFLAGS = -lreadline -L $(shell brew --prefix readline)/lib
+FLAGS = -Wall -Wextra -Werror -I includes -I libft -I$(shell brew --prefix readline)/include
+RLFLAGS = -lcurses -lreadline -L $(shell brew --prefix readline)/lib
 LEXER =		srcs/lexer/lexer_utils.c \
 			srcs/lexer/lexer.c \
 
@@ -30,9 +30,13 @@ PARSER = 	srcs/parser/parser.c \
 
 EXPAND =	srcs/expand/expand.c \
 			srcs/expand/split_into_list.c \
+			srcs/expand/judge_matched.c \
+			srcs/expand/expand_filename.c \
 
 SIGNAL =	srcs/signal/signal.c \
 			srcs/signal/signal_handler.c \
+
+TERMCONF =  srcs/termconf/init_term.c \
 
 BUILTIN =	srcs/builtin/bi_echo.c \
 			srcs/builtin/bi_cd.c \
@@ -64,7 +68,7 @@ UTILS =		srcs/utils/free.c \
 TESTS = 	tests/parser/print_utils_parser.c \
 			tests/lexer/print_utils_lexer.c \
 
-SRCS = srcs/main.c $(LEXER) $(AST) $(PARSER) $(EXPAND) $(SIGNAL) $(BUILTIN) $(EXECUTE) $(ERRORS) $(ENV) $(UTILS) $(TESTS)
+SRCS =  $(LEXER) $(AST) $(PARSER) $(EXPAND) $(SIGNAL) $(TERMCONF) $(BUILTIN) $(EXECUTE) $(ERRORS) $(ENV) $(UTILS) $(TESTS)
 
 NAME = minishell
 LIBFT = libft.a

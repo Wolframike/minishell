@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:14:15 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/27 17:27:51 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/27 21:19:00 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "libft.h"
 # include <stdio.h>
-# include <termios.h>
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
