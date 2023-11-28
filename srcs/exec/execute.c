@@ -6,11 +6,24 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:35:17 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 16:41:28 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 22:03:49 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
+
+static t_exit_code	exec_non_bi(const char *command, t_list *args, t_exec *config)
+{
+	pid_t	pid;
+
+	config->fork_count++;
+	pid = fork();
+	if (pid < 0)
+		return (operation_failed("fork"), EXIT_KO);
+	if (pid == 0)
+		exec_non_bi_in_child_process(command, args, config);
+	return (single_fork_destructor(pid, config));
+}
 
 static t_exit_code	exec_simple_command(t_ast_node *root, t_exec *config)
 {
@@ -38,9 +51,8 @@ static t_exit_code	exec_simple_command(t_ast_node *root, t_exec *config)
 	return (exec_non_bi(root->command->content, root->command->next, config));
 }
 
-static	t_exit_code	exec_simple_command_wrapper(t_ast_node *root, t_exec *config)
+static	void	exec_simple_command_wrapper(t_ast_node *root, t_exec *config)
 {
-	t_exit_code	exit_code;
 	int			fd[2];
 	int			in;
 	int			out;
@@ -50,12 +62,12 @@ static	t_exit_code	exec_simple_command_wrapper(t_ast_node *root, t_exec *config)
 	in = dup(STDIN_FILENO);
 	out = dup(STDOUT_FILENO);
 	if (!set_redir(root->redir, &fd))
-		return (EXIT_KO);
+		return ((void)(config->exit_code = EXIT_KO));
 	if (root->command == NULL)
-		return (EXIT_OK);
+		return ((void)(config->exit_code = EXIT_OK));
 	dup2(fd[0], STDIN_FILENO);
 	dup2(fd[1], STDOUT_FILENO);
-	exit_code = exec_simple_command(root, config);
+	config->exit_code = exec_simple_command(root, config);
 	dup2(in, STDIN_FILENO);
 	dup2(out, STDOUT_FILENO);
 	close(in);
@@ -64,24 +76,18 @@ static	t_exit_code	exec_simple_command_wrapper(t_ast_node *root, t_exec *config)
 		close(fd[0]);
 	if (fd[1] != STDOUT_FILENO)
 		close(fd[1]);
-	return (exit_code);
 }
 
-t_exit_code	execute(t_ast_node *root, t_exec *config)
+void	execute(t_ast_node *root, t_exec *config)
 {
 	if (root == NULL)
-		return (EXIT_OK);
+		return ;
 	if (root->type == AST_CMD)
-		return (exec_simple_command_wrapper(root, config));
-	else if (root->type == AST_AND)
-	{
-		;// TODO
-	}
-	else if (root->type == AST_OR)
+		exec_simple_command_wrapper(root, config);
+	else if ((root->type == AST_AND) || (root->type == AST_OR))
 	{
 		;// TODO
 	}
 	else if (root->type == AST_PIPE)
-		return (exec_pipeline(root, config));
-	return (EXIT_OK);
+		exec_pipeline(root, config);
 }

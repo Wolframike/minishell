@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 17:19:55 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 21:46:41 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,27 +25,13 @@ static void	initialize(t_exec *config, char **envp)
 	config->env = env_init(envp);
 }
 
-static void	reset(t_exec *config)
-{
-	config->exit_code = EXIT_OK;
-	config->fork_count = 0;
-}
-
-static void	wait_all(t_exec config)
-{
-	while (config.fork_count > 0)
-	{
-		wait(NULL);
-		config.fork_count--;
-	}
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	char		*line;
 	t_exec		config;
 	t_state		data;
 	t_ast_node	*node;
+	int 		fd;
 
 	(void)argc;
 	(void)argv;
@@ -54,6 +40,9 @@ int	main(int argc, char **argv, char **envp)
 	while (true)
 	{
 		set_idle_handler();
+		fd = dup(STDIN_FILENO);
+		printf("fd: %d\n", fd);
+		close(fd);
 		line = readline("\x1b[31mMINISHELL>>\x1b[0m ");
 		if (line == NULL)
 		{
@@ -65,9 +54,8 @@ int	main(int argc, char **argv, char **envp)
 		node = parse(&data, line);
 		if (node == NULL)
 			continue ;
-		reset(&config);
 		execute(node, &config);
-		wait_all(config);
+		dprintf(STDERR_FILENO, "exit code: %d\n", config.exit_code);
 		destroy_ast_node(node);
 		add_history(line);
 		free(line);

@@ -6,11 +6,12 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 01:28:00 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/25 15:21:55 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 18:56:40 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "error.h"
+#include "execute.h"
 
 t_exit_code	execvp_failed(const char *command)
 {
