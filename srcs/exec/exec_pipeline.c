@@ -6,11 +6,39 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 01:11:55 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 17:14:31 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 22:01:44 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
+
+static void	exec_in_pipeline(t_ast_node *root, t_exec *config)
+{
+	char	*expanded_cmd;
+
+	expanded_cmd = expand_variable(root->command->content, config->env);
+	if (expanded_cmd == NULL)
+		exit(EXIT_KO);
+	free(root->command->content);
+	root->command->content = expanded_cmd;
+	if (ft_strcmp(root->command->content, "echo") == 0)
+		exit(bi_echo(root->command->next, config));
+	if (ft_strcmp(root->command->content, "cd") == 0)
+		exit(bi_cd(root->command->next, config));
+	if (ft_strcmp(root->command->content, "pwd") == 0)
+		exit(bi_pwd());
+	// if (ft_strcmp(root->command->content, "export") == 0)
+	// 	exit(bi_export(root->command->next, config));
+	if (ft_strcmp(root->command->content, "unset") == 0)
+		exit(bi_unset(root->command->next, config));
+	if (ft_strcmp(root->command->content, "env") == 0)
+		exit(bi_env(config));
+	if (ft_strcmp(root->command->content, "exit") == 0)
+		exit(bi_exit(root->command->next, false, config));
+	else
+		exec_non_bi_in_child_process(root->command->content,
+			root->command->next, config);
+}
 
 static bool	create_pipeline_list(t_ast_node *root, t_list **head)
 {
@@ -40,12 +68,11 @@ static bool	pipe_loop(t_ast_node *ast, t_exec *config, bool last)
 		return (operation_failed("pipe"), false);
 	if (last)
 	{
-		close(fd[1]);
 		dup2(STDOUT_FILENO, fd[1]);
+		close(fd[0]);
 	}
 	if (!set_redir(ast->redir, &fd))
 		return (false);
-	config->fork_count++;
 	pid = fork();
 	if (pid < 0)
 		return (operation_failed("fork"), false);
@@ -64,16 +91,28 @@ static bool	exec_pipeline_list(t_list *head, t_exec *config)
 {
 	t_ast_node	*ast;
 	int			in;
+	int			len_before;
+	int			len_after;
 
 	in = dup(STDIN_FILENO);
+	len_before = ft_lstsize(head);
 	while (head != NULL)
 	{
 		ast = head->content;
 		if (!pipe_loop(ast, config, head->next == NULL))
-			return (false);
+			break ;
 		head = head->next;
 	}
+	if (head != NULL)
+	{
+		len_after = ft_lstsize(head);
+		config->fork_count += (len_before - len_after);
+		dup2(in, STDIN_FILENO);
+		return (false);
+	}
+	config->fork_count += len_before;
 	dup2(in, STDIN_FILENO);
+	close(in);
 	return (true);
 }
 
@@ -95,5 +134,5 @@ t_exit_code	exec_pipeline(t_ast_node *root, t_exec *config)
 		return (EXIT_KO);
 	}
 	ft_lstclear(&head, NULL);
-	return (EXIT_OK);
+	return (pipeline_forks_destructor(config));
 }

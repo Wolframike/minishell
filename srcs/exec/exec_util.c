@@ -6,13 +6,13 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 12:15:01 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 17:12:47 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 22:05:27 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-static void	exec_non_bi_in_pipeline(const char *command, t_list *args,
+void	exec_non_bi_in_child_process(const char *command, t_list *args,
 		t_exec *config)
 {
 	char	**argv;
@@ -35,66 +35,40 @@ static void	exec_non_bi_in_pipeline(const char *command, t_list *args,
 	ft_execvp(command, argv, envp);
 	free2darr(argv);
 	free2darr(envp);
-	execvp_failed(command);
-	exit(EXIT_KO);
+	exit(execvp_failed(command));
 }
 
-void	exec_in_pipeline(t_ast_node *root, t_exec *config)
+t_exit_code	single_fork_destructor(pid_t pid, t_exec *config)
 {
-	char	*expanded_cmd;
+	int	status;
 
-	expanded_cmd = expand_variable(root->command->content, config->env);
-	if (expanded_cmd == NULL)
-		exit(EXIT_KO);
-	free(root->command->content);
-	root->command->content = expanded_cmd;
-	if (ft_strcmp(root->command->content, "echo") == 0)
-		exit(bi_echo(root->command->next, config));
-	if (ft_strcmp(root->command->content, "cd") == 0)
-		exit(bi_cd(root->command->next, config));
-	if (ft_strcmp(root->command->content, "pwd") == 0)
-		exit(bi_pwd());
-	// if (ft_strcmp(root->command->content, "export") == 0)
-	// 	exit(bi_export(root->command->next, config));
-	if (ft_strcmp(root->command->content, "unset") == 0)
-		exit(bi_unset(root->command->next, config));
-	if (ft_strcmp(root->command->content, "env") == 0)
-		exit(bi_env(config));
-	if (ft_strcmp(root->command->content, "exit") == 0)
-		exit(bi_exit(root->command->next, false, config));
-	else
-		exec_non_bi_in_pipeline(root->command->content,
-			root->command->next, config);
-}
-
-t_exit_code	exec_non_bi(const char *command, t_list *args, t_exec *config)
-{
-	pid_t	pid;
-	char	**argv;
-	char	**envp;
-
-	config->fork_count++;
-	pid = fork();
-	if (pid < 0)
-		return (operation_failed("fork"), EXIT_KO);
-	if (!expand_command_list(&args, config->env))
-		return (operation_failed("malloc"), EXIT_KO);
-	if (pid == 0)
+	if (config->fork_count != 0)
 	{
-		argv = t_list_to_array(command, args);
-		envp = env_to_array(config->env);
-		if ((argv == NULL) || (envp == NULL))
+		config->fork_count = 0;
+		if (waitpid(pid, &status, 0) < 0)
 		{
-			free2darr(argv);
-			free2darr(envp);
-			operation_failed("malloc");
-			exit(EXIT_KO);
+			operation_failed("waitpid");
+			return (EXIT_KO);
 		}
-		ft_execvp(command, argv, envp);
-		free2darr(argv);
-		free2darr(envp);
-		execvp_failed(command);
-		exit(EXIT_KO);
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
 	}
-	return (EXIT_OK);
+	return (EXIT_KO);
+}
+
+t_exit_code	pipeline_forks_destructor(t_exec *config)
+{
+	int	status;
+
+	while (config->fork_count > 0)
+	{
+		if (wait(&status) < 0)
+			return (operation_failed("wait"), EXIT_KO);
+		if (WIFEXITED(status))
+			config->exit_code = WEXITSTATUS(status);
+		status = 0;
+		config->fork_count--;
+	}
+	config->fork_count = 0;
+	return (config->exit_code);
 }
