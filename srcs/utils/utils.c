@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:31:04 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/27 19:31:03 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 22:50:47 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,15 @@ void	free2darr(char **arr)
 	while (arr[i] != NULL)
 		free(arr[i++]);
 	free(arr);
+}
+
+bool	dir_exists(const char *path)
+{
+	DIR	*dir;
+
+	dir = opendir(path);
+	if (dir == NULL)
+		return (false);
+	closedir(dir);
+	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:55:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 20:09:46 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 22:48:21 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	ft_execvp(const char *file, char *const argv[], char *const *envp)
 		full_path = get_full_path(file);
 	else
 	{
+		if (dir_exists(file))
+			return (errno = EISDIR, -1);
 		if (access(file, X_OK) < 0)
 			return (errno = ENOENT, -1);
 		full_path = ft_strdup(file);

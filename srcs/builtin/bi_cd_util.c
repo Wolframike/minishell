@@ -6,23 +6,11 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 23:16:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 17:25:12 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 22:39:17 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
-#include <dirent.h>
-
-static	bool	dir_exists(char *path)
-{
-	DIR	*dir;
-
-	dir = opendir(path);
-	if (dir == NULL)
-		return (false);
-	closedir(dir);
-	return (true);
-}
 
 static bool	set_oldpwd(t_exec *config)
 {

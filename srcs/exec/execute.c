@@ -6,13 +6,14 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:35:17 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 22:03:49 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 23:45:21 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-static t_exit_code	exec_non_bi(const char *command, t_list *args, t_exec *config)
+static t_exit_code	exec_non_bi(const char *command, t_list *args,
+						t_exec *config)
 {
 	pid_t	pid;
 
@@ -57,14 +58,14 @@ static	void	exec_simple_command_wrapper(t_ast_node *root, t_exec *config)
 	int			in;
 	int			out;
 
-	fd[0] = STDIN_FILENO;
-	fd[1] = STDOUT_FILENO;
-	in = dup(STDIN_FILENO);
-	out = dup(STDOUT_FILENO);
+	fd[0] = dup(STDIN_FILENO);
+	fd[1] = dup(STDOUT_FILENO);
 	if (!set_redir(root->redir, &fd))
 		return ((void)(config->exit_code = EXIT_KO));
 	if (root->command == NULL)
 		return ((void)(config->exit_code = EXIT_OK));
+	in = dup(STDIN_FILENO);
+	out = dup(STDOUT_FILENO);
 	dup2(fd[0], STDIN_FILENO);
 	dup2(fd[1], STDOUT_FILENO);
 	config->exit_code = exec_simple_command(root, config);
@@ -78,6 +79,21 @@ static	void	exec_simple_command_wrapper(t_ast_node *root, t_exec *config)
 		close(fd[1]);
 }
 
+static void	exec_and_or(t_ast_node *root, t_exec *config)
+{
+	execute(root->left, config);
+	if (root->type == AST_AND)
+	{
+		if (config->exit_code == EXIT_OK)
+			execute(root->right, config);
+	}
+	if (root->type == AST_OR)
+	{
+		if (config->exit_code != EXIT_OK)
+			execute(root->right, config);
+	}
+}
+
 void	execute(t_ast_node *root, t_exec *config)
 {
 	if (root == NULL)
@@ -85,9 +101,7 @@ void	execute(t_ast_node *root, t_exec *config)
 	if (root->type == AST_CMD)
 		exec_simple_command_wrapper(root, config);
 	else if ((root->type == AST_AND) || (root->type == AST_OR))
-	{
-		;// TODO
-	}
+		exec_and_or(root, config);
 	else if (root->type == AST_PIPE)
 		exec_pipeline(root, config);
 }

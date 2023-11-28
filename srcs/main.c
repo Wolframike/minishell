@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 21:46:41 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 23:44:13 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,25 @@ int	main(int argc, char **argv, char **envp)
 	{
 		set_idle_handler();
 		fd = dup(STDIN_FILENO);
-		printf("fd: %d\n", fd);
-		close(fd);
 		line = readline("\x1b[31mMINISHELL>>\x1b[0m ");
 		if (line == NULL)
 		{
-			ft_putendl_fd("exit", STDOUT_FILENO);
+			ft_putendl_fd("exit", STDERR_FILENO);
+			close(fd);
 			break ;
 		}
 		g_signal = 0;
 		set_exec_handler();
 		node = parse(&data, line);
 		if (node == NULL)
+		{
+			close(fd);
 			continue ;
+		}
 		execute(node, &config);
 		dprintf(STDERR_FILENO, "exit code: %d\n", config.exit_code);
+		dprintf(STDERR_FILENO, "fd: %d\n", fd);
+		close(fd);
 		destroy_ast_node(node);
 		add_history(line);
 		free(line);
