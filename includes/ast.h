@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:10:39 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/26 14:19:41 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:32:15 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,15 @@ t_ast_node	*new_ast_node(t_ast_type type,
 				t_ast_node *left, t_ast_node *right);
 t_redir		*new_redir(t_redir_type type, char *filename);
 
-t_ast_node	*parse_and_or(t_token **token);
-t_ast_node	*parse_pipeline(t_token **token);
-t_ast_node	*parse_simple_command(t_token **token);
-bool		parse_cmd_suffix(t_token **token, t_ast_node *node);
-t_ast_node	*parse_word_cmd_suffix(t_token **token);
-t_redir		*parse_heredoc(t_token **token);
-t_list		*parse_io_files(t_token **token);
+t_ast_node	*parse_and_or(t_token **token, t_state *data);
+t_ast_node	*parse_pipeline(t_token **token, t_state *data);
+t_ast_node	*parse_simple_command(t_token **token, t_state *data);
+bool		parse_cmd_suffix(t_token **token, t_ast_node *node, t_state *data);
+t_ast_node	*parse_word_cmd_suffix(t_token **token, t_state *data);
+t_redir		*parse_heredoc(t_token **token, t_state *data);
+t_list		*parse_io_files(t_token **token, t_state *data);
 char		*parse_word(t_token **token);
-t_list		*parse_io_file(t_token **token);
+t_list		*parse_io_file(t_token **token, t_state *data);
 
 void		print_command_list(t_list *list);
 void		print_node(t_ast_node *node);

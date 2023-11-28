@@ -6,12 +6,13 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:58:43 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/27 18:15:34 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:46:54 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "execute.h"
+#include "expand.h"
 #include <readline/readline.h>
 #include <fcntl.h>
 
@@ -20,10 +21,11 @@ static char	*get_tmpfile_name(void)
 	return (ft_strdup("/tmp/.tmpfile"));
 }
 
-static void	start_heredoc(char *delimiter, int fd)
+static void	start_heredoc(char *delimiter, int fd, t_state *data)
 {
 	pid_t	pid;
 	char	*line;
+	char	*expanded;
 	int		status;
 
 	pid = fork();
@@ -38,8 +40,11 @@ static void	start_heredoc(char *delimiter, int fd)
 				free(line);
 				break ;
 			}
-			ft_putendl_fd(line, fd);
+			expanded = expand_variable(line, data->env);
 			free(line);
+			if (expanded == NULL)
+				return ;
+			ft_putendl_fd(expanded, fd);
 		}
 		close(fd);
 		exit(EXIT_OK);
@@ -48,7 +53,7 @@ static void	start_heredoc(char *delimiter, int fd)
 		waitpid(pid, &status, 0);
 }
 
-t_redir	*parse_heredoc(t_token **token)
+t_redir	*parse_heredoc(t_token **token, t_state *data)
 {
 	int		fd;
 	char	*delimiter;
@@ -66,7 +71,8 @@ t_redir	*parse_heredoc(t_token **token)
 	if (fd == -1)
 		return (NULL);
 	set_heredoc_handler();
-	start_heredoc(delimiter, fd);
+	start_heredoc(delimiter, fd, data);
+	free(delimiter);
 	if (g_signal == 0)
 		return (new_redir(REDIR_IN, filename));
 	else

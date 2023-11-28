@@ -6,18 +6,18 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:09 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/21 06:05:20 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/27 19:25:28 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static t_ast_node	*parse_and(t_token **token, t_ast_node **node)
+static t_ast_node	*parse_and(t_token **token, t_ast_node **node, t_state *data)
 {
 	t_ast_node	*res;
 	t_ast_node	*r_node;
 
-	r_node = parse_pipeline(token);
+	r_node = parse_pipeline(token, data);
 	if (r_node == NULL)
 	{
 		destroy_ast_node(*node);
@@ -32,12 +32,12 @@ static t_ast_node	*parse_and(t_token **token, t_ast_node **node)
 	return (res);
 }
 
-static t_ast_node	*parse_or(t_token **token, t_ast_node **node)
+static t_ast_node	*parse_or(t_token **token, t_ast_node **node, t_state *data)
 {
 	t_ast_node	*res;
 	t_ast_node	*r_node;
 
-	r_node = parse_pipeline(token);
+	r_node = parse_pipeline(token, data);
 	if (r_node == NULL)
 	{
 		destroy_ast_node(*node);
@@ -52,24 +52,24 @@ static t_ast_node	*parse_or(t_token **token, t_ast_node **node)
 	return (res);
 }
 
-t_ast_node	*parse_and_or(t_token **token)
+t_ast_node	*parse_and_or(t_token **token, t_state *data)
 {
 	t_ast_node	*res;
 
 	if ((*token)->type == TK_AND || (*token)->type == TK_OR)
 		return (NULL);
-	res = parse_pipeline(token);
+	res = parse_pipeline(token, data);
 	while (res != NULL && res->type != TK_EOL)
 	{
 		if (consume_token(token, TK_AND))
 		{
-			res = parse_and(token, &res);
+			res = parse_and(token, &res, data);
 			if (res == NULL)
 				return (NULL);
 		}
 		else if (consume_token(token, TK_OR))
 		{
-			res = parse_or(token, &res);
+			res = parse_or(token, &res, data);
 			if (res == NULL)
 				return (NULL);
 		}
