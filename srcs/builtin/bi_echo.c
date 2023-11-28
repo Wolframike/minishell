@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:19:09 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/27 19:01:53 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 16:45:14 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	bi_echo(t_list *args, t_exec *config)
 		args = args->next;
 	}
 	if (!expand_command_list(&args, config->env))
-		return (EXIT_KO);
+		return (operation_failed("malloc"), EXIT_KO);
 	while (true)
 	{
 		ft_putstr_fd(args->content, STDOUT_FILENO);

@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 23:16:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 19:32:43 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:25:12 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,18 +96,24 @@ bool	move_to_envvar(t_exec *config, char *varname)
 
 bool	move_to_path(t_exec *config, char *path)
 {
+	path = expand_variable(path, config->env);
+	if (path == NULL)
+		return (operation_failed("malloc"), false);
 	if (file_name_check(path))
-		return (false);
+		return (free(path), false);
 	if (!dir_exists(path))
 	{
 		no_such_file_or_directory("cd", path);
+		free(path);
 		return (false);
 	}
 	set_oldpwd(config);
 	if (chdir(path) < 0)
 	{
 		operation_failed("chdir");
+		free(path);
 		return (false);
 	}
+	free(path);
 	return (true);
 }

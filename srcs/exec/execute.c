@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:35:17 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/27 17:39:06 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 16:41:28 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 
 static t_exit_code	exec_simple_command(t_ast_node *root, t_exec *config)
 {
+	char	*expanded_cmd;
+
+	expanded_cmd = expand_variable(root->command->content, config->env);
+	if (expanded_cmd == NULL)
+		return (EXIT_KO);
+	free(root->command->content);
+	root->command->content = expanded_cmd;
 	if (ft_strcmp(root->command->content, "echo") == 0)
 		return (bi_echo(root->command->next, config));
 	if (ft_strcmp(root->command->content, "cd") == 0)
@@ -27,16 +34,16 @@ static t_exit_code	exec_simple_command(t_ast_node *root, t_exec *config)
 	if (ft_strcmp(root->command->content, "env") == 0)
 		return (bi_env(config));
 	if (ft_strcmp(root->command->content, "exit") == 0)
-		return (bi_exit(root->command->next, true));
+		return (bi_exit(root->command->next, true, config));
 	return (exec_non_bi(root->command->content, root->command->next, config));
 }
 
 static	t_exit_code	exec_simple_command_wrapper(t_ast_node *root, t_exec *config)
 {
-	int	exit_code;
-	int	fd[2];
-	int	in;
-	int	out;
+	t_exit_code	exit_code;
+	int			fd[2];
+	int			in;
+	int			out;
 
 	fd[0] = STDIN_FILENO;
 	fd[1] = STDOUT_FILENO;

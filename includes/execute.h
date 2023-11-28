@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:34:44 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/27 19:24:57 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:08:29 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_exec
 {
 	t_env			*env;
 	t_exit_code		exit_code;
+	int				fork_count;
 }	t_exec;
 
 //ft_execvp.c

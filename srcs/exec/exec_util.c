@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 12:15:01 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/27 19:30:13 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:12:47 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,13 @@ static void	exec_non_bi_in_pipeline(const char *command, t_list *args,
 
 void	exec_in_pipeline(t_ast_node *root, t_exec *config)
 {
+	char	*expanded_cmd;
+
+	expanded_cmd = expand_variable(root->command->content, config->env);
+	if (expanded_cmd == NULL)
+		exit(EXIT_KO);
+	free(root->command->content);
+	root->command->content = expanded_cmd;
 	if (ft_strcmp(root->command->content, "echo") == 0)
 		exit(bi_echo(root->command->next, config));
 	if (ft_strcmp(root->command->content, "cd") == 0)
@@ -54,7 +61,7 @@ void	exec_in_pipeline(t_ast_node *root, t_exec *config)
 	if (ft_strcmp(root->command->content, "env") == 0)
 		exit(bi_env(config));
 	if (ft_strcmp(root->command->content, "exit") == 0)
-		exit(bi_exit(root->command->next, false));
+		exit(bi_exit(root->command->next, false, config));
 	else
 		exec_non_bi_in_pipeline(root->command->content,
 			root->command->next, config);
@@ -66,6 +73,7 @@ t_exit_code	exec_non_bi(const char *command, t_list *args, t_exec *config)
 	char	**argv;
 	char	**envp;
 
+	config->fork_count++;
 	pid = fork();
 	if (pid < 0)
 		return (operation_failed("fork"), EXIT_KO);
