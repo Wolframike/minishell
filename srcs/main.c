@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/27 19:41:23 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:19:55 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,21 @@ static void	initialize(t_exec *config, char **envp)
 	rl_instream = stdin;
 	rl_outstream = stdout;
 	config->env = env_init(envp);
+}
+
+static void	reset(t_exec *config)
+{
 	config->exit_code = EXIT_OK;
+	config->fork_count = 0;
+}
+
+static void	wait_all(t_exec config)
+{
+	while (config.fork_count > 0)
+	{
+		wait(NULL);
+		config.fork_count--;
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -51,9 +65,9 @@ int	main(int argc, char **argv, char **envp)
 		node = parse(&data, line);
 		if (node == NULL)
 			continue ;
-		// print_node(node);
+		reset(&config);
 		execute(node, &config);
-		wait(NULL);
+		wait_all(config);
 		destroy_ast_node(node);
 		add_history(line);
 		free(line);

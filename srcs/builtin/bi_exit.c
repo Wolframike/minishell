@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:38:14 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/27 19:26:54 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 16:45:09 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,10 @@ static bool	isoverflow(char *arg)
 	return (false);
 }
 
-int	bi_exit(t_list *args, bool parent)
+int	bi_exit(t_list *args, bool parent, t_exec *config)
 {
+	if (!expand_command_list(&args, config->env))
+		return (operation_failed("malloc"), EXIT_KO);
 	if (parent)
 		ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (args == NULL)

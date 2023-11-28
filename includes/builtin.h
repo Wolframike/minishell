@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:14:09 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/27 17:39:13 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 16:22:19 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		bi_pwd(void);
 int		bi_export(t_list *args, t_exec *config);
 int		bi_unset(t_list *args, t_exec *config);
 int		bi_env(t_exec *config);
-int		bi_exit(t_list *args, bool parent);
+int		bi_exit(t_list *args, bool parent, t_exec *config);
 
 bool	is_valid_identifier(char *str);
 
