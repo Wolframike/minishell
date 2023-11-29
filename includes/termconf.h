@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.h                                           :+:      :+:    :+:   */
+/*   termconf.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/25 21:04:03 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/29 15:28:25 by knishiok         ###   ########.fr       */
+/*   Created: 2023/11/27 21:28:30 by knishiok          #+#    #+#             */
+/*   Updated: 2023/11/27 22:14:53 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXPAND_H
-# define EXPAND_H
+#ifndef TERMCONF_H
+# define TERMCONF_H
 
 # include "type.h"
-# include "ast.h"
-# include "env.h"
 # include "error.h"
-# include <stdbool.h>
-# include <dirent.h>
+# include <term.h>
+# include <termios.h>
+# include <curses.h>
 
-bool	matched(char *filename, char *pattern, bool *flg);
-t_list	*expand_wildcard(t_list **input);
-
-char	*expand_variable_heredoc(char *line, t_env *env);
-char	*expand_variable(char *line, t_env *env);
-bool	expand_command_list(t_list **command, t_env *env);
-
+void	set_term_config(t_state *data, int mode);
 #endif

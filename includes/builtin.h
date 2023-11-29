@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:14:09 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 16:22:19 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:08:01 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "error.h"
 # include "execute.h"
 # include "expand.h"
+# include "termconf.h"
 # include <stdbool.h>
 # include <sys/errno.h>
 # include <string.h>
