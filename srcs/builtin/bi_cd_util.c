@@ -6,23 +6,11 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 23:16:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 17:25:12 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:47:03 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
-#include <dirent.h>
-
-static	bool	dir_exists(char *path)
-{
-	DIR	*dir;
-
-	dir = opendir(path);
-	if (dir == NULL)
-		return (false);
-	closedir(dir);
-	return (true);
-}
 
 static bool	set_oldpwd(t_exec *config)
 {
@@ -31,7 +19,7 @@ static bool	set_oldpwd(t_exec *config)
 	oldpwd = getcwd(NULL, 0);
 	if (oldpwd == NULL)
 		return (operation_failed("getcwd"), false);
-	if (!set_env(config->env, "OLDPWD", oldpwd))
+	if (!set_env(&config->env, "OLDPWD", oldpwd))
 		return (operation_failed("malloc"), false);
 	free(oldpwd);
 	return (true);

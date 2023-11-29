@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:08:01 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 18:24:28 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:50:55 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ char	**env_to_array(t_env *env)
 	i = 0;
 	while (env != NULL && env->value != NULL)
 	{
+		if (ft_strcmp(env->key, "?") == 0)
+		{
+			env = env->next;
+			continue ;
+		}
 		arr[i] = ft_strjoin(env->key, "=");
 		if (arr[i] == NULL)
 			return (free2darr(arr), NULL);
