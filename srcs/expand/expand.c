@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:40:29 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/26 18:54:01 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/29 15:55:01 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ static char	*get_variable_name(char **line)
 	(*line)++;
 	len = 0;
 	if (**line == '?')
+	{
 		res = ft_strdup("?");
+		len++;
+	}
 	else if (!ft_isalpha(**line) && **line != '_')
 		res = ft_strdup("$");
 	else
@@ -47,6 +50,8 @@ static char	*expand_variable_for_one(char **line, t_env *env, char *res_old)
 	if (varname == NULL)
 		return (NULL);
 	value = get_env(env, varname);
+	if (ft_strcmp(varname, "$") == 0)
+		value = "$";
 	free(varname);
 	if (value == NULL)
 		value = "";
@@ -87,6 +92,31 @@ static void	update_flag(bool *is_single_quote, char **line)
 	(*line)++;
 }
 
+char	*expand_variable_heredoc(char *line, t_env *env)
+{
+	char	*res;
+
+	res = ft_strdup("");
+	if (res == NULL)
+		return (operation_failed("malloc"), NULL);
+	while (*line)
+	{
+		if (*line == '$')
+		{
+			res = expand_variable_for_one(&line, env, res);
+			if (res == NULL)
+				return (NULL);
+		}
+		else
+		{
+			res = proceed_line(&line, res);
+			if (res == NULL)
+				return (NULL);
+		}
+	}
+	return (res);	
+}
+
 char	*expand_variable(char *line, t_env *env)
 {
 	char	*res;
@@ -95,6 +125,8 @@ char	*expand_variable(char *line, t_env *env)
 	res = ft_strdup("");
 	if (res == NULL)
 		return (operation_failed("malloc"), NULL);
+	// if (ft_strcmp(line, "") == 0)
+	// 	return (res);
 	is_single_quote = false;
 	while (*line)
 	{
@@ -113,5 +145,7 @@ char	*expand_variable(char *line, t_env *env)
 				return (NULL);
 		}
 	}
+	// if (ft_strcmp(res, "") == 0)
+	// 	return (free(res), NULL);
 	return (res);
 }

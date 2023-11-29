@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:07:40 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 15:16:03 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:47:21 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,7 @@ t_env	*env_init(char **envp)
 		add_env_node(&env, &new);
 		i++;
 	}
+	if (!set_env(&env, "?", "0"))
+		return (env_destroy(env), NULL);
 	return (env);
 }

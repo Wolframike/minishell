@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_into_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 17:35:08 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/28 21:40:11 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/29 15:50:25 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ static t_list	*expand_variable_to_list(char *line, t_env *env)
 	free(expanded);
 	if (res == NULL)
 		return (operation_failed("malloc"), NULL);
+	res = expand_wildcard(&res);
 	return (res);
 }
 

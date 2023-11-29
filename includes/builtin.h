@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:14:09 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 22:38:03 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:00:54 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "execute.h"
 # include "expand.h"
 # include "utils.h"
+# include "termconf.h"
 # include <stdbool.h>
 # include <sys/errno.h>
 # include <string.h>
