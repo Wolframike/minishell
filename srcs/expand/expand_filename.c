@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 21:01:19 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/28 23:54:04 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/29 15:39:04 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static bool	merge_list(char *filename, bool flg, t_list **res)
 	return (true);
 }
 
-t_list	*expand_filename(char *pattern)
+static t_list	*expand_filename(char *pattern)
 {
 	t_list	*head;
 	t_list	*dir_filenames;
@@ -84,14 +84,45 @@ t_list	*expand_filename(char *pattern)
 	return (res);
 }
 
-// int main()
-// {
-// 	char	*pattern = ft_strdup("*");
-// 	t_list *lst = expand_filename(pattern);
-// 	while (lst)
-// 	{
-// 		printf("%s\n", lst->content);
-// 		lst = lst->next;
-// 	}
-// 	free(pattern);
-// }
+static t_list	*duplicate_filename(char *filename)
+{
+	t_list	*res;
+	char	*dup_filename;
+
+	dup_filename = ft_strdup(filename);
+	if (dup_filename == NULL)
+		return (NULL);
+	res = ft_lstnew(dup_filename);
+	if (res == NULL)
+	{
+		free(dup_filename);
+		return (NULL);
+	}
+	return (res);
+}
+
+t_list	*expand_wildcard(t_list **input)
+{
+	t_list	*res;
+	t_list	*new;
+	t_list	*head;
+
+	res = NULL;
+	head = *input;
+	while (*input)
+	{
+		if (ft_strchr((*input)->content, '*'))
+			new = expand_filename((*input)->content);
+		else
+		{
+			new = duplicate_filename((*input)->content);
+			if (new == NULL)
+				return (ft_lstclear(&res, free),
+					ft_lstclear(&head, free), operation_failed("malloc"), NULL);
+		}
+		ft_lstadd_back(&res, new);
+		*input = (*input)->next;
+	}
+	ft_lstclear(&head, free);
+	return (res);
+}

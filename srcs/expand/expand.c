@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:40:29 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/28 20:49:20 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/29 15:55:01 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ static char	*get_variable_name(char **line)
 	(*line)++;
 	len = 0;
 	if (**line == '?')
+	{
 		res = ft_strdup("?");
+		len++;
+	}
 	else if (!ft_isalpha(**line) && **line != '_')
 		res = ft_strdup("$");
 	else

@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:58:43 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/28 22:17:05 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/29 14:56:47 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static char	*get_tmpfile_name(void)
 static void	start_heredoc(char *delimiter, int fd, t_state *data)
 {
 	pid_t	pid;
+	int		status;
 	char	*line;
 	char	*expanded;
 
@@ -48,7 +49,7 @@ static void	start_heredoc(char *delimiter, int fd, t_state *data)
 		close(fd);
 		exit(EXIT_OK);
 	}
-	wait(NULL);
+	waitpid(pid, &status, WUNTRACED);
 }
 
 t_redir	*parse_heredoc(t_token **token, t_state *data)

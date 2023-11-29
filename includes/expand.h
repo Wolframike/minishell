@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 21:04:03 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/28 22:57:37 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/29 15:28:25 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <dirent.h>
 
 bool	matched(char *filename, char *pattern, bool *flg);
+t_list	*expand_wildcard(t_list **input);
 
 char	*expand_variable_heredoc(char *line, t_env *env);
 char	*expand_variable(char *line, t_env *env);
