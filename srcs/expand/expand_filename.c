@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 21:01:19 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/29 15:39:04 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/29 18:29:50 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ t_list	*expand_wildcard(t_list **input)
 	head = *input;
 	while (*input)
 	{
-		if (ft_strchr((*input)->content, '*'))
+		if (ft_strchr((*input)->content, '*') != NULL)
 			new = expand_filename((*input)->content);
 		else
 		{

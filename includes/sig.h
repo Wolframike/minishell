@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:14:15 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/27 21:19:00 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:25:39 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	handler_ignore(int signum);
 
 void	set_idle_handler(void);
 void	set_exec_handler(void);
+void	set_exec_child_handler(void);
 void	set_heredoc_handler(void);
 void	set_heredoc_child_handler(void);
 #endif

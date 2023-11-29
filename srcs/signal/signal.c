@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:13:07 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/29 14:43:16 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/29 16:45:16 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,17 @@ void	set_exec_handler(void)
 	struct sigaction	sig;
 
 	sig.sa_handler = exec_handler;
+	sigemptyset(&sig.sa_mask);
+	sig.sa_flags = 0;
+	sigaction(SIGINT, &sig, NULL);
+	sigaction(SIGQUIT, &sig, NULL);
+}
+
+void	set_exec_child_handler(void)
+{
+	struct sigaction	sig;
+
+	sig.sa_handler = SIG_DFL;
 	sigemptyset(&sig.sa_mask);
 	sig.sa_flags = 0;
 	sigaction(SIGINT, &sig, NULL);

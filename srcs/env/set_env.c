@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:51:27 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/29 18:04:33 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/29 18:24:06 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ static t_env	*create_new_var(char *key, char *value)
 
 bool	set_env(t_env **env, char *key, char *value)
 {
-	t_env	*tmp;
 	t_env	*head;
+	t_env	*tmp;
 
 	head = *env;
 	while (head != NULL)

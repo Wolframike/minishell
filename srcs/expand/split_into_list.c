@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 17:35:08 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/29 15:50:25 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/29 18:28:25 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,8 @@ bool	expand_command_list(t_list **command, t_env *env)
 	prev = NULL;
 	while (*command != NULL)
 	{
-		if (ft_strchr((*command)->content, '$') != NULL)
-		{
+		// if (ft_strchr((*command)->content, '$') != NULL)
+		// {
 			head = prev;
 			tail = (*command)->next;
 			next = expand_variable_to_list((*command)->content, env);
@@ -106,7 +106,7 @@ bool	expand_command_list(t_list **command, t_env *env)
 				return (false);
 			rewire_nodes(&orig, &next, &head, &tail);
 			*command = next;
-		}
+		// }
 		prev = *command;
 		*command = (*command)->next;
 	}

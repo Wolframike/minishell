@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:35:17 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 23:45:21 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/29 17:32:47 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 static t_exit_code	exec_non_bi(const char *command, t_list *args,
 						t_exec *config)
 {
-	pid_t	pid;
+	pid_t		pid;
+	t_exit_code	code;
 
 	config->fork_count++;
 	pid = fork();
@@ -23,7 +24,8 @@ static t_exit_code	exec_non_bi(const char *command, t_list *args,
 		return (operation_failed("fork"), EXIT_KO);
 	if (pid == 0)
 		exec_non_bi_in_child_process(command, args, config);
-	return (single_fork_destructor(pid, config));
+	code = single_fork_destructor(pid, config);
+	return (code);
 }
 
 static t_exit_code	exec_simple_command(t_ast_node *root, t_exec *config)
