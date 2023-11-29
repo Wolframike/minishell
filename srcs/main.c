@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/29 18:06:46 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/29 18:35:09 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,17 @@ static void	initialize(t_exec *config, t_state *data, char **envp)
 	config->env = env_init(envp);
 	data->env = config->env;
 	config->exit_code = 0;
+}
+
+void print_env(t_env *env)
+{
+	puts("==============================");
+	while (env)
+	{
+		printf("%s: %s\n", env->key, env->value);
+		env = env->next;
+	}
+	puts("=============================");
 }
 
 static void	terminate(t_exec *config)
@@ -76,6 +87,5 @@ int	main(int argc, char **argv, char **envp)
 		add_history(line);
 		free(line);
 	}
-	free(data.termconf);
 	exit(EXIT_SUCCESS);
 }

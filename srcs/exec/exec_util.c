@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 12:15:01 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/29 16:56:39 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/29 19:01:03 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	exec_non_bi_in_child_process(const char *command, t_list *args,
 	char	**argv;
 	char	**envp;
 
+	set_exec_child_handler();
 	if (!expand_command_list(&args, config->env))
 	{
 		operation_failed("malloc");
@@ -46,10 +47,9 @@ t_exit_code	single_fork_destructor(pid_t pid, t_exec *config)
 	{
 		config->fork_count = 0;
 		if (waitpid(pid, &status, 0) < 0)
-		{
-			operation_failed("waitpid");
-			return (EXIT_KO);
-		}
+			waitpid(pid, &status, 0);
+		if (WIFSIGNALED(status))
+			return (WTERMSIG(status) + 128);
 		if (WIFEXITED(status))
 			return (WEXITSTATUS(status));
 	}
