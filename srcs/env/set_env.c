@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:51:27 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/29 16:46:34 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/29 18:04:33 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,20 @@ static t_env	*create_new_var(char *key, char *value)
 bool	set_env(t_env **env, char *key, char *value)
 {
 	t_env	*tmp;
+	t_env	*head;
 
-	while (*env != NULL)
+	head = *env;
+	while (head != NULL)
 	{
-		if (ft_strcmp((*env)->key, key) == 0)
+		if (ft_strcmp(head->key, key) == 0)
 		{
-			free((*env)->value);
-			(*env)->value = ft_strdup(value);
+			free(head->value);
+			head->value = ft_strdup(value);
 			return (true);
 		}
-		*env = (*env)->next;
+		head = head->next;
 	}
-	if (*env == NULL)
+	if (head == NULL)
 	{
 		tmp = create_new_var(key, value);
 		if (tmp == NULL)

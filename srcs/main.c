@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/29 16:48:33 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/29 18:06:46 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ static void	terminate(t_exec *config)
 	char	*exit_code;
 
 	exit_code = ft_itoa(config->exit_code);
-	dprintf(STDERR_FILENO, "exit_code: %s\n", exit_code);
 	if (exit_code == NULL)
 	{
 		operation_failed("malloc");
 		return ;
 	}
 	set_env(&config->env, "?", exit_code);
-	free(exit_code);
 	int fd = dup(STDOUT_FILENO);
-	dprintf(STDERR_FILENO, "===debug===\nfd: %d\n===========n", fd);
+	dprintf(STDERR_FILENO, "===debug===\nfd: %d\n", fd);
+	dprintf(STDERR_FILENO, "exit_code: %s\n===========\n", exit_code);
+	free(exit_code);
 	close(fd);
 }
 
