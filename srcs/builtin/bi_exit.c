@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:38:14 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/29 20:10:50 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:28:25 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ static bool	isoverflow(char *arg)
 int	bi_exit(t_list *args, bool parent, t_exec *config)
 {
 	set_term_config(NULL, 2);
-	if (!expand_command_list(&args, config->env))
-		return (operation_failed("malloc"), EXIT_KO);
 	if (parent)
 		ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (args == NULL)

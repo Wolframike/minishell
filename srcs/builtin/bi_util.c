@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 17:22:50 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/26 17:22:58 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/01 17:49:48 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	is_valid_identifier(char *str)
 	if ((ft_isalpha(str[i]) == 0) && (str[i] != '_'))
 		return (false);
 	i++;
-	while (str[i] != '\0')
+	while (str[i] != '\0' && str[i] != '=')
 	{
 		if ((ft_isalnum(str[i]) == 0) && (str[i] != '_'))
 			return (false);

@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:34:44 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/29 20:21:19 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:36:35 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 typedef struct s_exec
 {
 	t_env			*env;
+	t_list			*expanded;
 	t_exit_code		exit_code;
 	int				fork_count;
 }	t_exec;
@@ -54,6 +55,7 @@ void		execute(t_ast_node *root, t_exec *config);
 //exec_util.c
 void		exec_non_bi_in_child_process(const char *command, t_list *args,
 				t_exec *config);
+bool		set_expanded_args(t_ast_node *root, t_exec *config);
 t_exit_code	single_fork_destructor(pid_t pid, t_exec *config);
 t_exit_code	pipeline_forks_destructor(t_exec *config);
 

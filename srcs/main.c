@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/01 13:20:24 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:46:00 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ static void	terminate(t_exec *config)
 	char	*exit_code;
 	int		fd;
 
+	ft_lstclear(&config->expanded, free);
 	exit_code = ft_itoa(config->exit_code);
 	if (exit_code == NULL)
 	{

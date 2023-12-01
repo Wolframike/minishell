@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/26 17:35:08 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/01 13:40:26 by misargsy         ###   ########.fr       */
+/*   Created: 2023/12/01 14:56:45 by misargsy          #+#    #+#             */
+/*   Updated: 2023/12/01 18:15:30 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static void	set_res(t_list **res, char *line)
 	char	*str;
 
 	*res = NULL;
+	if (line == NULL)
+		return ;
 	if (*line == '\0')
 	{
 		str = ft_strdup("");
@@ -28,14 +30,15 @@ static void	set_res(t_list **res, char *line)
 	}
 }
 
-static t_list	*split_line_to_list(char *line)
+static bool	split_line_to_list(char *line, t_list **res)
 {
-	t_list	*res;
 	t_list	*new;
 	char	*word_start;
 	char	*chunk;
 
-	set_res(&res, line);
+	if (line == NULL)
+		return (*res = NULL, true);
+	set_res(res, line);
 	while (*line)
 	{
 		if (ft_strchr(" \n\t", *line) == NULL)
@@ -45,68 +48,44 @@ static t_list	*split_line_to_list(char *line)
 				line++;
 			chunk = ft_strndup(word_start, line - word_start);
 			if (chunk == NULL)
-				return (ft_lstclear(&res, free), NULL);
+				return (ft_lstclear(res, free), false);
 			new = ft_lstnew(chunk);
 			if (new == NULL)
-				return (ft_lstclear(&res, free), NULL);
-			ft_lstadd_back(&res, new);
+				return (ft_lstclear(res, free), false);
+			ft_lstadd_back(res, new);
 		}
 		else
 			line++;
 	}
-	return (res);
+	return (true);
 }
 
-static t_list	*expand_variable_to_list(char *line, t_env *env)
+static bool	expand_variable_to_list(char *line, t_env *env, t_list **res)
 {
-	t_list	*res;
 	char	*expanded;
 
-	expanded = expand_variable(line, env);
-	if (expanded == NULL)
-		return (NULL);
-	res = split_line_to_list(expanded);
+	if (!expand_variable(line, env, &expanded))
+		return (false);
+	if (!split_line_to_list(expanded, res))
+		return (free(expanded), false);
 	free(expanded);
-	if (res == NULL)
-		return (operation_failed("malloc"), NULL);
-	res = expand_wildcard(&res);
-	return (res);
+	*res = expand_wildcard(res);
+	return (true);
 }
 
-static void	rewire_nodes(t_list **orig, t_list **next,
-							t_list **head, t_list **tail)
+bool	expand_command_list(t_list *command, t_env *env, t_list **head)
 {
-	if (*head != NULL)
-		(*head)->next = *next;
-	else
-		*orig = *next;
-	while ((*next)->next != NULL)
-		*next = (*next)->next;
-	(*next)->next = *tail;
-}
-
-bool	expand_command_list(t_list **command, t_env *env)
-{
+	t_list	*new;
 	t_list	*orig;
-	t_list	*next;
-	t_list	*prev;
-	t_list	*head;
-	t_list	*tail;
 
-	orig = *command;
-	prev = NULL;
-	while (*command != NULL)
+	orig = command;
+	*head = NULL;
+	while (command != NULL)
 	{
-		head = prev;
-		tail = (*command)->next;
-		next = expand_variable_to_list((*command)->content, env);
-		if (next == NULL)
-			return (false);
-		rewire_nodes(&orig, &next, &head, &tail);
-		*command = next;
-		prev = *command;
-		*command = (*command)->next;
+		if (!expand_variable_to_list(command->content, env, &new))
+			return (ft_lstclear(&orig, free), false);
+		ft_lstadd_back(head, new);
+		command = command->next;
 	}
-	*command = orig;
 	return (true);
 }

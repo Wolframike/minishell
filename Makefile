@@ -6,7 +6,7 @@
 #    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/11/29 16:01:47 by misargsy         ###   ########.fr        #
+#    Updated: 2023/12/01 17:19:38 by misargsy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ BUILTIN =	srcs/builtin/bi_echo.c \
 			srcs/builtin/bi_cd_util.c \
 			srcs/builtin/bi_pwd.c \
 			srcs/builtin/bi_export.c \
+			srcs/builtin/bi_export_util.c \
 			srcs/builtin/bi_unset.c \
 			srcs/builtin/bi_env.c \
 			srcs/builtin/bi_exit.c \

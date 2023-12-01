@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 01:11:55 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 22:01:44 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/01 18:12:42 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,31 @@
 
 static void	exec_in_pipeline(t_ast_node *root, t_exec *config)
 {
-	char	*expanded_cmd;
+	const char	*command;
+	t_list		*args;
 
-	expanded_cmd = expand_variable(root->command->content, config->env);
-	if (expanded_cmd == NULL)
+	if (!set_expanded_args(root, config))
 		exit(EXIT_KO);
-	free(root->command->content);
-	root->command->content = expanded_cmd;
-	if (ft_strcmp(root->command->content, "echo") == 0)
-		exit(bi_echo(root->command->next, config));
-	if (ft_strcmp(root->command->content, "cd") == 0)
-		exit(bi_cd(root->command->next, config));
-	if (ft_strcmp(root->command->content, "pwd") == 0)
+	if (config->expanded == NULL)
+		exit(EXIT_OK);
+	command = config->expanded->content;
+	args = config->expanded->next;
+	if (ft_strcmp(command, "echo") == 0)
+		exit(bi_echo(args, config));
+	if (ft_strcmp(command, "cd") == 0)
+		exit(bi_cd(args, config));
+	if (ft_strcmp(command, "pwd") == 0)
 		exit(bi_pwd());
-	// if (ft_strcmp(root->command->content, "export") == 0)
-	// 	exit(bi_export(root->command->next, config));
-	if (ft_strcmp(root->command->content, "unset") == 0)
-		exit(bi_unset(root->command->next, config));
-	if (ft_strcmp(root->command->content, "env") == 0)
+	if (ft_strcmp(command, "export") == 0)
+		exit(bi_export(args, config));
+	if (ft_strcmp(command, "unset") == 0)
+		exit(bi_unset(args, config));
+	if (ft_strcmp(command, "env") == 0)
 		exit(bi_env(config));
-	if (ft_strcmp(root->command->content, "exit") == 0)
-		exit(bi_exit(root->command->next, false, config));
+	if (ft_strcmp(command, "exit") == 0)
+		exit(bi_exit(args, true, config));
 	else
-		exec_non_bi_in_child_process(root->command->content,
-			root->command->next, config);
+		exec_non_bi_in_child_process(command, args, config);
 }
 
 static bool	create_pipeline_list(t_ast_node *root, t_list **head)
