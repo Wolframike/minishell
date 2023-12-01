@@ -6,13 +6,14 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:14 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/27 19:32:41 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/01 21:01:49 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static bool	parse_redirects_helper(t_token **token, t_ast_node *node, t_state *data)
+static bool	parse_redirects_helper(t_token **token, t_ast_node *node,
+									t_state *data)
 {
 	t_list	*redir;
 

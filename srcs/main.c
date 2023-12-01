@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/01 16:46:00 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/01 21:35:13 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,14 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		}
 		g_signal = 0;
-		set_exec_handler();
+		set_exec_handler(false);
 		node = parse(&data, line);
 		// print_node(node);
 		if (node == NULL)
+		{
+			set_env(&(data.env), "?", "1");
 			continue ;
+		}
 		execute(node, &config);
 		terminate(&config);
 		destroy_ast_node(node);

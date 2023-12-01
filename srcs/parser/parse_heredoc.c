@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:58:43 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/29 19:03:11 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/01 21:32:44 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static char	*get_tmpfile_name(void)
 	return (ft_strdup("/tmp/.tmpfile"));
 }
 
-static void wait_heredoc(pid_t pid, t_state *data)
+static void	wait_heredoc(pid_t pid, t_state *data)
 {
 	int			status;
 	t_exit_code	code;
@@ -43,38 +43,46 @@ static void wait_heredoc(pid_t pid, t_state *data)
 	set_env(&(data->env), "?", str_code);
 }
 
-static void	start_heredoc(char *delimiter, int fd, t_state *data)
+static void	heredoc_child(char *delimiter, int fd, t_state *data)
 {
-	pid_t	pid;
 	char	*line;
 	char	*expanded;
 
-	pid = fork();
-	// if (pid < 0)
-	// 	operation_failed("fork");
-	if (pid == 0)
+	set_heredoc_child_handler();
+	while (true)
 	{
-		set_heredoc_child_handler();
-		while (true)
+		line = readline("> ");
+		if (line == NULL)
+			exit(EXIT_SUCCESS);
+		if (ft_strcmp(line, delimiter) == 0)
 		{
-			line = readline("> ");
-			if (line == NULL)
-				exit(EXIT_SUCCESS);
-			if (ft_strcmp(line, delimiter) == 0)
-			{
-				free(line);
-				break ;
-			}
-			expanded = expand_variable_heredoc(line, data->env);
 			free(line);
-			if (expanded == NULL)
-				exit(EXIT_KO);
-			ft_putendl_fd(expanded, fd);
+			break ;
 		}
-		close(fd);
-		exit(EXIT_OK);
+		expanded = expand_variable_heredoc(line, data->env);
+		free(line);
+		if (expanded == NULL)
+			exit(EXIT_KO);
+		ft_putendl_fd(expanded, fd);
 	}
-	wait_heredoc(pid, data);
+	close(fd);
+	exit(EXIT_OK);
+}
+
+static void	start_heredoc(char *delimiter, int fd, t_state *data)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+	{
+		operation_failed("fork");
+		set_env(&(data->env), "?", "1");
+	}
+	else if (pid == 0)
+		heredoc_child(delimiter, fd, data);
+	else
+		wait_heredoc(pid, data);
 }
 
 t_redir	*parse_heredoc(t_token **token, t_state *data)
