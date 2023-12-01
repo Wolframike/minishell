@@ -6,13 +6,14 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:09 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/27 19:25:28 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/01 21:02:03 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
-static t_ast_node	*parse_and(t_token **token, t_ast_node **node, t_state *data)
+static t_ast_node	*parse_and(t_token **token, t_ast_node **node,
+									t_state *data)
 {
 	t_ast_node	*res;
 	t_ast_node	*r_node;

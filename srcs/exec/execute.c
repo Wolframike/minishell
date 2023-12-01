@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:35:17 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/01 17:57:18 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/01 21:15:21 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static t_exit_code	exec_non_bi(const char *command, t_list *args,
 		return (operation_failed("fork"), EXIT_KO);
 	if (pid == 0)
 		exec_non_bi_in_child_process(command, args, config);
+	set_exec_handler(true);
 	code = single_fork_destructor(pid, config);
 	return (code);
 }

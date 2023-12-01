@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 21:01:19 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/29 18:29:50 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/29 21:14:10 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,14 @@ static t_list	*get_filenames(void)
 	res = NULL;
 	dir = opendir("./");
 	if (dir == NULL)
-		return (operation_failed("Cannot open the current directory"), NULL);
+		return (operation_failed("opendir"), NULL);
 	while (1)
 	{
 		entry = readdir(dir);
 		if (entry == NULL)
 			break ;
+		if (*(entry->d_name) == '.')
+			continue ;
 		filename = ft_strdup(entry->d_name);
 		if (filename == NULL)
 			return (ft_lstclear(&res, free), operation_failed("malloc"), NULL);
@@ -89,14 +91,16 @@ static t_list	*duplicate_filename(char *filename)
 	t_list	*res;
 	char	*dup_filename;
 
+	if (filename == NULL)
+		return (NULL);
 	dup_filename = ft_strdup(filename);
 	if (dup_filename == NULL)
-		return (NULL);
+		return (operation_failed("malloc"), NULL);
 	res = ft_lstnew(dup_filename);
 	if (res == NULL)
 	{
 		free(dup_filename);
-		return (NULL);
+		return (operation_failed("malloc"), NULL);
 	}
 	return (res);
 }
@@ -114,12 +118,10 @@ t_list	*expand_wildcard(t_list **input)
 		if (ft_strchr((*input)->content, '*') != NULL)
 			new = expand_filename((*input)->content);
 		else
-		{
 			new = duplicate_filename((*input)->content);
-			if (new == NULL)
-				return (ft_lstclear(&res, free),
-					ft_lstclear(&head, free), operation_failed("malloc"), NULL);
-		}
+		if (new == NULL)
+			return (ft_lstclear(&res, free),
+				ft_lstclear(&head, free), NULL);
 		ft_lstadd_back(&res, new);
 		*input = (*input)->next;
 	}
