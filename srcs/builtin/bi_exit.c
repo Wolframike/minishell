@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:38:14 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 20:30:19 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/29 20:10:50 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	bi_exit(t_list *args, bool parent, t_exec *config)
 	if (parent)
 		ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (args == NULL)
-		exit(EXIT_SUCCESS);
+		exit(config->exit_code);
 	if (!isnum(args->content) || isoverflow(args->content))
 	{
 		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);

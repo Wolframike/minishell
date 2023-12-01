@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:10:39 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/27 19:32:15 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/29 21:47:26 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 # include "lexer.h"
 # include "type.h"
-// debug
-# include <stdio.h>
 
 typedef enum e_ast_type
 {

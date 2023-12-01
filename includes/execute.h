@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:34:44 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 23:12:09 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/29 20:21:19 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <fcntl.h>
 
 # define PERMS 0644
+# define ENOCMD -1
 
 typedef struct s_exec
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 13:40:29 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/29 15:55:01 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/29 18:14:18 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ char	*expand_variable_heredoc(char *line, t_env *env)
 				return (NULL);
 		}
 	}
-	return (res);	
+	return (res);
 }
 
 char	*expand_variable(char *line, t_env *env)

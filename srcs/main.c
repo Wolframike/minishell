@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/29 18:35:09 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/01 13:20:24 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,35 @@
 
 static void	initialize(t_exec *config, t_state *data, char **envp)
 {
+	char	*shlvl;
+
 	rl_instream = stdin;
-	rl_outstream = stdout;
+	rl_outstream = stderr;
 	config->env = env_init(envp);
 	data->env = config->env;
 	config->exit_code = 0;
-}
-
-void print_env(t_env *env)
-{
-	puts("==============================");
-	while (env)
+	shlvl = get_env(config->env, "SHLVL");
+	if (shlvl == NULL)
 	{
-		printf("%s: %s\n", env->key, env->value);
-		env = env->next;
+		set_env(&config->env, "SHLVL", "1");
 	}
-	puts("=============================");
+	else
+	{
+		shlvl = ft_itoa(ft_atoi(shlvl) + 1);
+		if (shlvl == NULL)
+		{
+			operation_failed("malloc");
+			return ;
+		}
+		set_env(&config->env, "SHLVL", shlvl);
+		free(shlvl);
+	}
 }
 
 static void	terminate(t_exec *config)
 {
 	char	*exit_code;
+	int		fd;
 
 	exit_code = ft_itoa(config->exit_code);
 	if (exit_code == NULL)
@@ -50,9 +58,9 @@ static void	terminate(t_exec *config)
 		return ;
 	}
 	set_env(&config->env, "?", exit_code);
-	int fd = dup(STDOUT_FILENO);
-	dprintf(STDERR_FILENO, "===debug===\nfd: %d\n", fd);
-	dprintf(STDERR_FILENO, "exit_code: %s\n===========\n", exit_code);
+	fd = dup(STDOUT_FILENO);
+	// dprintf(STDERR_FILENO, "===debug===\nfd: %d\n", fd);
+	// dprintf(STDERR_FILENO, "exit_code: %s\n===========\n", exit_code);
 	free(exit_code);
 	close(fd);
 }
@@ -79,6 +87,7 @@ int	main(int argc, char **argv, char **envp)
 		g_signal = 0;
 		set_exec_handler();
 		node = parse(&data, line);
+		// print_node(node);
 		if (node == NULL)
 			continue ;
 		execute(node, &config);
@@ -87,5 +96,5 @@ int	main(int argc, char **argv, char **envp)
 		add_history(line);
 		free(line);
 	}
-	exit(EXIT_SUCCESS);
+	exit(config.exit_code);
 }
