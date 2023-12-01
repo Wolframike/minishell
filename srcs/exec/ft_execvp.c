@@ -6,13 +6,27 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:55:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 22:48:21 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/01 18:05:24 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-static char	*get_full_path(const char *cmd)
+static void	*get_path_env(char *const *envp)
+{
+	size_t	i;
+
+	i = 0;
+	while (envp[i] != NULL)
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			return (envp[i] + 5);
+		i++;
+	}
+	return (NULL);
+}
+
+static char	*get_full_path(const char *cmd, char *const *envp)
 {
 	char	*path;
 	char	**path_env;
@@ -20,9 +34,9 @@ static char	*get_full_path(const char *cmd)
 	size_t	i;
 
 	path = NULL;
-	path_env = ft_split(getenv("PATH"), ':');
+	path_env = ft_split(get_path_env(envp), ':');
 	if (path_env == NULL)
-		return (errno = ENOENT, NULL);
+		return (errno = ENOCMD, NULL);
 	i = 0;
 	while (path_env[i] != NULL)
 	{
@@ -45,13 +59,15 @@ int	ft_execvp(const char *file, char *const argv[], char *const *envp)
 	char	*full_path;
 
 	if (ft_strchr(file, '/') == NULL)
-		full_path = get_full_path(file);
+		full_path = get_full_path(file, envp);
 	else
 	{
-		if (dir_exists(file))
+		if (is_dir(file))
 			return (errno = EISDIR, -1);
-		if (access(file, X_OK) < 0)
+		if (access(file, F_OK) < 0)
 			return (errno = ENOENT, -1);
+		if (access(file, X_OK) < 0)
+			return (errno = EACCES, -1);
 		full_path = ft_strdup(file);
 	}
 	if (full_path == NULL)

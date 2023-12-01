@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 19:08:20 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/28 18:56:48 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:10:57 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 # include "type.h"
 # include <sys/errno.h>
 # include <string.h>
+
+typedef struct s_state		t_state;
+typedef struct s_token		t_token;
+typedef enum e_exit_code	t_exit_code;
 
 //general_errors.c
 void		no_such_file_or_directory(const char *command, const char *path);

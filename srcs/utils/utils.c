@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:31:04 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 22:50:47 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:06:46 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,11 @@ void	free2darr(char **arr)
 	free(arr);
 }
 
-bool	dir_exists(const char *path)
+bool	is_dir(const char *path)
 {
-	DIR	*dir;
+	struct stat	statbuf;
 
-	dir = opendir(path);
-	if (dir == NULL)
-		return (false);
-	closedir(dir);
-	return (true);
+	if (stat(path, &statbuf) < 0)
+		return (operation_failed("stat"), false);
+	return (S_ISDIR(statbuf.st_mode));
 }

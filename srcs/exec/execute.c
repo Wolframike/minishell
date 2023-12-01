@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:35:17 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/29 17:32:47 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/01 17:57:18 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,28 +30,30 @@ static t_exit_code	exec_non_bi(const char *command, t_list *args,
 
 static t_exit_code	exec_simple_command(t_ast_node *root, t_exec *config)
 {
-	char	*expanded_cmd;
+	const char	*command;
+	t_list		*args;
 
-	expanded_cmd = expand_variable(root->command->content, config->env);
-	if (expanded_cmd == NULL)
-		return (EXIT_KO);
-	free(root->command->content);
-	root->command->content = expanded_cmd;
-	if (ft_strcmp(root->command->content, "echo") == 0)
-		return (bi_echo(root->command->next, config));
-	if (ft_strcmp(root->command->content, "cd") == 0)
-		return (bi_cd(root->command->next, config));
-	if (ft_strcmp(root->command->content, "pwd") == 0)
+	if (!set_expanded_args(root, config))
+		exit(EXIT_KO);
+	if (config->expanded == NULL)
+		return (EXIT_OK);
+	command = config->expanded->content;
+	args = config->expanded->next;
+	if (ft_strcmp(command, "echo") == 0)
+		return (bi_echo(args, config));
+	if (ft_strcmp(command, "cd") == 0)
+		return (bi_cd(args, config));
+	if (ft_strcmp(command, "pwd") == 0)
 		return (bi_pwd());
-	// if (ft_strcmp(root->command->content, "export") == 0)
-	// 	return (bi_export(root->command->next, config));
-	if (ft_strcmp(root->command->content, "unset") == 0)
-		return (bi_unset(root->command->next, config));
-	if (ft_strcmp(root->command->content, "env") == 0)
+	if (ft_strcmp(command, "export") == 0)
+		return (bi_export(args, config));
+	if (ft_strcmp(command, "unset") == 0)
+		return (bi_unset(args, config));
+	if (ft_strcmp(command, "env") == 0)
 		return (bi_env(config));
-	if (ft_strcmp(root->command->content, "exit") == 0)
-		return (bi_exit(root->command->next, true, config));
-	return (exec_non_bi(root->command->content, root->command->next, config));
+	if (ft_strcmp(command, "exit") == 0)
+		return (bi_exit(args, true, config));
+	return (exec_non_bi(command, args, config));
 }
 
 static	void	exec_simple_command_wrapper(t_ast_node *root, t_exec *config)

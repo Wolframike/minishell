@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_destroy.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:07:40 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/29 18:23:22 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/11/29 19:07:45 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ void	env_destroy(t_env *env)
 	}
 }
 
-t_env    *env_init(char **envp)
+t_env	*env_init(char **envp)
 {
-    t_env    *env;
-    t_env    *new;
-    size_t    i;
+	t_env	*env;
+	t_env	*new;
+	size_t	i;
 
 	i = 0;
 	env = NULL;

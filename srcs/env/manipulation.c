@@ -6,13 +6,13 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:08:01 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/29 16:50:55 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/01 17:19:48 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 
-static size_t	env_len(t_env *env)
+size_t	env_len(t_env *env)
 {
 	size_t	len;
 

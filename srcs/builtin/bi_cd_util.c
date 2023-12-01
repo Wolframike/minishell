@@ -6,11 +6,12 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 23:16:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/29 16:47:03 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:04:27 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
+#include <sys/stat.h>
 
 static bool	set_oldpwd(t_exec *config)
 {
@@ -53,6 +54,27 @@ static bool	file_name_check(char *path)
 	return (false);
 }
 
+static bool	dir_check(char *path)
+{
+	struct stat	statbuf;
+
+	if (!is_dir(path))
+	{
+		no_such_file_or_directory("cd", path);
+		return (false);
+	}
+	if (stat(path, &statbuf) < 0)
+		return (operation_failed("stat"), false);
+	if (S_ISDIR(statbuf.st_mode) && ((statbuf.st_mode & S_IXUSR) == 0))
+	{
+		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+		ft_putstr_fd(path, STDERR_FILENO);
+		ft_putendl_fd(": Permission denied", STDERR_FILENO);
+		return (false);
+	}
+	return (true);
+}
+
 bool	move_to_envvar(t_exec *config, char *varname)
 {
 	char	*path;
@@ -65,11 +87,8 @@ bool	move_to_envvar(t_exec *config, char *varname)
 		ft_putstr_fd(" not set\n", STDERR_FILENO);
 		return (false);
 	}
-	if (!dir_exists(path))
-	{
-		no_such_file_or_directory("cd", path);
+	if (!dir_check(path))
 		return (false);
-	}
 	path = ft_strdup(path);
 	set_oldpwd(config);
 	if (chdir(path) < 0)
@@ -84,24 +103,21 @@ bool	move_to_envvar(t_exec *config, char *varname)
 
 bool	move_to_path(t_exec *config, char *path)
 {
-	path = expand_variable(path, config->env);
-	if (path == NULL)
-		return (operation_failed("malloc"), false);
-	if (file_name_check(path))
+	char	*expanded;
+
+	if (!expand_variable(path, config->env, &expanded))
 		return (free(path), false);
-	if (!dir_exists(path))
-	{
-		no_such_file_or_directory("cd", path);
-		free(path);
-		return (false);
-	}
+	if (file_name_check(expanded))
+		return (free(expanded), false);
+	if (!dir_check(expanded))
+		return (free(expanded), false);
 	set_oldpwd(config);
-	if (chdir(path) < 0)
+	if (chdir(expanded) < 0)
 	{
 		operation_failed("chdir");
-		free(path);
+		free(expanded);
 		return (false);
 	}
-	free(path);
+	free(expanded);
 	return (true);
 }

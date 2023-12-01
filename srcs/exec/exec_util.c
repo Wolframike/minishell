@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 12:15:01 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/29 19:01:03 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:33:17 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@ void	exec_non_bi_in_child_process(const char *command, t_list *args,
 	char	**envp;
 
 	set_exec_child_handler();
-	if (!expand_command_list(&args, config->env))
-	{
-		operation_failed("malloc");
-		exit(EXIT_KO);
-	}
 	argv = t_list_to_array(command, args);
 	envp = env_to_array(config->env);
 	if ((argv == NULL) || (envp == NULL))
@@ -37,6 +32,15 @@ void	exec_non_bi_in_child_process(const char *command, t_list *args,
 	free2darr(argv);
 	free2darr(envp);
 	exit(execvp_failed(command));
+}
+
+bool	set_expanded_args(t_ast_node *root, t_exec *config)
+{
+	if (config->expanded != NULL)
+		ft_lstclear(&config->expanded, free);
+	if (!expand_command_list(root->command, config->env, &config->expanded))
+		return (false);
+	return (true);
 }
 
 t_exit_code	single_fork_destructor(pid_t pid, t_exec *config)

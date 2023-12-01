@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 21:04:03 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/29 15:28:25 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:31:59 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ bool	matched(char *filename, char *pattern, bool *flg);
 t_list	*expand_wildcard(t_list **input);
 
 char	*expand_variable_heredoc(char *line, t_env *env);
-char	*expand_variable(char *line, t_env *env);
-bool	expand_command_list(t_list **command, t_env *env);
+bool	expand_variable(char *line, t_env *env, char **expanded);
+bool	expand_command_list(t_list *command, t_env *env, t_list **head);
 
 #endif

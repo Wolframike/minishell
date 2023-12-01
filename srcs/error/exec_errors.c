@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 01:28:00 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/28 22:51:49 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/11/29 20:33:02 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,14 @@ static void	is_a_directory(const char *command)
 
 t_exit_code	execvp_failed(const char *command)
 {
-	if (errno == ENOENT)
+	if (errno == ENOCMD)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd((char *)command, STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		return (EXIT_KO);
+	}
+	else if (errno == ENOENT)
 	{
 		if (ft_strchr(command, '/') == NULL)
 			command_not_found(command);
@@ -31,18 +38,9 @@ t_exit_code	execvp_failed(const char *command)
 		return (EXIT_NOENT);
 	}
 	else if (errno == ENOMEM)
-	{
-		operation_failed("malloc");
-		return (EXIT_KO);
-	}
+		return (operation_failed("malloc"), EXIT_KO);
 	else if (errno == EISDIR)
-	{
-		is_a_directory(command);
-		return (EXIT_EXEC);
-	}
+		return (is_a_directory(command), EXIT_EXEC);
 	else
-	{
-		operation_failed("execve");
-		return (EXIT_KO);
-	}
+		return (operation_failed(command), EXIT_KO);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:57:35 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/27 21:49:53 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:11:20 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <term.h>
 # include <termios.h>
 # include <stdbool.h>
+
+typedef struct s_env	t_env;
 
 typedef enum e_token_type
 {

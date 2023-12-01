@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 10:02:40 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/26 12:56:17 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/01 16:40:44 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,6 @@ char		*get_next_line(int fd);
 int			ft_min(int a, int b);
 int			ft_max(int a, int b);
 int			ft_abs(int a);
-int			ft_strcmp(char *s1, char *s2);
+int			ft_strcmp(const char *s1, const char *s2);
 
 #endif
