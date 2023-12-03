@@ -6,24 +6,23 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 21:01:19 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/29 21:14:10 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/02 21:08:02 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
 
-static t_list	*get_filenames(void)
+static bool	get_filenames(t_list **res)
 {
-	t_list			*res;
 	t_list			*new;
 	char			*filename;
 	DIR				*dir;
 	struct dirent	*entry;
 
-	res = NULL;
+	*res = NULL;
 	dir = opendir("./");
 	if (dir == NULL)
-		return (operation_failed("opendir"), NULL);
+		return (false);
 	while (1)
 	{
 		entry = readdir(dir);
@@ -33,14 +32,14 @@ static t_list	*get_filenames(void)
 			continue ;
 		filename = ft_strdup(entry->d_name);
 		if (filename == NULL)
-			return (ft_lstclear(&res, free), operation_failed("malloc"), NULL);
+			return (ft_lstclear(res, free), operation_failed("malloc"), NULL);
 		new = ft_lstnew(filename);
 		if (new == NULL)
-			return (ft_lstclear(&res, free), operation_failed("malloc"), NULL);
-		ft_lstadd_back(&res, new);
+			return (ft_lstclear(res, free), operation_failed("malloc"), NULL);
+		ft_lstadd_back(res, new);
 	}
 	closedir(dir);
-	return (res);
+	return (true);
 }
 
 static bool	merge_list(char *filename, bool flg, t_list **res)
@@ -60,6 +59,25 @@ static bool	merge_list(char *filename, bool flg, t_list **res)
 	return (true);
 }
 
+t_list	*dup_string_to_list(char *string)
+{
+	t_list	*res;
+	char	*dup_string;
+
+	if (string == NULL)
+		return (NULL);
+	dup_string = ft_strdup(string);
+	if (dup_string == NULL)
+		return (operation_failed("malloc"), NULL);
+	res = ft_lstnew(dup_string);
+	if (res == NULL)
+	{
+		free(dup_string);
+		return (operation_failed("malloc"), NULL);
+	}
+	return (res);
+}
+
 static t_list	*expand_filename(char *pattern)
 {
 	t_list	*head;
@@ -68,7 +86,8 @@ static t_list	*expand_filename(char *pattern)
 	bool	malloc_flg;
 
 	res = NULL;
-	dir_filenames = get_filenames();
+	if (!get_filenames(&dir_filenames))
+		return (dup_string_to_list(pattern));
 	if (dir_filenames == NULL)
 		return (NULL);
 	head = dir_filenames;
@@ -86,31 +105,15 @@ static t_list	*expand_filename(char *pattern)
 	return (res);
 }
 
-static t_list	*duplicate_filename(char *filename)
-{
-	t_list	*res;
-	char	*dup_filename;
-
-	if (filename == NULL)
-		return (NULL);
-	dup_filename = ft_strdup(filename);
-	if (dup_filename == NULL)
-		return (operation_failed("malloc"), NULL);
-	res = ft_lstnew(dup_filename);
-	if (res == NULL)
-	{
-		free(dup_filename);
-		return (operation_failed("malloc"), NULL);
-	}
-	return (res);
-}
-
+#include <stdio.h>
 t_list	*expand_wildcard(t_list **input)
 {
 	t_list	*res;
 	t_list	*new;
 	t_list	*head;
 
+	if (input == NULL || *input == NULL)
+		return (NULL);
 	res = NULL;
 	head = *input;
 	while (*input)
@@ -118,7 +121,7 @@ t_list	*expand_wildcard(t_list **input)
 		if (ft_strchr((*input)->content, '*') != NULL)
 			new = expand_filename((*input)->content);
 		else
-			new = duplicate_filename((*input)->content);
+			new = dup_string_to_list((*input)->content);
 		if (new == NULL)
 			return (ft_lstclear(&res, free),
 				ft_lstclear(&head, free), NULL);
