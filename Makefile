@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
+#    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/12/01 17:19:38 by misargsy         ###   ########.fr        #
+#    Updated: 2023/12/02 18:14:50 by knishiok         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -97,30 +97,27 @@ valgrind: $(NAME)
 	@grep "definitely lost" valgrind.logs
 
 $(NAME): $(OBJS) $(LIBFT)
-	@echo "$(BLUE)Compiling minishell... $(RESET)"
+	@printf "$(BLUE)Compiling minishell... $(RESET)"
 	cc $(FLAGS) $(RLFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
-	@echo "$(CHECK) $(RESET)"
 	@clear
 
 $(LIBFT):
-	@echo "$(BLUE)Compiling libft... $(RESET)"
+	@printf "$(BLUE)Compiling libft... \n$(RESET)"
 	@make -C libft
 	@mv libft/libft.a .
-	@echo "$(CHECK) $(RESET)"
 
 %.o: %.c
 	@cc $(FLAGS) $(INC) -c $< -o $@
 
 clean:
-	@echo "$(BLUE)Removing objects and libraries... $(RESET)"
+	@printf "$(BLUE)Removing objects and libraries... \n$(RESET)"
 	@rm -f $(OBJS) $(LIBFT)
 	@make clean -C libft
-	@echo "$(CHECK) $(RESET)"
 
 fclean: clean
-	@echo "$(BLUE)Removing executables... $(RESET)"
+	@printf "$(BLUE)Removing executables... \n$(RESET)"
 	@rm -f $(NAME) $(LIBFT)
-	@echo "$(CHECK) $(RESET)"
+	@make fclean -C libft
 
 re:	fclean	all
 

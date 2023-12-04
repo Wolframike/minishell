@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:30:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/01 18:16:21 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/03 21:27:33 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static bool	expand_variable_for_one(char **line, t_env *env,
 	if (value == NULL)
 		return (operation_failed("malloc"), free(res_old), false);
 	res = ft_strjoin(res_old, value);
-	free(res_old);
 	free(value);
 	if (res == NULL)
 		return (operation_failed("malloc"), free(res_old), false);
@@ -66,7 +65,7 @@ static bool	expand_variable_for_one(char **line, t_env *env,
 	return (true);
 }
 
-static bool	proceed_line(char **line, char *res_old, char **res)
+bool	skip_line(char **line, char *res_old, char **res)
 {
 	int		i;
 	int		src_len;
@@ -74,11 +73,15 @@ static bool	proceed_line(char **line, char *res_old, char **res)
 	src_len = ft_strlen(res_old);
 	*res = ft_calloc(src_len + 2, sizeof(char));
 	if (*res == NULL)
+	{
+		free(res_old);
 		return (operation_failed("malloc"), false);
+	}
 	i = -1;
 	while (++i < src_len)
 		(*res)[i] = res_old[i];
 	(*res)[src_len] = **line;
+	free(res_old);
 	(*line)++;
 	return (true);
 }
@@ -87,7 +90,7 @@ static void	update_flag(bool *is_single_quote, char **line)
 {
 	if (**line == '\'')
 		*is_single_quote = !(*is_single_quote);
-	(*line)++;
+	// (*line)++;
 }
 
 char	*expand_variable_heredoc(char *line, t_env *env)
@@ -104,14 +107,12 @@ char	*expand_variable_heredoc(char *line, t_env *env)
 		{
 			if (!expand_variable_for_one(&line, env, res, &new))
 				return (NULL);
-			free(res);
 			res = new;
 		}
 		else
 		{
-			if (!proceed_line(&line, res, &new))
+			if (!skip_line(&line, res, &new))
 				return (NULL);
-			free(res);
 			res = new;
 		}
 	}
@@ -140,15 +141,14 @@ bool	expand_variable(char *line, t_env *env, char **expanded)
 				return (false);
 			res = *expanded;
 		}
-		else if (*line == '\'' || *line == '\"')
-			update_flag(&is_single_quote, &line);
 		else
 		{
-			if (!proceed_line(&line, res, expanded))
+			if (*line == '\'' || *line == '\"')
+				update_flag(&is_single_quote, &line);
+			if (!skip_line(&line, res, expanded))
 				return (false);
 			res = *expanded;
 		}
 	}
 	return (true);
 }
-// 

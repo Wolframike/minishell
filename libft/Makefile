@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
+#    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/20 09:55:58 by knishiok          #+#    #+#              #
-#    Updated: 2023/11/26 12:23:46 by misargsy         ###   ########.fr        #
+#    Updated: 2023/12/02 17:44:03 by knishiok         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -108,11 +108,11 @@ objs/%.o: %.c
 
 clean:
 	@$(RM) -r objs
-	@echo "$(CHECK) $(CIAN)Successfuly delted object files!$(RESET)"
+	@printf "$(CHECK) $(CIAN)Successfuly delted object files!\n$(RESET)"
 
 fclean: clean
 	@$(RM) $(NAME)
-	@echo "$(CHECK) $(CIAN)Successfuly delted $(NAME)!$(RESET)"
+	@printf "$(CHECK) $(CIAN)Successfuly delted $(NAME)!\n$(RESET)"
 
 re: fclean all
 
