@@ -6,7 +6,7 @@
 #    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/12/03 23:23:16 by knishiok         ###   ########.fr        #
+#    Updated: 2023/12/05 22:32:42 by knishiok         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,8 +30,10 @@ PARSER = 	srcs/parser/parser.c \
 
 EXPAND =	srcs/expand/expand.c \
 			srcs/expand/split_into_list.c \
+			srcs/expand/remove_quotes.c \
 			srcs/expand/judge_matched.c \
 			srcs/expand/rebuild_dp.c \
+			srcs/expand/handle_wildcard.c \
 			srcs/expand/expand_filename.c \
 
 SIGNAL =	srcs/signal/signal.c \
@@ -67,10 +69,7 @@ ENV =		srcs/env/init_destroy.c \
 
 UTILS =		srcs/utils/utils.c \
 
-TESTS = 	tests/parser/print_utils_parser.c \
-			tests/lexer/print_utils_lexer.c \
-
-SRCS = srcs/main.c $(LEXER) $(AST) $(PARSER) $(EXPAND) $(SIGNAL) $(TERMCONF) $(BUILTIN) $(EXECUTE) $(ERRORS) $(ENV) $(UTILS) $(TESTS)
+SRCS = srcs/main.c $(LEXER) $(AST) $(PARSER) $(EXPAND) $(SIGNAL) $(TERMCONF) $(BUILTIN) $(EXECUTE) $(ERRORS) $(ENV) $(UTILS)
 
 NAME = minishell
 LIBFT = libft.a

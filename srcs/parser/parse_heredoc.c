@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:58:43 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/01 21:32:44 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/05 20:28:34 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	wait_heredoc(pid_t pid, t_state *data)
 		set_env(&(data->env), "?", "1");
 	}
 	set_env(&(data->env), "?", str_code);
+	free(str_code);
 }
 
 static void	heredoc_child(char *delimiter, int fd, t_state *data)

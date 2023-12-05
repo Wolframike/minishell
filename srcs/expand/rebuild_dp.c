@@ -6,11 +6,18 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 23:11:16 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/03 23:23:44 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/05 21:14:30 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
+
+void	destroy_table(bool **table, int height)
+{
+	while (height >= 0)
+		free(table[height--]);
+	free(table);
+}
 
 int	count_patlen(char *line)
 {
@@ -19,7 +26,7 @@ int	count_patlen(char *line)
 	len = 0;
 	while (*line)
 	{
-		if (*line != '\'' || *line != '\"')
+		if (*line != '\'' && *line != '\"')
 			len++;
 		line++;
 	}
