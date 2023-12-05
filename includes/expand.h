@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 21:04:03 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/05 19:01:18 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 23:22:58 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,22 @@
 
 typedef struct s_env	t_env;
 
+void	destroy_table(bool **table, int height);
 int		count_patlen(char *line);
 bool	*expand_or_not(char *line);
+
 bool	matched(char *filename, char *pattern, bool *flg);
 t_list	*expand_wildcard(t_list **input);
 
-bool	skip_line(char **line, char *res_old, char **res);
+t_list	*remove_quotes(char *line);
+bool	handle_quote(t_list **res, char **line);
+bool	remove_quotes_list(t_list **res_old);
+
 t_list	*dup_string_to_list(char *string);
+bool	get_filenames(t_list **res);
+
+bool	skip_line(char **line, char *res_old, char **res);
+
 char	*expand_variable_heredoc(char *line, t_env *env);
 char	*expand_variable_export(char *line, t_env *env);
 bool	expand_variable(char *line, t_env *env, char **expanded);

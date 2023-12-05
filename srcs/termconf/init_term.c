@@ -3,39 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   init_term.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 21:22:27 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/29 22:25:58 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 23:08:05 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "termconf.h"
 
-// static void	set_read_mode(t_state *data)
-// {
-// 	tcsetattr(STDIN_FILENO, TCSANOW, data->termconf);
-// }
-
 void	set_term_config(t_state *data, int mode)
 {
-	static struct termios	default_setting;
+	static int	default_lflag;
+	static int	default_vtime;
 
 	if (mode == 0)
 	{
-		data->termconf = ft_calloc(1, sizeof(struct termios));
-		if (data->termconf == NULL)
-			return (operation_failed("malloc"));
-		tgetent(NULL, get_env(data->env, "TERM"));
-		tcgetattr(STDIN_FILENO, &default_setting);
-		ft_memcpy(data->termconf, &default_setting, sizeof(struct termios));
-		data->termconf->c_iflag &= ~(IXON);
-		data->termconf->c_lflag &= ~(ECHO | ICANON | ISIG | IEXTEN);
-		data->termconf->c_oflag &= ~(OPOST);
+		if (tcgetattr(STDIN_FILENO, &(data->termconf)) < 0)
+		{
+			operation_failed("tcgetattr");
+			exit(1);
+		}
+		default_lflag = data->termconf.c_lflag;
+		default_vtime = data->termconf.c_cc[VTIME];
+		data->termconf.c_lflag &= ~ICANON;
+		data->termconf.c_cc[VTIME] = 1;
 	}
-	// else if (mode == 1)
-	// 	set_read_mode(data);
 	else if (mode == 1)
-		// 初期の端末設定に戻す
-		tcsetattr(STDIN_FILENO, TCSANOW, &default_setting);
+	{
+		data->termconf.c_lflag = default_lflag;
+		data->termconf.c_cc[VTIME] = default_vtime;
+		if (tcsetattr(STDIN_FILENO, TCSANOW, &(data->termconf)) < 0)
+		{
+			operation_failed("tcsetattr");
+			exit(1);
+		}
+	}
 }

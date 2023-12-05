@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 22:32:17 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 23:23:54 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,13 @@ static void	initialize(t_exec *config, t_state *data, char **envp)
 	rl_instream = stdin;
 	rl_outstream = stderr;
 	init_config(config, envp);
+	set_term_config(data, 0);
 	data->env = config->env;
 }
 
 static void	terminate(t_exec *config)
 {
 	char	*exit_code;
-	int		fd;
 
 	ft_lstclear(&config->expanded, free);
 	exit_code = ft_itoa(config->exit_code);
@@ -68,11 +68,30 @@ static void	terminate(t_exec *config)
 		return ;
 	}
 	set_env(&config->env, "?", exit_code);
-	fd = dup(STDOUT_FILENO);
-	dprintf(STDERR_FILENO, "===debug===\nfd: %d\n", fd);
-	dprintf(STDERR_FILENO, "exit_code: %s\n===========\n", exit_code);
+	// int fd = dup(STDOUT_FILENO);
+	// dprintf(STDERR_FILENO, "===debug===\nfd: %d\n", fd);
+	// dprintf(STDERR_FILENO, "exit_code: %s\n===========\n", exit_code);
+	// close(fd);
 	free(exit_code);
-	close(fd);
+}
+
+static bool	parse_and_execue(t_state *data, char **line, t_exec *config)
+{
+	t_ast_node	*node;
+
+	g_signal = 0;
+	set_exec_handler(false);
+	node = parse(data, *line);
+	if (node == NULL)
+	{
+		set_env(&(data->env), "?", "1");
+		free(*line);
+		return (false);
+	}
+	execute(node, config);
+	destroy_ast_node(node);
+	free(*line);
+	return (true);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -80,7 +99,6 @@ int	main(int argc, char **argv, char **envp)
 	char		*line;
 	t_exec		config;
 	t_state		data;
-	t_ast_node	*node;
 
 	(void)argc;
 	(void)argv;
@@ -94,20 +112,12 @@ int	main(int argc, char **argv, char **envp)
 			ft_putendl_fd("exit", STDERR_FILENO);
 			break ;
 		}
-		g_signal = 0;
-		set_exec_handler(false);
-		node = parse(&data, line);
-		// print_node(node);
-		if (node == NULL)
-		{
-			set_env(&(data.env), "?", "1");
-			continue ;
-		}
-		execute(node, &config);
-		terminate(&config);
-		destroy_ast_node(node);
 		add_history(line);
-		free(line);
+		if (!parse_and_execue(&data, &line, &config))
+			continue ;
+		terminate(&config);
+		set_term_config(&data, 1);
 	}
+	set_term_config(&data, 1);
 	exit(config.exit_code);
 }

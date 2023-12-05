@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:57:35 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/05 13:08:08 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 23:02:09 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_env
 
 typedef struct s_state
 {
-	struct termios	*termconf;
+	struct termios	termconf;
 	t_token			*token;
 	t_env			*env;
 	int				status;
