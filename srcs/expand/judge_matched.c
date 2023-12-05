@@ -6,18 +6,11 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 21:44:40 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/05 20:12:10 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/05 21:34:44 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
-
-static void	destroy_table(bool **table, int height)
-{
-	while (height >= 0)
-		free(table[height--]);
-	free(table);
-}
 
 static bool	**create_table(char *filename, char *pattern, bool *flg)
 {
@@ -32,32 +25,24 @@ static bool	**create_table(char *filename, char *pattern, bool *flg)
 	pat_len = count_patlen(pattern);
 	table = ft_calloc(f_len + 1, sizeof(bool *));
 	if (table == NULL)
-	{
-		*flg = true;
-		return (NULL);
-	}
+		return (*flg = true, NULL);
 	i = -1;
 	while (++i < f_len + 1)
 	{
 		table[i] = ft_calloc(pat_len + 1, sizeof(bool));
 		if (table[i] == NULL)
-		{
-			*flg = true;
-			return (destroy_table(table, i), NULL);
-		}
+			return (*flg = true, destroy_table(table, i), NULL);
 	}
 	return (table);
 }
 
-static void	init_table(bool **table, char *filename, char *pattern)
+static void	init_table(bool **table, int height, char *pattern)
 {
 	int		i;
 	int		pat_idx;
-	int		height;
 	int		width;
 	bool	*pat_exp;
 
-	height = ft_strlen(filename);
 	width = count_patlen(pattern);
 	pat_exp = expand_or_not(pattern);
 	if (pat_exp == NULL)
@@ -128,7 +113,7 @@ bool	matched(char *filename, char *pattern, bool *flg)
 	table = create_table(filename, pattern, flg);
 	if (table == NULL)
 		return (false);
-	init_table(table, filename, pattern);
+	init_table(table, f_len, pattern);
 	eval_dp(table, filename, pattern);
 	res = table[f_len][pat_len];
 	destroy_table(table, f_len);

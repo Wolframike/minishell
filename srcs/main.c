@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 20:15:51 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/05 22:49:49 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static void	initialize(t_exec *config, t_state *data, char **envp)
 	rl_instream = stdin;
 	rl_outstream = stderr;
 	init_config(config, envp);
+	set_term_config(data, 0);
 	data->env = config->env;
 }
 
@@ -75,12 +76,30 @@ static void	terminate(t_exec *config)
 	close(fd);
 }
 
+static bool	parse_and_execue(t_state *data, char **line, t_exec *config)
+{
+	t_ast_node	*node;
+
+	g_signal = 0;
+	set_exec_handler(false);
+	node = parse(data, *line);
+	if (node == NULL)
+	{
+		set_env(&(data->env), "?", "1");
+		free(*line);
+		return (false);
+	}
+	execute(node, config);
+	destroy_ast_node(node);
+	free(*line);
+	return (true);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char		*line;
 	t_exec		config;
 	t_state		data;
-	t_ast_node	*node;
 
 	(void)argc;
 	(void)argv;
@@ -94,20 +113,12 @@ int	main(int argc, char **argv, char **envp)
 			ft_putendl_fd("exit", STDERR_FILENO);
 			break ;
 		}
-		g_signal = 0;
-		set_exec_handler(false);
-		node = parse(&data, line);
-		// print_node(node);
-		if (node == NULL)
-		{
-			set_env(&(data.env), "?", "1");
-			continue ;
-		}
-		execute(node, &config);
-		terminate(&config);
-		destroy_ast_node(node);
 		add_history(line);
-		free(line);
+		if (!parse_and_execue(&data, &line, &config))
+			continue ;
+		terminate(&config);
+		set_term_config(&data, 1);
 	}
+	set_term_config(&data, 1);
 	exit(config.exit_code);
 }
