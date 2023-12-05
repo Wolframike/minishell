@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 21:01:19 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/05 09:47:19 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:50:47 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,30 @@ t_list	*dup_string_to_list(char *string)
 	return (res);
 }
 
+bool	contain_expansion(char *pattern, bool *malloc_flg)
+{
+	int		pat_len;
+	bool	*pat_exp;
+
+	pat_len = count_patlen(pattern);
+	pat_exp = expand_or_not(pattern);
+	if (pat_exp == NULL)
+	{
+		*malloc_flg = true;
+		return (operation_failed("malloc"), NULL);
+	}
+	while (--pat_len >= 0)
+	{
+		if (pat_exp[pat_len])
+		{
+			free(pat_exp);
+			return (true);
+		}
+	}
+	free(pat_exp);
+	return (false);
+}
+
 static t_list	*expand_filename(char *pattern)
 {
 	t_list	*head;
@@ -85,13 +109,17 @@ static t_list	*expand_filename(char *pattern)
 	t_list	*res;
 	bool	malloc_flg;
 
+	malloc_flg = false;
+	if (!contain_expansion(pattern, &malloc_flg) && !malloc_flg)
+		return (dup_string_to_list(pattern));
+	if (malloc_flg)
+		return (NULL);
 	res = NULL;
 	if (!get_filenames(&dir_filenames))
 		return (dup_string_to_list(pattern));
 	if (dir_filenames == NULL)
 		return (NULL);
 	head = dir_filenames;
-	malloc_flg = false;
 	while (dir_filenames)
 	{
 		if (matched(dir_filenames->content, pattern, &malloc_flg))
@@ -105,7 +133,6 @@ static t_list	*expand_filename(char *pattern)
 	return (res);
 }
 
-#include <stdio.h>
 t_list	*expand_wildcard(t_list **input)
 {
 	t_list	*res;

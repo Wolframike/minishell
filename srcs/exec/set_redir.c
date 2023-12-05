@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 02:06:23 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 16:10:32 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:42:42 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,37 +79,24 @@ static bool	expand_and_check_ambiguous_redirect(char **filename, t_env *env)
 	return (true);
 }
 
-static void	substitute_fd(t_redir_type type, int (*fd)[2])
-{
-	if (type == REDIR_IN)
-	{
-		if ((*fd)[0] != STDIN_FILENO)
-			close((*fd)[0]);
-		(*fd)[0] = STDIN_FILENO;
-	}
-	else
-	{
-		if ((*fd)[1] != STDOUT_FILENO)
-			close((*fd)[1]);
-		(*fd)[1] = STDOUT_FILENO;
-	}
-}
-
-bool	set_redir(t_list *redirects, int (*fd)[2], t_env *env)
+bool	set_redir(t_list *redirects, t_env *env)
 {
 	t_redir	*redir;
 	int		fd_tmp;
-	bool	ans;
+	bool	status;
 
-	ans = true;
+	status = true;
 	while (redirects != NULL)
 	{
 		redir = redirects->content;
 		if (!expand_and_check_ambiguous_redirect(&redir->filename, env)
 			|| !open_redir_file(redir->filename, redir->type, &fd_tmp))
-			ans = false;
-		substitute_fd(redir->type, fd);
+			status = false;
+		if (redir->type == REDIR_IN)
+			dup2(fd_tmp, STDIN_FILENO);
+		else
+			dup2(fd_tmp, STDOUT_FILENO);
 		redirects = redirects->next;
 	}
-	return (ans);
+	return (status);
 }

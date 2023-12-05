@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:34:44 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/01 19:08:01 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:42:29 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char		**t_list_to_array(const char *command, t_list *lst);
 t_exit_code	exec_pipeline(t_ast_node *root, t_exec *config);
 
 //set_redir.c
-bool		set_redir(t_list *redirects, int (*fd)[2], t_env *env);
+bool		set_redir(t_list *redirects, t_env *env);
 
 //error.c
 void		command_not_found(const char *command);

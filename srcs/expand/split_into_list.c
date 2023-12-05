@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:56:45 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 09:49:44 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:50:55 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,40 @@ static bool	split_line_to_list(char *line, t_list **res)
 // 	}
 // }
 
+char	*expand_variable_export(char *line,  t_env *env)
+{
+	char	*str_quote;
+	char	*res;
+	char	*head;
+
+	if (!expand_variable(line, env, &str_quote))
+		return (NULL);
+	res = ft_strdup("");
+	if (res == NULL)
+		return (NULL);
+	head = str_quote;
+	while (*str_quote)
+	{
+		if (*str_quote == '\'' || *str_quote == '\"')
+			str_quote++;
+		else
+		{
+			if (!skip_line(&str_quote, res, &res))
+				return (free(res), NULL);
+		}
+	}
+	free(head);
+	return (res);
+}
+
 static t_list	*remove_quotes(char *line)
 {
 	t_list	*res;
 	char	*res_str;
 
 	res_str = ft_strdup("");
+	if (res_str == NULL)
+		return (NULL);
 	while (*line)
 	{
 		if (*line == '\'' || *line == '\"')

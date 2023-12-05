@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 19:11:52 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/01 20:00:47 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 16:56:22 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int	bi_export(t_list *args, t_exec *config)
 			return (EXIT_KO);
 		return (EXIT_OK);
 	}
+	args = args->next;
 	while (args != NULL)
 	{
 		line = args->content;
