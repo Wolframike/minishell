@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_into_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:56:45 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 18:11:15 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:50:55 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ static bool	remove_quotes_list(t_list **res_old)
 	return (true);
 }
 
-static bool	expand_variable_to_list(char *line, t_env *env, t_list **res)
+bool	expand_variable_to_list(char *line, t_env *env, t_list **res)
 {
 	char	*expanded;
 

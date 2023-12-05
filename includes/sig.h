@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   sig.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:14:15 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/01 21:14:10 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/05 09:46:49 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SIG_H
 # define SIG_H
 
+# include "type.h"
 # include "libft.h"
 # include <stdio.h>
 # include <signal.h>

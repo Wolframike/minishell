@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:55:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/01 18:05:24 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 15:33:08 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,17 @@ static char	*get_full_path(const char *cmd, char *const *envp)
 	i = 0;
 	while (path_env[i] != NULL)
 	{
-		dir_candidate = ft_strjoin(path_env[i], "/");
+		dir_candidate = ft_strjoin(path_env[i++], "/");
 		path = ft_strjoin(dir_candidate, cmd);
 		free(dir_candidate);
 		if (path == NULL || access(path, X_OK) == 0)
 			break ;
 		free(path);
-		i++;
 	}
 	if (path_env[i] == NULL && access(cmd, X_OK) < 0)
 		errno = ENOENT;
+	if (access(path, F_OK) < 0)
+		errno = ENOCMD;
 	free2darr(path_env);
 	return (path);
 }

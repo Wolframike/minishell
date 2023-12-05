@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipeline.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 01:11:55 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/01 19:33:28 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:41:59 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ static void	exec_in_pipeline(t_ast_node *root, t_exec *config)
 	if (ft_strcmp(command, "cd") == 0)
 		exit(bi_cd(args, config));
 	if (ft_strcmp(command, "pwd") == 0)
-		exit(bi_pwd());
+		exit(bi_pwd(config));
 	if (ft_strcmp(command, "export") == 0)
-		exit(bi_export(args, config));
+		exit(bi_export(root->command, config));
 	if (ft_strcmp(command, "unset") == 0)
 		exit(bi_unset(args, config));
 	if (ft_strcmp(command, "env") == 0)
@@ -70,10 +70,10 @@ static bool	pipe_loop(t_ast_node *ast, t_exec *config, bool last)
 	if (last)
 	{
 		dup2(STDOUT_FILENO, fd[1]);
-		close(fd[0]);
 	}
-	if (!set_redir(ast->redir, &fd))
-		return (false);
+	if (!set_redir(ast->redir, config->env))
+		return (close(fd[0]), close(fd[1]), true);
+	config->fork_count++;
 	pid = fork();
 	if (pid < 0)
 		return (operation_failed("fork"), false);
@@ -92,11 +92,8 @@ static bool	exec_pipeline_list(t_list *head, t_exec *config)
 {
 	t_ast_node	*ast;
 	int			in;
-	int			len_before;
-	int			len_after;
 
 	in = dup(STDIN_FILENO);
-	len_before = ft_lstsize(head);
 	while (head != NULL)
 	{
 		ast = head->content;
@@ -104,17 +101,9 @@ static bool	exec_pipeline_list(t_list *head, t_exec *config)
 			break ;
 		head = head->next;
 	}
-	if (head != NULL)
-	{
-		len_after = ft_lstsize(head);
-		config->fork_count += (len_before - len_after);
-		dup2(in, STDIN_FILENO);
-		return (false);
-	}
-	config->fork_count += len_before;
 	dup2(in, STDIN_FILENO);
 	close(in);
-	return (true);
+	return (head == NULL);
 }
 
 t_exit_code	exec_pipeline(t_ast_node *root, t_exec *config)

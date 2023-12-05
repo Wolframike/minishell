@@ -6,47 +6,23 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:10:39 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/29 21:47:26 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/01 19:08:15 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef AST_H
 # define AST_H
 
-# include "lexer.h"
 # include "type.h"
+# include "lexer.h"
 
-typedef enum e_ast_type
-{
-	AST_CMD,
-	AST_AND,
-	AST_OR,
-	AST_PIPE,
-}	t_ast_type;
-
-typedef struct s_ast_node
-{
-	t_ast_type			type;
-	struct s_ast_node	*left;
-	struct s_ast_node	*right;
-	t_list				*redir;
-	t_list				*command;
-}	t_ast_node;
-
-typedef enum e_redir_type
-{
-	REDIR_IN,
-	REDIR_OUT,
-	REDIR_APPEND,
-	REDIR_HEREDOC,
-}	t_redir_type;
-
-typedef struct s_redir
-{
-	t_redir_type	type;
-	char			*filename;
-	char			*expanded;
-}	t_redir;
+typedef struct s_redir		t_redir;
+typedef struct s_ast_node	t_ast_node;
+typedef struct s_state		t_state;
+typedef struct s_token		t_token;
+typedef enum e_ast_type		t_ast_type;
+typedef enum e_redir_type	t_redir_type;
+typedef enum e_token_type	t_token_type;
 
 void		destroy_redir(t_redir *redir);
 void		destroy_ast_node(t_ast_node *node);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:22:28 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/26 18:13:08 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/01 19:10:19 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static t_token	*parse_metacharacters(const char **line)
 	return (create_token(word, types[i]));
 }
 
-static t_token	*parse_word(t_state *data, const char **line)
+static t_token	*parse_non_metacharacters(t_state *data, const char **line)
 {
 	const char	*head;
 	const char	*tmp;
@@ -91,7 +91,7 @@ void	tokenize(t_state *data, const char *line)
 		}
 		else if (*line)
 		{
-			cur->next = parse_word(data, &line);
+			cur->next = parse_non_metacharacters(data, &line);
 			if (cur->next == NULL)
 				return (set_allocation_error(data, head.next));
 			cur = cur->next;

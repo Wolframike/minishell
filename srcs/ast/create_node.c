@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_node.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:23:24 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/26 18:23:11 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/01 18:36:35 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,5 @@ t_redir	*new_redir(t_redir_type type, char *filename)
 		return (NULL);
 	res->type = type;
 	res->filename = filename;
-	res->expanded = NULL;
 	return (res);
 }

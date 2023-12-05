@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   termconf.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 21:28:30 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/27 22:14:53 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/01 19:06:51 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <term.h>
 # include <termios.h>
 # include <curses.h>
+
+typedef struct s_state	t_state;
 
 void	set_term_config(t_state *data, int mode);
 #endif
