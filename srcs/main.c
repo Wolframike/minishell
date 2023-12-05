@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/01 21:35:13 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:26:18 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@
 #include <readline/history.h>
 #include <stdio.h>
 
-static void	initialize(t_exec *config, t_state *data, char **envp)
+static void	init_config(t_exec *config, char **envp)
 {
 	char	*shlvl;
 
-	rl_instream = stdin;
-	rl_outstream = stderr;
+	ft_bzero(config, sizeof(t_exec));
+	config->cwd = getcwd(NULL, 0);
+	if (config->cwd == NULL)
+		error_retrieving_cd("shell-init");
 	config->env = env_init(envp);
-	data->env = config->env;
 	config->exit_code = 0;
 	shlvl = get_env(config->env, "SHLVL");
 	if (shlvl == NULL)
@@ -44,6 +45,14 @@ static void	initialize(t_exec *config, t_state *data, char **envp)
 		set_env(&config->env, "SHLVL", shlvl);
 		free(shlvl);
 	}
+}
+
+static void	initialize(t_exec *config, t_state *data, char **envp)
+{
+	rl_instream = stdin;
+	rl_outstream = stderr;
+	init_config(config, envp);
+	data->env = config->env;
 }
 
 static void	terminate(t_exec *config)

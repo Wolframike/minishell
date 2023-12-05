@@ -6,25 +6,30 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 15:21:39 by misargsy          #+#    #+#             */
-/*   Updated: 2023/11/24 18:41:52 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 14:30:05 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-int	bi_pwd(void)
+int	bi_pwd(t_exec *config)
 {
-	char	*pwd;
+	char	*cwd;
 
-	pwd = getcwd(NULL, 0);
-	if (pwd == NULL)
+	if (config->cwd == NULL)
 	{
-		ft_putstr_fd("minishell: pwd: ", STDERR_FILENO);
-		ft_putstr_fd(strerror(errno), STDERR_FILENO);
-		ft_putchar_fd('\n', STDERR_FILENO);
-		return (EXIT_KO);
+		cwd = getcwd(NULL, 0);
+		if (cwd == NULL)
+		{
+			if (errno == EACCES || errno == ENOENT || errno == ENOTDIR)
+				error_retrieving_cd("pwd");
+			else
+				operation_failed("getcwd");
+			return (EXIT_KO);
+		}
+		free(config->cwd);
+		config->cwd = cwd;
 	}
-	ft_putendl_fd(pwd, STDOUT_FILENO);
-	free(pwd);
+	ft_putendl_fd(config->cwd, STDOUT_FILENO);
 	return (EXIT_OK);
 }

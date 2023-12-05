@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:35:17 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/01 21:15:21 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/05 10:18:15 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ static t_exit_code	exec_simple_command(t_ast_node *root, t_exec *config)
 	if (ft_strcmp(command, "cd") == 0)
 		return (bi_cd(args, config));
 	if (ft_strcmp(command, "pwd") == 0)
-		return (bi_pwd());
+		return (bi_pwd(config));
 	if (ft_strcmp(command, "export") == 0)
-		return (bi_export(args, config));
+		return (bi_export(root->command, config));
 	if (ft_strcmp(command, "unset") == 0)
 		return (bi_unset(args, config));
 	if (ft_strcmp(command, "env") == 0)
@@ -65,7 +65,7 @@ static	void	exec_simple_command_wrapper(t_ast_node *root, t_exec *config)
 
 	fd[0] = dup(STDIN_FILENO);
 	fd[1] = dup(STDOUT_FILENO);
-	if (!set_redir(root->redir, &fd))
+	if (!set_redir(root->redir, &fd, config->env))
 		return ((void)(config->exit_code = EXIT_KO));
 	if (root->command == NULL)
 		return ((void)(config->exit_code = EXIT_OK));

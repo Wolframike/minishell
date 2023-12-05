@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipeline.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 01:11:55 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/01 19:33:28 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/05 10:18:00 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ static void	exec_in_pipeline(t_ast_node *root, t_exec *config)
 	if (ft_strcmp(command, "cd") == 0)
 		exit(bi_cd(args, config));
 	if (ft_strcmp(command, "pwd") == 0)
-		exit(bi_pwd());
+		exit(bi_pwd(config));
 	if (ft_strcmp(command, "export") == 0)
-		exit(bi_export(args, config));
+		exit(bi_export(root->command, config));
 	if (ft_strcmp(command, "unset") == 0)
 		exit(bi_unset(args, config));
 	if (ft_strcmp(command, "env") == 0)
@@ -72,7 +72,7 @@ static bool	pipe_loop(t_ast_node *ast, t_exec *config, bool last)
 		dup2(STDOUT_FILENO, fd[1]);
 		close(fd[0]);
 	}
-	if (!set_redir(ast->redir, &fd))
+	if (!set_redir(ast->redir, &fd, config->env))
 		return (false);
 	pid = fork();
 	if (pid < 0)

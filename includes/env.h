@@ -6,23 +6,18 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 11:59:58 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/01 17:19:58 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/01 19:05:38 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENV_H
 # define ENV_H
 
+# include "type.h"
 # include "libft.h"
 # include "utils.h"
 
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-	struct s_env	*prev;
-}	t_env;
+typedef struct s_env	t_env;
 
 t_env	*env_init(char **envp);
 void	add_env_node(t_env **head, t_env **new);

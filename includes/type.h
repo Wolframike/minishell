@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:57:35 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/01 18:50:09 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/05 13:08:08 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 # include <term.h>
 # include <termios.h>
 # include <stdbool.h>
-
-typedef struct s_env	t_env;
 
 typedef enum e_token_type
 {
@@ -41,6 +39,14 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+	struct s_env	*prev;
+}	t_env;
+
 typedef struct s_state
 {
 	struct termios	*termconf;
@@ -61,5 +67,45 @@ typedef enum e_exit_code
 	EXIT_INVAL,
 	EXIT_SEGV = 255
 }	t_exit_code;
+
+typedef enum e_ast_type
+{
+	AST_CMD,
+	AST_AND,
+	AST_OR,
+	AST_PIPE,
+}	t_ast_type;
+
+typedef struct s_ast_node
+{
+	t_ast_type			type;
+	struct s_ast_node	*left;
+	struct s_ast_node	*right;
+	t_list				*redir;
+	t_list				*command;
+}	t_ast_node;
+
+typedef enum e_redir_type
+{
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_APPEND,
+	REDIR_HEREDOC,
+}	t_redir_type;
+
+typedef struct s_redir
+{
+	t_redir_type	type;
+	char			*filename;
+}	t_redir;
+
+typedef struct s_exec
+{
+	t_env			*env;
+	t_list			*expanded;
+	t_exit_code		exit_code;
+	char			*cwd;
+	int				fork_count;
+}	t_exec;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 17:11:41 by knishiok          #+#    #+#             */
-/*   Updated: 2023/11/26 12:00:37 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/01 19:07:16 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include "type.h"
 # include "error.h"
+
+typedef struct s_token	t_token;
+typedef struct s_state	t_state;
 
 void	destroy_token(t_token **token);
 bool	is_space(const char c);
