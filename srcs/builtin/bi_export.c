@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 19:11:52 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 16:56:22 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 20:54:04 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,33 +70,45 @@ static bool	export_variable(t_exec *config, char *line)
 		key = ft_strdup(line);
 		value = NULL;
 	}
+	dprintf(STDERR_FILENO, "key: %s\n", key);
 	if (key == NULL || (assign && (value == NULL)))
 		return (operation_failed("malloc"), false);
+	if (!is_valid_identifier(key))
+		return (not_a_valid_identifier("export", key), false);
 	if (!set_env(&config->env, key, value))
 		return (operation_failed("malloc"), false);
 	free(key);
 	return (true);
 }
 
+static bool	process_single_chunk(t_exec *config, char *chunk, size_t *count)
+{
+	(*count)++;
+	if (ft_strcmp(chunk, "export") == 0)
+		return (true);
+	if (!export_variable(config, chunk))
+		return (false);
+	return (true);
+}
+
 int	bi_export(t_list *args, t_exec *config)
 {
-	char	*line;
+	char	*expanded;
+	size_t	count;
 
-	if (args->next == NULL)
-	{
-		if (!print_declare(config->env))
-			return (EXIT_KO);
-		return (EXIT_OK);
-	}
-	args = args->next;
+	count = 0;
 	while (args != NULL)
 	{
-		line = args->content;
-		if (!is_valid_identifier(line))
-			return (not_a_valid_identifier("export", line), EXIT_KO);
-		if (!export_variable(config, line))
+		expanded = expand_variable_export(args->content, config->env);
+		if (expanded == NULL)
 			return (EXIT_KO);
+		if (!process_single_chunk(config, expanded, &count))
+			return (free(expanded), EXIT_KO);
 		args = args->next;
+		free(expanded);
 	}
+	if (count == 1)
+		if (!print_declare(config->env))
+			return (EXIT_KO);
 	return (EXIT_OK);
 }
