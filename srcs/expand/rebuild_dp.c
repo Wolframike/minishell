@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 23:11:16 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/03 23:23:44 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/05 19:57:28 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	count_patlen(char *line)
 	len = 0;
 	while (*line)
 	{
-		if (*line != '\'' || *line != '\"')
+		if (*line != '\'' && *line != '\"')
 			len++;
 		line++;
 	}

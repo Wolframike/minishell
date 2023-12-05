@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 21:44:40 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/03 23:31:42 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/05 20:12:10 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static bool	**create_table(char *filename, char *pattern, bool *flg)
 static void	init_table(bool **table, char *filename, char *pattern)
 {
 	int		i;
+	int		pat_idx;
 	int		height;
 	int		width;
 	bool	*pat_exp;
@@ -65,43 +66,54 @@ static void	init_table(bool **table, char *filename, char *pattern)
 	i = 0;
 	while (++i <= height)
 		table[i][0] = false;
-	i = 0;
-	while (++i <= width)
+	i = 1;
+	pat_idx = -1;
+	while (++pat_idx >= 0 && i <= width)
 	{
-		if (i == 1 && pat_exp && pattern[i - 1] == '*')
-			table[0][i] = true;
+		if (pattern[pat_idx] == '\'' || pattern[pat_idx] == '\"')
+			continue ;
+		else if (i == 1 && pat_exp[i - 1] && pattern[pat_idx] == '*')
+			table[0][i++] = true;
 		else
-			table[0][i] = false;
+			table[0][i++] = false;
 	}
 	free(pat_exp);
 }
 
-static void	eval_dp(bool **dp, char *filename, char *pattern)
+static void	update_dp_row(bool **dp, char *filename, char *pattern, int i)
 {
-	int	i;
-	int	j;
-	int	height;
-	int	width;
+	int		j;
+	int		width;
+	int		pat_idx;
 	bool	*pat_exp;
 
-	height = ft_strlen(filename);
 	width = count_patlen(pattern);
 	pat_exp = expand_or_not(pattern);
 	if (pat_exp == NULL)
 		return ;
+	j = 0;
+	pat_idx = -1;
+	while (++pat_idx >= 0 && j <= width)
+	{
+		if (pattern[pat_idx] == '\'' || pattern[pat_idx] == '\"')
+			continue ;
+		if (pattern[pat_idx] == '*' && pat_exp[j])
+			dp[i + 1][j + 1] = dp[i][j] | dp[i][j + 1] | dp[i + 1][j];
+		else if (filename[i] == pattern[pat_idx] && dp[i][j])
+			dp[i + 1][j + 1] = true;
+		j++;
+	}
+}
+
+static void	eval_dp(bool **dp, char *filename, char *pattern)
+{
+	int		i;
+	int		height;
+
+	height = ft_strlen(filename);
 	i = -1;
 	while (++i < height)
-	{
-		j = -1;
-		while (++j < width)
-		{
-			if (pattern[j] == '*' && pat_exp[j])
-				dp[i + 1][j + 1] = dp[i][j] | dp[i][j + 1] | dp[i + 1][j];
-			else if (filename[i] == pattern[j] && dp[i][j])
-				dp[i + 1][j + 1] = true;
-		}
-	}
-	free(pat_exp);
+		update_dp_row(dp, filename, pattern, i);
 }
 
 bool	matched(char *filename, char *pattern, bool *flg)

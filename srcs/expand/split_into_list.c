@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_into_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:56:45 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 18:50:55 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 20:17:12 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,15 @@ static bool	handle_quote(t_list **res, char **line)
 	t_list	*new;
 
 	word_start = *line;
-	(*line)++;
-	while (**line && ft_strchr("\'\"", **line) == NULL)
+	if (*word_start == '\'' || *word_start == '\"')
+	{
 		(*line)++;
-	if (**line != '\0')
+		while (**line && **line != *word_start)
+			(*line)++;
+		if (**line == *word_start)
+			(*line)++;
+	}
+	while (**line && ft_strchr(" \n\t", **line) == NULL)
 		(*line)++;
 	chunk = ft_strndup(word_start, *line - word_start);
 	if (chunk == NULL)
@@ -36,33 +41,20 @@ static bool	handle_quote(t_list **res, char **line)
 
 static bool	split_line_to_list(char *line, t_list **res)
 {
-	t_list	*new;
-	char	*word_start;
-	char	*chunk;
+	// t_list	*new;
+	// char	*word_start;
+	// char	*chunk;
 
 	*res = NULL;
 	if (line == NULL)
 		return (true);
 	while (*line)
 	{
-		if ((*line == '\"' || *line == '\'') && !handle_quote(res, &line))
+		if (!handle_quote(res, &line))
 			return (false);
-		else if (*line == '\0')
+		if (*line == '\0')
 			break ;
-		else if (ft_strchr(" \n\t", *line) == NULL)
-		{
-			word_start = line;
-			while (*line && ft_strchr(" \n\t", *line) == NULL)
-				line++;
-			chunk = ft_strndup(word_start, line - word_start);
-			if (chunk == NULL)
-				return (ft_lstclear(res, free), false);
-			new = ft_lstnew(chunk);
-			if (new == NULL)
-				return (ft_lstclear(res, free), false);
-			ft_lstadd_back(res, new);
-		}
-		else
+		if (ft_strchr(" \n\t", *line) != NULL)
 			line++;
 	}
 	return (true);

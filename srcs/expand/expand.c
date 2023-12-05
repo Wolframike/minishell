@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:30:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 09:53:04 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 20:17:25 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ static void	update_flag(bool *is_single_quote, char **line)
 {
 	if (**line == '\'')
 		*is_single_quote = !(*is_single_quote);
-	// (*line)++;
 }
 
 char	*expand_variable_heredoc(char *line, t_env *env)
@@ -127,11 +126,6 @@ bool	expand_variable(char *line, t_env *env, char **expanded)
 	res = ft_strdup("");
 	if (res == NULL)
 		return (operation_failed("malloc"), NULL);
-	if (ft_strcmp(line, "\"\"") == 0 || ft_strcmp(line, "\'\'") == 0)
-	{
-		*expanded = res;
-		return (true);
-	}
 	is_single_quote = false;
 	while (*line)
 	{
