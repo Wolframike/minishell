@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 22:49:49 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/05 23:23:54 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static void	initialize(t_exec *config, t_state *data, char **envp)
 static void	terminate(t_exec *config)
 {
 	char	*exit_code;
-	int		fd;
 
 	ft_lstclear(&config->expanded, free);
 	exit_code = ft_itoa(config->exit_code);
@@ -69,11 +68,11 @@ static void	terminate(t_exec *config)
 		return ;
 	}
 	set_env(&config->env, "?", exit_code);
-	fd = dup(STDOUT_FILENO);
+	// int fd = dup(STDOUT_FILENO);
 	// dprintf(STDERR_FILENO, "===debug===\nfd: %d\n", fd);
 	// dprintf(STDERR_FILENO, "exit_code: %s\n===========\n", exit_code);
+	// close(fd);
 	free(exit_code);
-	close(fd);
 }
 
 static bool	parse_and_execue(t_state *data, char **line, t_exec *config)

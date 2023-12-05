@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 01:11:55 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 18:41:59 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 22:31:28 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,21 +67,18 @@ static bool	pipe_loop(t_ast_node *ast, t_exec *config, bool last)
 
 	if (pipe(fd) < 0)
 		return (operation_failed("pipe"), false);
-	if (last)
-	{
-		dup2(STDOUT_FILENO, fd[1]);
-	}
-	if (!set_redir(ast->redir, config->env))
-		return (close(fd[0]), close(fd[1]), true);
 	config->fork_count++;
 	pid = fork();
+	if (last)
+		dup2(STDOUT_FILENO, fd[1]);
 	if (pid < 0)
 		return (operation_failed("fork"), false);
 	if (pid == 0)
 	{
+		dup2(fd[0], STDIN_FILENO);
 		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
-		close(fd[0]);
+		if (!set_redir(ast->redir, config->env))
+			exit(EXIT_KO);
 		exec_in_pipeline(ast, config);
 	}
 	dup2(fd[0], STDIN_FILENO);
@@ -92,8 +89,10 @@ static bool	exec_pipeline_list(t_list *head, t_exec *config)
 {
 	t_ast_node	*ast;
 	int			in;
+	int			out;
 
 	in = dup(STDIN_FILENO);
+	out = dup(STDOUT_FILENO);
 	while (head != NULL)
 	{
 		ast = head->content;
@@ -102,7 +101,9 @@ static bool	exec_pipeline_list(t_list *head, t_exec *config)
 		head = head->next;
 	}
 	dup2(in, STDIN_FILENO);
+	dup2(out, STDOUT_FILENO);
 	close(in);
+	close(out);
 	return (head == NULL);
 }
 
