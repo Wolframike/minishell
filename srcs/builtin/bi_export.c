@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 19:11:52 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 20:54:04 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 21:34:43 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ static bool	export_variable(t_exec *config, char *line)
 		key = ft_strdup(line);
 		value = NULL;
 	}
-	dprintf(STDERR_FILENO, "key: %s\n", key);
 	if (key == NULL || (assign && (value == NULL)))
 		return (operation_failed("malloc"), false);
 	if (!is_valid_identifier(key))
@@ -83,17 +82,32 @@ static bool	export_variable(t_exec *config, char *line)
 
 static bool	process_single_chunk(t_exec *config, char *chunk, size_t *count)
 {
+	size_t	len;
+	char	*line;
+
 	(*count)++;
-	if (ft_strcmp(chunk, "export") == 0)
-		return (true);
-	if (!export_variable(config, chunk))
-		return (false);
+	while (*chunk != '\0')
+	{
+		len = 0;
+		while (chunk[len] != '\0' && chunk[len] != ' ')
+			len++;
+		line = ft_substr(chunk, 0, len);
+		if (line == NULL)
+			return (operation_failed("malloc"), false);
+		if (!export_variable(config, line))
+			return (free(line), false);
+		free(line);
+		chunk += len;
+		if (*chunk != '\0' && *chunk == ' ')
+			chunk++;
+	}
 	return (true);
 }
 
 int	bi_export(t_list *args, t_exec *config)
 {
 	char	*expanded;
+	char	*original;
 	size_t	count;
 
 	count = 0;
@@ -102,10 +116,13 @@ int	bi_export(t_list *args, t_exec *config)
 		expanded = expand_variable_export(args->content, config->env);
 		if (expanded == NULL)
 			return (EXIT_KO);
+		original = expanded;
+		if (count == 0 && ft_strncmp(expanded, "export", 6) == 0)
+			expanded += 6;
 		if (!process_single_chunk(config, expanded, &count))
-			return (free(expanded), EXIT_KO);
+			return (free(original), EXIT_KO);
 		args = args->next;
-		free(expanded);
+		free(original);
 	}
 	if (count == 1)
 		if (!print_declare(config->env))

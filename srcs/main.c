@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 18:56:14 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/05 22:32:17 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ static void	terminate(t_exec *config)
 	}
 	set_env(&config->env, "?", exit_code);
 	fd = dup(STDOUT_FILENO);
-	// dprintf(STDERR_FILENO, "===debug===\nfd: %d\n", fd);
-	// dprintf(STDERR_FILENO, "exit_code: %s\n===========\n", exit_code);
+	dprintf(STDERR_FILENO, "===debug===\nfd: %d\n", fd);
+	dprintf(STDERR_FILENO, "exit_code: %s\n===========\n", exit_code);
 	free(exit_code);
 	close(fd);
 }
