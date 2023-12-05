@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/01 21:35:13 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:13:44 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	initialize(&config, &data, envp);
+	printf("%s\n", expand_variable_export("$HOME=\"$PWD\"", data.env));
 	while (true)
 	{
 		set_idle_handler();
@@ -88,7 +89,6 @@ int	main(int argc, char **argv, char **envp)
 		g_signal = 0;
 		set_exec_handler(false);
 		node = parse(&data, line);
-		// print_node(node);
 		if (node == NULL)
 		{
 			set_env(&(data.env), "?", "1");

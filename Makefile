@@ -6,7 +6,7 @@
 #    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/12/02 18:14:50 by knishiok         ###   ########.fr        #
+#    Updated: 2023/12/03 23:23:16 by knishiok         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ PARSER = 	srcs/parser/parser.c \
 EXPAND =	srcs/expand/expand.c \
 			srcs/expand/split_into_list.c \
 			srcs/expand/judge_matched.c \
+			srcs/expand/rebuild_dp.c \
 			srcs/expand/expand_filename.c \
 
 SIGNAL =	srcs/signal/signal.c \
