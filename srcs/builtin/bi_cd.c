@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:18:54 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 15:36:42 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/06 17:25:24 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,5 @@ int	bi_cd(t_list *args, t_exec *config)
 		return (free(target_path), EXIT_KO);
 	if (args != NULL && ft_strcmp(args->content, "-") == 0)
 		ft_putendl_fd(config->cwd, STDOUT_FILENO);
-	return (EXIT_OK);
+	return (free(target_path), EXIT_OK);
 }

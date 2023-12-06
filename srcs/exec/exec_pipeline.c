@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 01:11:55 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 22:31:28 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/06 21:02:37 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ static void	exec_in_pipeline(t_ast_node *root, t_exec *config)
 	if (ft_strcmp(command, "pwd") == 0)
 		exit(bi_pwd(config));
 	if (ft_strcmp(command, "export") == 0)
-		exit(bi_export(root->command, config));
+		exit(bi_export(args, config));
 	if (ft_strcmp(command, "unset") == 0)
 		exit(bi_unset(args, config));
 	if (ft_strcmp(command, "env") == 0)
 		exit(bi_env(config));
 	if (ft_strcmp(command, "exit") == 0)
-		exit(bi_exit(args, true, config));
+		exit(bi_exit(args, false, config));
 	else
 		exec_non_bi_in_child_process(command, args, config);
 }
@@ -75,7 +75,6 @@ static bool	pipe_loop(t_ast_node *ast, t_exec *config, bool last)
 		return (operation_failed("fork"), false);
 	if (pid == 0)
 	{
-		dup2(fd[0], STDIN_FILENO);
 		dup2(fd[1], STDOUT_FILENO);
 		if (!set_redir(ast->redir, config->env))
 			exit(EXIT_KO);
@@ -107,23 +106,28 @@ static bool	exec_pipeline_list(t_list *head, t_exec *config)
 	return (head == NULL);
 }
 
-t_exit_code	exec_pipeline(t_ast_node *root, t_exec *config)
+void	exec_pipeline(t_ast_node *root, t_exec *config)
 {
 	t_list	*head;
 
 	if (root == NULL)
-		return (EXIT_OK);
+	{
+		config->exit_code = EXIT_OK;
+		return ;
+	}
 	head = NULL;
 	if (!create_pipeline_list(root, &head))
 	{
 		ft_lstclear(&head, NULL);
-		return (operation_failed("malloc"), EXIT_KO);
+		config->exit_code = EXIT_KO;
+		return (operation_failed("malloc"));
 	}
 	if (!exec_pipeline_list(head, config))
 	{
 		ft_lstclear(&head, NULL);
-		return (EXIT_KO);
+		config->exit_code = EXIT_KO;
+		return ;
 	}
 	ft_lstclear(&head, NULL);
-	return (pipeline_forks_destructor(config));
+	config->exit_code = pipeline_forks_destructor(config);
 }

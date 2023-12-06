@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:34:44 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 18:42:29 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/06 16:55:43 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ int			ft_execvp(const char *file, char *const argv[], char *const *envp);
 char		**t_list_to_array(const char *command, t_list *lst);
 
 //exec_pipeline.c
-t_exit_code	exec_pipeline(t_ast_node *root, t_exec *config);
+void		exec_pipeline(t_ast_node *root, t_exec *config);
 
 //set_redir.c
 bool		set_redir(t_list *redirects, t_env *env);
+void		only_redir(t_list *redirects, t_env *env, t_exec *config);
 
 //error.c
 void		command_not_found(const char *command);
