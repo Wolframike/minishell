@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 21:04:03 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/06 21:01:24 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/06 21:33:14 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ bool	get_filenames(t_list **res);
 bool	skip_line(char **line, char *res_old, char **res);
 
 char	*expand_variable_heredoc(char *line, t_env *env);
+char	*expand_variable_export(char *line, t_env *env);
 bool	expand_variable(char *line, t_env *env, char **expanded);
 bool	expand_variable_to_list(char *line, t_env *env, t_list **res);
 bool	expand_command_list(t_list *command, t_env *env, t_list **head);

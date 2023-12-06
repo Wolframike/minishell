@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 01:11:55 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 21:02:37 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/06 21:38:15 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	exec_in_pipeline(t_ast_node *root, t_exec *config)
 	if (ft_strcmp(command, "pwd") == 0)
 		exit(bi_pwd(config));
 	if (ft_strcmp(command, "export") == 0)
-		exit(bi_export(args, config));
+		exit(bi_export(root->command, config));
 	if (ft_strcmp(command, "unset") == 0)
 		exit(bi_unset(args, config));
 	if (ft_strcmp(command, "env") == 0)
@@ -75,13 +75,17 @@ static bool	pipe_loop(t_ast_node *ast, t_exec *config, bool last)
 		return (operation_failed("fork"), false);
 	if (pid == 0)
 	{
+		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
 		if (!set_redir(ast->redir, config->env))
 			exit(EXIT_KO);
 		exec_in_pipeline(ast, config);
 	}
+	close(fd[1]);
 	dup2(fd[0], STDIN_FILENO);
-	return (close(fd[0]), close(fd[1]), true);
+	close(fd[0]);
+	return (true);
 }
 
 static bool	exec_pipeline_list(t_list *head, t_exec *config)
