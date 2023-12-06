@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 19:11:52 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 21:03:10 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/06 21:50:45 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,32 +86,37 @@ static bool	export_variable(t_exec *config, char *line)
 	if (key == NULL || (assign && (value == NULL)))
 		return (operation_failed("malloc"), false);
 	if (!is_valid_identifier(key))
-		return (not_a_valid_identifier("export", key), false);
+		return (not_a_valid_identifier("export", key), free(key), false);
 	if (!set_env(&config->env, key, value))
-		return (operation_failed("malloc"), false);
+		return (operation_failed("malloc"), free(key), false);
 	return (free(key), true);
 }
 
 static bool	process_args(char **line, t_exec *config, bool *declare)
 {
 	char	*arg;
+	char	*expanded;
 
 	while (**line != '\0')
 	{
-		arg = NULL;
 		if (!get_single_arg(line, &arg))
 			return (false);
 		if (arg == NULL)
 			return (true);
-		if (ft_strcmp(arg, "export") == 0)
+		expanded = expand_variable_export(arg, config->env);
+		if (expanded == NULL)
+			return (operation_failed("malloc"), free(arg), false);
+		if ((ft_strcmp(expanded, "export") == 0) || (ft_strlen(expanded) == 0
+				&& ft_strcmp(arg, "\"\"") != 0 && ft_strcmp(arg, "\'\'") != 0))
 		{
+			free(expanded);
 			free(arg);
 			continue ;
 		}
 		*declare = false;
-		if (!export_variable(config, arg))
-			return (free(arg), false);
-		free(arg);
+		if (!export_variable(config, expanded))
+			return (free(expanded), false);
+		free(expanded);
 	}
 	return (true);
 }
@@ -131,7 +136,7 @@ int	bi_export(t_list *args, t_exec *config)
 		return (free(tmp), EXIT_KO);
 	if (declare)
 		if (!print_declare(config->env))
-			return (operation_failed("malloc"), free(line), EXIT_KO);
+			return (operation_failed("malloc"), free(tmp), EXIT_KO);
 	free(tmp);
 	return (EXIT_OK);
 }

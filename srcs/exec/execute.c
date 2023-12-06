@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:35:17 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 21:02:27 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/06 21:59:16 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static t_exit_code	exec_simple_command(t_ast_node *root, t_exec *config)
 	if (ft_strcmp(command, "pwd") == 0)
 		return (bi_pwd(config));
 	if (ft_strcmp(command, "export") == 0)
-		return (bi_export(args, config));
+		return (bi_export(root->command, config));
 	if (ft_strcmp(command, "unset") == 0)
 		return (bi_unset(args, config));
 	if (ft_strcmp(command, "env") == 0)
@@ -65,10 +65,18 @@ static	void	exec_simple_command_wrapper(t_ast_node *root, t_exec *config)
 	in = dup(STDIN_FILENO);
 	out = dup(STDOUT_FILENO);
 	if (!set_redir(root->redir, config->env))
-		return ((void)(config->exit_code = EXIT_KO));
-	if (root->command == NULL)
-		return ((void)(config->exit_code = EXIT_OK));
-	config->exit_code = exec_simple_command(root, config);
+	{
+		config->exit_code = EXIT_KO;
+		dup2(in, STDIN_FILENO);
+		dup2(out, STDOUT_FILENO);
+		close(in);
+		close(out);
+		return ;
+	}
+	if (root->command != NULL)
+		config->exit_code = exec_simple_command(root, config);
+	else
+		config->exit_code = EXIT_OK;
 	dup2(in, STDIN_FILENO);
 	dup2(out, STDOUT_FILENO);
 	close(in);
