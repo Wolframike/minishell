@@ -6,24 +6,43 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 21:08:48 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/05 21:10:19 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/06 18:12:16 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
 
+static bool	update_quote(char **line, char *quote)
+{
+	if (*quote == '\0')
+	{
+		*quote = **line;
+		(*line)++;
+		return (true);
+	}
+	else if (*quote == **line)
+	{
+		*quote = '\0';
+		(*line)++;
+		return (true);
+	}
+	return (false);
+}
+
 t_list	*remove_quotes(char *line)
 {
 	t_list	*res;
 	char	*res_str;
+	char	quote;
 
 	res_str = ft_strdup("");
 	if (res_str == NULL)
 		return (NULL);
+	quote = '\0';
 	while (*line)
 	{
-		if (*line == '\'' || *line == '\"')
-			line++;
+		if ((*line == '\'' || *line == '\"') && update_quote(&line, &quote))
+			continue ;
 		else
 		{
 			if (!skip_line(&line, res_str, &res_str))

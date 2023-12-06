@@ -6,7 +6,7 @@
 #    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/20 09:55:58 by knishiok          #+#    #+#              #
-#    Updated: 2023/12/02 17:44:03 by knishiok         ###   ########.fr        #
+#    Updated: 2023/12/06 15:19:26 by knishiok         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -108,11 +108,11 @@ objs/%.o: %.c
 
 clean:
 	@$(RM) -r objs
-	@printf "$(CHECK) $(CIAN)Successfuly delted object files!\n$(RESET)"
+	@printf "$(CHECK) $(CIAN)Successfuly deleted object files!\n$(RESET)"
 
 fclean: clean
 	@$(RM) $(NAME)
-	@printf "$(CHECK) $(CIAN)Successfuly delted $(NAME)!\n$(RESET)"
+	@printf "$(CHECK) $(CIAN)Successfuly deleted $(NAME)!\n$(RESET)"
 
 re: fclean all
 
