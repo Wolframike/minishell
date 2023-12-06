@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:30:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 21:13:28 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/06 19:20:09 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static bool	expand_variable_for_one(char **line, t_env *env,
 	if (value == NULL)
 		return (operation_failed("malloc"), free(res_old), false);
 	res = ft_strjoin(res_old, value);
+	free(res_old);
 	free(value);
 	if (res == NULL)
 		return (operation_failed("malloc"), free(res_old), false);
@@ -70,6 +71,12 @@ bool	skip_line(char **line, char *res_old, char **res)
 	int		i;
 	int		src_len;
 
+	if (res_old == NULL)
+	{
+		res_old = ft_strdup("");
+		if (res_old == NULL)
+			return (false);
+	}
 	src_len = ft_strlen(res_old);
 	*res = ft_calloc(src_len + 2, sizeof(char));
 	if (*res == NULL)
@@ -91,9 +98,7 @@ char	*expand_variable_heredoc(char *line, t_env *env)
 	char	*res;
 	char	*new;
 
-	res = ft_strdup("");
-	if (res == NULL)
-		return (operation_failed("malloc"), NULL);
+	res = NULL;
 	while (*line)
 	{
 		if (*line == '$')
@@ -112,29 +117,37 @@ char	*expand_variable_heredoc(char *line, t_env *env)
 	return (res);
 }
 
+static void	update_quote_expand(char *cur_quote, char c)
+{
+	if (*cur_quote == '\0')
+		*cur_quote = c;
+	else if (*cur_quote == c)
+		*cur_quote = '\0';
+}
+
 bool	expand_variable(char *line, t_env *env, char **expanded)
 {
 	char	*res;
-	bool	is_single_quote;
+	char	cur_quote;
 
-	res = ft_strdup("");
-	if (res == NULL)
-		return (operation_failed("malloc"), NULL);
-	is_single_quote = false;
+	res = NULL;
+	cur_quote = '\0';
 	while (*line)
 	{
-		if (*line == '$' && is_single_quote == false)
+		if (ft_strncmp(line, "$\'", 2) == 0 || ft_strncmp(line, "$\"", 2) == 0)
+			line++;
+		else if (*line == '$' && cur_quote != '\'')
 		{
 			if (!expand_variable_for_one(&line, env, res, expanded))
-				return (false);
+				return (free(res), false);
 			res = *expanded;
 		}
 		else
 		{
-			if (*line == '\'')
-				is_single_quote = !is_single_quote;
+			if (*line == '\'' || *line == '\"')
+				update_quote_expand(&cur_quote, *line);
 			if (!skip_line(&line, res, expanded))
-				return (false);
+				return (free(res), false);
 			res = *expanded;
 		}
 	}
