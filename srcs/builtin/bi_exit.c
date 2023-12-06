@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:38:14 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 17:24:25 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/06 22:48:17 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static bool	isoverflow(char *arg)
 
 int	bi_exit(t_list *args, bool parent, t_exec *config)
 {
-	set_term_config(NULL, 2);
 	if (parent)
 		ft_putstr_fd("exit\n", STDERR_FILENO);
 	if (args == NULL)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 19:23:02 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/06 22:49:14 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ static void	terminate(t_exec *config)
 	// dprintf(STDERR_FILENO, "===debug===\nfd: %d\n", fd);
 	// dprintf(STDERR_FILENO, "exit_code: %s\n===========\n", exit_code);
 	// close(fd);
+	g_signal = 0;
 	free(exit_code);
 }
 
@@ -79,7 +80,6 @@ static bool	parse_and_execue(t_state *data, char **line, t_exec *config)
 {
 	t_ast_node	*node;
 
-	g_signal = 0;
 	set_exec_handler(false);
 	node = parse(data, *line);
 	if (node == NULL)
@@ -87,6 +87,11 @@ static bool	parse_and_execue(t_state *data, char **line, t_exec *config)
 		set_env(&(data->env), "?", "258");
 		free(*line);
 		return (false);
+	}
+	if (g_signal == SIGINT)
+	{
+		set_env(&config->env, "?", "1");
+		config->exit_code = 1;
 	}
 	execute(node, config);
 	destroy_ast_node(node);

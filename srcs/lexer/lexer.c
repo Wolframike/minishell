@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 19:04:02 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/06 19:19:58 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/06 22:14:55 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static bool	parse_metacharacters(const char **line, t_token **token)
 	return (true);
 }
 
-static t_token	*parse_non_metacharacters(t_state *data, const char **line)
+static bool	parse_non_metacharacters(const char **line, t_token **token)
 {
 	const char	*head;
 	const char	*tmp;
@@ -68,44 +68,55 @@ static t_token	*parse_non_metacharacters(t_state *data, const char **line)
 			while (*tmp != '\0' && *tmp != quote)
 				tmp++;
 			if (!*tmp)
-			{
-				set_syntax_error(data);
-				return (NULL);
-			}
+				return (*token = NULL, true);
 		}
 		tmp++;
 	}
 	*line = tmp;
-	return (create_token(ft_substr(head, 0, tmp - head), TK_WORD));
+	*token = create_token(ft_substr(head, 0, tmp - head), TK_WORD);
+	if (*token == NULL)
+		return (false);
+	return (true);
+}
+
+static bool	process_character(t_token **t_head, char const **line
+								, t_token **cur)
+{
+	if (is_metacharacter(**line))
+	{
+		if (!parse_metacharacters(line, &((*cur)->next)))
+			return (destroy_token(t_head), operation_failed("malloc"), false);
+		if ((*cur)->next == NULL)
+			return (destroy_token(t_head),
+				operation_failed("syntax error"), false);
+		*cur = (*cur)->next;
+	}
+	else if (**line)
+	{
+		if (!parse_non_metacharacters(line, &((*cur)->next)))
+			return (destroy_token(t_head), operation_failed("malloc"), false);
+		if ((*cur)->next == NULL)
+			return (destroy_token(t_head),
+				operation_failed("syntax error"), false);
+		*cur = (*cur)->next;
+	}
+	return (true);
 }
 
 void	tokenize(t_state *data, const char *line)
 {
 	t_token	head;
 	t_token	*cur;
-	t_token	*t_head;
+	t_token	**t_head;
 
-	head.next = NULL;
 	cur = &head;
-	t_head = cur->next;
+	cur->next = NULL;
+	t_head = &(cur->next);
 	while (*line)
 	{
 		skip_spaces(&line);
-		if (is_metacharacter(*line))
-		{
-			if (!parse_metacharacters(&line, &(cur->next)))
-				return (set_allocation_error(data, head.next));
-			if (cur->next == NULL)
-				return (destroy_token(&t_head), set_syntax_error(data));
-			cur = cur->next;
-		}
-		else if (*line)
-		{
-			cur->next = parse_non_metacharacters(data, &line);
-			if (cur->next == NULL)
-				return (set_allocation_error(data, head.next));
-			cur = cur->next;
-		}
+		if (!process_character(t_head, &line, &cur))
+			break ;
 	}
 	data->token = head.next;
 }

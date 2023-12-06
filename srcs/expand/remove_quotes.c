@@ -6,11 +6,38 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 21:08:48 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/06 18:12:16 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/06 20:04:17 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
+
+bool	skip_line(char **line, char *res_old, char **res)
+{
+	int		i;
+	int		src_len;
+
+	if (res_old == NULL)
+	{
+		res_old = ft_strdup("");
+		if (res_old == NULL)
+			return (false);
+	}
+	src_len = ft_strlen(res_old);
+	*res = ft_calloc(src_len + 2, sizeof(char));
+	if (*res == NULL)
+	{
+		free(res_old);
+		return (operation_failed("malloc"), false);
+	}
+	i = -1;
+	while (++i < src_len)
+		(*res)[i] = res_old[i];
+	(*res)[src_len] = **line;
+	free(res_old);
+	(*line)++;
+	return (true);
+}
 
 static bool	update_quote(char **line, char *quote)
 {
