@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:30:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 19:20:09 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/06 20:04:11 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,33 +63,6 @@ static bool	expand_variable_for_one(char **line, t_env *env,
 	if (res == NULL)
 		return (operation_failed("malloc"), free(res_old), false);
 	*res_new = res;
-	return (true);
-}
-
-bool	skip_line(char **line, char *res_old, char **res)
-{
-	int		i;
-	int		src_len;
-
-	if (res_old == NULL)
-	{
-		res_old = ft_strdup("");
-		if (res_old == NULL)
-			return (false);
-	}
-	src_len = ft_strlen(res_old);
-	*res = ft_calloc(src_len + 2, sizeof(char));
-	if (*res == NULL)
-	{
-		free(res_old);
-		return (operation_failed("malloc"), false);
-	}
-	i = -1;
-	while (++i < src_len)
-		(*res)[i] = res_old[i];
-	(*res)[src_len] = **line;
-	free(res_old);
-	(*line)++;
 	return (true);
 }
 

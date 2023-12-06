@@ -6,7 +6,7 @@
 #    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/12/05 22:32:42 by knishiok         ###   ########.fr        #
+#    Updated: 2023/12/06 21:59:17 by knishiok         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,6 @@ EXECUTE =	srcs/exec/execute.c \
 			srcs/exec/set_redir.c \
 
 ERRORS =	srcs/error/general_errors.c \
-			srcs/error/lexer_errors.c \
 			srcs/error/bi_errors.c \
 			srcs/error/exec_errors.c \
 
