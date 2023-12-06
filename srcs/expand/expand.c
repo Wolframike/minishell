@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:30:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 18:30:00 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/06 19:20:09 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ bool	expand_variable(char *line, t_env *env, char **expanded)
 		else if (*line == '$' && cur_quote != '\'')
 		{
 			if (!expand_variable_for_one(&line, env, res, expanded))
-				return (free(res),false);
+				return (free(res), false);
 			res = *expanded;
 		}
 		else
