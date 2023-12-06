@@ -6,51 +6,66 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 19:11:52 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 21:34:43 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/06 21:03:10 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-static void	sort_envp(char **envp)
+static char	*join_all_args(t_list *args)
 {
-	size_t	i;
-	size_t	j;
+	char	*res;
 	char	*tmp;
 
-	i = 0;
-	while (envp[i] != NULL)
+	res = ft_strdup("");
+	if (res == NULL)
+		return (NULL);
+	while (args != NULL)
 	{
-		j = i + 1;
-		while (envp[j] != NULL)
+		tmp = res;
+		res = ft_strjoin(res, args->content);
+		free(tmp);
+		if (res == NULL)
+			return (NULL);
+		args = args->next;
+		if (args != NULL)
 		{
-			if (ft_strcmp(envp[i], envp[j]) > 0)
-			{
-				tmp = envp[i];
-				envp[i] = envp[j];
-				envp[j] = tmp;
-			}
-			j++;
+			tmp = res;
+			res = ft_strjoin(res, " ");
+			free(tmp);
+			if (res == NULL)
+				return (NULL);
+		}
+	}
+	return (res);
+}
+
+static bool	get_single_arg(char **line, char **arg)
+{
+	ssize_t	i;
+	bool	squote;
+	bool	dquote;
+
+	i = 0;
+	squote = false;
+	dquote = false;
+	while ((*line)[i] != '\0')
+	{
+		if ((*line)[i] == '\"')
+			dquote = !dquote;
+		if ((*line)[i] == '\'')
+			squote = !squote;
+		if ((*line)[i] == ' ' && !squote && !dquote)
+		{
+			*arg = ft_substr(*line, 0, i);
+			*line += i + 1;
+			return (*arg != NULL);
 		}
 		i++;
 	}
-}
-
-static bool	print_declare(t_env *env)
-{
-	char	**envp;
-
-	envp = env_to_declare(env);
-	if (envp == NULL)
-		return (operation_failed("malloc"), false);
-	sort_envp(envp);
-	while (*envp != NULL)
-	{
-		ft_putstr_fd("declare -x ", STDOUT_FILENO);
-		ft_putendl_fd(*envp, STDOUT_FILENO);
-		envp++;
-	}
-	return (true);
+	*arg = ft_strdup(*line);
+	*line += i;
+	return (*arg != NULL);
 }
 
 static bool	export_variable(t_exec *config, char *line)
@@ -61,71 +76,62 @@ static bool	export_variable(t_exec *config, char *line)
 
 	assign = ft_strchr(line, '=') != NULL;
 	if (assign)
-	{
 		key = ft_substr(line, 0, ft_strchr(line, '=') - line);
-		value = ft_strchr(line, '=') + 1;
-	}
 	else
-	{
 		key = ft_strdup(line);
+	if (assign)
+		value = ft_strchr(line, '=') + 1;
+	else
 		value = NULL;
-	}
 	if (key == NULL || (assign && (value == NULL)))
 		return (operation_failed("malloc"), false);
 	if (!is_valid_identifier(key))
 		return (not_a_valid_identifier("export", key), false);
 	if (!set_env(&config->env, key, value))
 		return (operation_failed("malloc"), false);
-	free(key);
-	return (true);
+	return (free(key), true);
 }
 
-static bool	process_single_chunk(t_exec *config, char *chunk, size_t *count)
+static bool	process_args(char **line, t_exec *config, bool *declare)
 {
-	size_t	len;
-	char	*line;
+	char	*arg;
 
-	(*count)++;
-	while (*chunk != '\0')
+	while (**line != '\0')
 	{
-		len = 0;
-		while (chunk[len] != '\0' && chunk[len] != ' ')
-			len++;
-		line = ft_substr(chunk, 0, len);
-		if (line == NULL)
-			return (operation_failed("malloc"), false);
-		if (!export_variable(config, line))
-			return (free(line), false);
-		free(line);
-		chunk += len;
-		if (*chunk != '\0' && *chunk == ' ')
-			chunk++;
+		arg = NULL;
+		if (!get_single_arg(line, &arg))
+			return (false);
+		if (arg == NULL)
+			return (true);
+		if (ft_strcmp(arg, "export") == 0)
+		{
+			free(arg);
+			continue ;
+		}
+		*declare = false;
+		if (!export_variable(config, arg))
+			return (free(arg), false);
+		free(arg);
 	}
 	return (true);
 }
 
 int	bi_export(t_list *args, t_exec *config)
 {
-	char	*expanded;
-	char	*original;
-	size_t	count;
+	char	*line;
+	char	*tmp;
+	bool	declare;
 
-	count = 0;
-	while (args != NULL)
-	{
-		expanded = expand_variable_export(args->content, config->env);
-		if (expanded == NULL)
-			return (EXIT_KO);
-		original = expanded;
-		if (count == 0 && ft_strncmp(expanded, "export", 6) == 0)
-			expanded += 6;
-		if (!process_single_chunk(config, expanded, &count))
-			return (free(original), EXIT_KO);
-		args = args->next;
-		free(original);
-	}
-	if (count == 1)
+	line = join_all_args(args);
+	if (line == NULL)
+		return (operation_failed("malloc"), EXIT_KO);
+	tmp = line;
+	declare = true;
+	if (!process_args(&line, config, &declare))
+		return (free(tmp), EXIT_KO);
+	if (declare)
 		if (!print_declare(config->env))
-			return (EXIT_KO);
+			return (operation_failed("malloc"), free(line), EXIT_KO);
+	free(tmp);
 	return (EXIT_OK);
 }

@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 20:55:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 15:33:08 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/06 17:33:57 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@ int	ft_execvp(const char *file, char *const argv[], char *const *envp)
 {
 	char	*full_path;
 
+	if (file[0] == '\0'
+		|| ft_strcmp(file, ".") == 0 || ft_strcmp(file, "..") == 0)
+		return (errno = ENOENT, -1);
 	if (ft_strchr(file, '/') == NULL)
 		full_path = get_full_path(file, envp);
 	else

@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:35:17 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 21:12:35 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/06 21:02:27 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static t_exit_code	exec_simple_command(t_ast_node *root, t_exec *config)
 	if (ft_strcmp(command, "pwd") == 0)
 		return (bi_pwd(config));
 	if (ft_strcmp(command, "export") == 0)
-		return (bi_export(root->command, config));
+		return (bi_export(args, config));
 	if (ft_strcmp(command, "unset") == 0)
 		return (bi_unset(args, config));
 	if (ft_strcmp(command, "env") == 0)
@@ -94,7 +94,9 @@ void	execute(t_ast_node *root, t_exec *config)
 {
 	if (root == NULL)
 		return ;
-	if (root->type == AST_CMD)
+	if (root->type == AST_CMD && root->command == NULL)
+		only_redir(root->redir, config->env, config);
+	else if (root->type == AST_CMD)
 		exec_simple_command_wrapper(root, config);
 	else if ((root->type == AST_AND) || (root->type == AST_OR))
 		exec_and_or(root, config);

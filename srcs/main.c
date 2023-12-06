@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 15:26:13 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/06 19:23:02 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static bool	parse_and_execue(t_state *data, char **line, t_exec *config)
 	node = parse(data, *line);
 	if (node == NULL)
 	{
-		set_env(&(data->env), "?", "1");
+		set_env(&(data->env), "?", "258");
 		free(*line);
 		return (false);
 	}

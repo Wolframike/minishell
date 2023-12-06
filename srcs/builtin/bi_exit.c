@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:38:14 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/01 16:28:25 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/06 17:24:25 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ static bool	isoverflow(char *arg)
 	long	prev;
 
 	excode = 0;
+	if (*arg == '-' || *arg == '+')
+		arg++;
 	while (*arg != '\0')
 	{
 		prev = excode;

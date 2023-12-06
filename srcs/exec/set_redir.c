@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 02:06:23 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 22:21:29 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/06 17:05:32 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,20 @@ bool	set_redir(t_list *redirects, t_env *env)
 		redirects = redirects->next;
 	}
 	return (status);
+}
+
+void	only_redir(t_list *redirects, t_env *env, t_exec *config)
+{
+	t_redir	*redir;
+	int		fd_tmp;
+
+	while (redirects != NULL)
+	{
+		redir = redirects->content;
+		if (!expand_and_check_ambiguous_redirect(&redir->filename, env)
+			|| !open_redir_file(redir->filename, redir->type, &fd_tmp))
+			config->exit_code = EXIT_KO;
+		close(fd_tmp);
+		redirects = redirects->next;
+	}
 }
