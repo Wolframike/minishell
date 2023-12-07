@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_into_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:56:45 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 22:05:45 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/07 18:10:31 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,16 @@ static bool	split_line_to_list(char *line, t_list **res)
 	return (true);
 }
 
-char	*expand_variable_export(char *line, t_env *env)
+bool	expand_variable_export(char *line, t_env *env, char **expanded)
 {
 	char	*str_quote;
-	char	*res;
 	char	*head;
 
 	if (!expand_variable(line, env, &str_quote))
 		return (NULL);
-	res = ft_strdup("");
-	if (res == NULL)
-		return (NULL);
+	*expanded = ft_strdup("");
+	if (*expanded == NULL)
+		return (false);
 	head = str_quote;
 	while (*str_quote)
 	{
@@ -47,12 +46,12 @@ char	*expand_variable_export(char *line, t_env *env)
 			str_quote++;
 		else
 		{
-			if (!skip_line(&str_quote, res, &res))
-				return (free(res), NULL);
+			if (!skip_line(&str_quote, *expanded, expanded))
+				return (free(*expanded), false);
 		}
 	}
 	free(head);
-	return (res);
+	return (true);
 }
 
 bool	expand_variable_to_list(char *line, t_env *env, t_list **res)
