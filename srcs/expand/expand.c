@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:30:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 20:04:11 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/07 23:01:36 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,9 @@ char	*expand_variable_heredoc(char *line, t_env *env)
 	return (res);
 }
 
-static void	update_quote_expand(char *cur_quote, char c)
+static void	update_quote_expand(char *cur_quote, char c, bool *quote_start)
 {
+	*quote_start = !(*quote_start);
 	if (*cur_quote == '\0')
 		*cur_quote = c;
 	else if (*cur_quote == c)
@@ -102,12 +103,14 @@ bool	expand_variable(char *line, t_env *env, char **expanded)
 {
 	char	*res;
 	char	cur_quote;
+	bool	quote_start;
 
 	res = NULL;
 	cur_quote = '\0';
+	quote_start = true;
 	while (*line)
 	{
-		if (ft_strncmp(line, "$\'", 2) == 0 || ft_strncmp(line, "$\"", 2) == 0)
+		if (quote_start && (ft_strncmp(line, "$\'", 2) == 0 || ft_strncmp(line, "$\"", 2) == 0))
 			line++;
 		else if (*line == '$' && cur_quote != '\'')
 		{
@@ -118,7 +121,7 @@ bool	expand_variable(char *line, t_env *env, char **expanded)
 		else
 		{
 			if (*line == '\'' || *line == '\"')
-				update_quote_expand(&cur_quote, *line);
+				update_quote_expand(&cur_quote, *line, &quote_start);
 			if (!skip_line(&line, res, expanded))
 				return (free(res), false);
 			res = *expanded;

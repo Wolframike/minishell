@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:57:35 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/06 21:56:43 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/07 23:01:21 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_state
 	struct termios	termconf;
 	t_token			*token;
 	t_env			*env;
+	bool			interrupted;
 }	t_state;
 
 typedef enum e_exit_code

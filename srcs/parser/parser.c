@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:42 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/06 17:42:19 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/07 23:02:32 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_ast_node	*parse(t_state *data, char *line)
 		return (NULL);
 	token = data->token;
 	res = parse_and_or(&token, data);
-	if (res == NULL)
+	if (res == NULL && !data->interrupted)
 		ft_putendl_fd("minishell: syntax error", STDERR_FILENO);
 	destroy_token(&(data->token));
 	if (token != NULL)

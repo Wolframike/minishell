@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 21:24:22 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/05 21:26:22 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/07 23:01:46 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,10 @@ static bool	merge_list(char *filename, bool flg, t_list **res)
 	return (true);
 }
 
-static t_list	*expand_filename(char *pattern)
+static bool	expand_filename(t_list **res, char *pattern)
 {
 	t_list	*head;
 	t_list	*dir_filenames;
-	t_list	*res;
 	bool	malloc_flg;
 
 	malloc_flg = false;
@@ -65,21 +64,26 @@ static t_list	*expand_filename(char *pattern)
 		return (dup_string_to_list(pattern));
 	if (malloc_flg)
 		return (NULL);
-	res = NULL;
+	*res = NULL;
 	if (!get_filenames(&dir_filenames))
-		return (dup_string_to_list(pattern));
+	{
+		*res = dup_string_to_list(pattern);
+		if (*res == NULL)
+			return (false);
+		return (true);
+	}
 	if (dir_filenames == NULL)
-		return (NULL);
+		return (false);
 	head = dir_filenames;
 	while (dir_filenames)
 	{
 		if (matched(dir_filenames->content, pattern, &malloc_flg))
-			if (!merge_list(dir_filenames->content, malloc_flg, &res))
-				return (NULL);
+			if (!merge_list(dir_filenames->content, malloc_flg, res))
+				return (false);
 		dir_filenames = dir_filenames->next;
 	}
 	ft_lstclear(&head, free);
-	return (res);
+	return (true);
 }
 
 t_list	*expand_wildcard(t_list **input)
@@ -94,9 +98,11 @@ t_list	*expand_wildcard(t_list **input)
 	head = *input;
 	while (*input)
 	{
+		new = NULL;
 		if (ft_strchr((*input)->content, '*') != NULL)
-			new = expand_filename((*input)->content);
-		else
+			if (!expand_filename(&new, (*input)->content))
+				return (ft_lstclear(&head, free), operation_failed("malloc"), NULL);
+		if (new == NULL)
 			new = dup_string_to_list((*input)->content);
 		if (new == NULL)
 			return (ft_lstclear(&res, free),

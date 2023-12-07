@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:58:43 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/07 18:01:49 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/07 23:03:31 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,5 @@ t_redir	*parse_heredoc(t_token **token, t_state *data)
 	free(delimiter);
 	if (g_signal == 0)
 		return (new_redir(REDIR_IN, filename));
-	else
-		return (NULL);
+	return (data->interrupted = true, NULL);
 }
