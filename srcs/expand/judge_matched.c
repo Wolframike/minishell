@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 21:44:40 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/05 21:34:44 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/07 19:19:29 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ static void	update_dp_row(bool **dp, char *filename, char *pattern, int i)
 			dp[i + 1][j + 1] = true;
 		j++;
 	}
+	free(pat_exp);
 }
 
 static void	eval_dp(bool **dp, char *filename, char *pattern)

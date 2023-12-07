@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd_suffix.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:14 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/06 17:47:17 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/07 19:26:37 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ t_ast_node	*parse_word_cmd_suffix(t_token **token, t_state *data)
 		if (!parse_cmd_suffix(token, res, data))
 		{
 			destroy_ast_node(res);
-			free(command);
 			return (NULL);
 		}
 	}
