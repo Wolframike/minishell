@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 19:04:02 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/06 22:14:55 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/07 17:55:16 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static bool	process_character(t_token **t_head, char const **line
 			return (destroy_token(t_head), operation_failed("malloc"), false);
 		if ((*cur)->next == NULL)
 			return (destroy_token(t_head),
-				operation_failed("syntax error"), false);
+				ft_putendl_fd("minishell: syntax error", STDERR_FILENO), false);
 		*cur = (*cur)->next;
 	}
 	else if (**line)
@@ -97,7 +97,7 @@ static bool	process_character(t_token **t_head, char const **line
 			return (destroy_token(t_head), operation_failed("malloc"), false);
 		if ((*cur)->next == NULL)
 			return (destroy_token(t_head),
-				operation_failed("syntax error"), false);
+				ft_putendl_fd("minishell: syntax error", STDERR_FILENO), false);
 		*cur = (*cur)->next;
 	}
 	return (true);

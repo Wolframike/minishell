@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:58:43 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/05 20:28:34 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/07 18:01:49 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,12 @@ static void	heredoc_child(char *delimiter, int fd, t_state *data)
 			break ;
 		}
 		expanded = expand_variable_heredoc(line, data->env);
-		free(line);
-		if (expanded == NULL)
+		if (expanded == NULL && ft_strlen(line) > 0)
+		{
+			free(line);
 			exit(EXIT_KO);
+		}
+		free(line);
 		ft_putendl_fd(expanded, fd);
 	}
 	close(fd);

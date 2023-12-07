@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
+#    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/12/06 21:59:17 by knishiok         ###   ########.fr        #
+#    Updated: 2023/12/07 18:50:40 by misargsy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ EXPAND =	srcs/expand/expand.c \
 SIGNAL =	srcs/signal/signal.c \
 			srcs/signal/signal_handler.c \
 
-TERMCONF =  srcs/termconf/init_term.c \
+TERMCONF =  srcs/termconf/term.c \
 
 BUILTIN =	srcs/builtin/bi_echo.c \
 			srcs/builtin/bi_cd.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 22:49:14 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/07 18:59:58 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ static void	initialize(t_exec *config, t_state *data, char **envp)
 	rl_instream = stdin;
 	rl_outstream = stderr;
 	init_config(config, envp);
-	set_term_config(data, 0);
 	data->env = config->env;
 }
 
@@ -111,7 +110,7 @@ int	main(int argc, char **argv, char **envp)
 	while (true)
 	{
 		set_idle_handler();
-		line = readline("\x1b[31mMINISHELL>>\x1b[0m ");
+		line = readline(PROMPT);
 		if (line == NULL)
 		{
 			ft_putendl_fd("exit", STDERR_FILENO);
@@ -122,8 +121,8 @@ int	main(int argc, char **argv, char **envp)
 		if (!parse_and_execue(&data, &line, &config))
 			continue ;
 		terminate(&config);
-		set_term_config(&data, 1);
+		set_term_config(&data);
 	}
-	set_term_config(&data, 1);
+	set_term_config(&data);
 	exit(config.exit_code);
 }

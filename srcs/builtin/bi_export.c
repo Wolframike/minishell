@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 19:11:52 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 21:50:45 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/07 18:12:40 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,7 @@ static bool	process_args(char **line, t_exec *config, bool *declare)
 			return (false);
 		if (arg == NULL)
 			return (true);
-		expanded = expand_variable_export(arg, config->env);
-		if (expanded == NULL)
+		if (!expand_variable_export(arg, config->env, &expanded))
 			return (operation_failed("malloc"), free(arg), false);
 		if ((ft_strcmp(expanded, "export") == 0) || (ft_strlen(expanded) == 0
 				&& ft_strcmp(arg, "\"\"") != 0 && ft_strcmp(arg, "\'\'") != 0))
@@ -113,6 +112,7 @@ static bool	process_args(char **line, t_exec *config, bool *declare)
 			free(arg);
 			continue ;
 		}
+		free(arg);
 		*declare = false;
 		if (!export_variable(config, expanded))
 			return (free(expanded), false);
