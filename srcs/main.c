@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/08 21:40:53 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:56:00 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static void	terminate(t_state *data, t_exec *config)
 {
 	char	*exit_code;
 
+	set_term_config(data);
 	ft_lstclear(&config->expanded, free);
 	exit_code = ft_itoa(config->exit_code);
 	if (exit_code == NULL)
@@ -67,33 +68,33 @@ static void	terminate(t_state *data, t_exec *config)
 		operation_failed("malloc");
 		return ;
 	}
-	set_env(&config->env, "?", exit_code);
+	if (!set_env(&config->env, "?", exit_code))
+		operation_failed("malloc");
 	g_signal = 0;
 	data->interrupted = false;
 	free(exit_code);
 }
 
-static bool	parse_and_execue(t_state *data, char **line, t_exec *config)
+static void	parse_and_execue(t_state *data, char *line, t_exec *config)
 {
 	t_ast_node	*node;
 
+	add_history(line);
 	set_exec_handler(false);
-	node = parse(data, *line);
+	node = parse(data, line);
+	free(line);
 	if (node == NULL)
 	{
-		set_env(&(data->env), "?", "258");
-		free(*line);
-		return (false);
+		if (!set_env(&config->env, "?", "258"))
+			operation_failed("malloc");
+		return ;
 	}
 	if (g_signal == SIGINT)
-	{
-		set_env(&config->env, "?", "1");
-		config->exit_code = 1;
-	}
+		if (!set_env(&config->env, "?", "1"))
+			operation_failed("malloc");
 	execute(node, config);
 	destroy_ast_node(node);
-	free(*line);
-	return (true);
+	terminate(data, config);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -114,12 +115,12 @@ int	main(int argc, char **argv, char **envp)
 			ft_putendl_fd("exit", STDERR_FILENO);
 			break ;
 		}
-		if (ft_strlen(line) > 0)
-			add_history(line);
-		if (!parse_and_execue(&data, &line, &config))
+		if (ft_strlen(line) == 0)
+		{
+			free(line);
 			continue ;
-		terminate(&data, &config);
-		set_term_config(&data);
+		}
+		parse_and_execue(&data, line, &config);
 	}
 	set_term_config(&data);
 	exit(config.exit_code);
