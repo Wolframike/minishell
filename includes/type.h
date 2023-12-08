@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:57:35 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/07 23:01:21 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/07 23:51:44 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ typedef enum e_token_type
 	TK_PIPE,
 	TK_WORD,
 	TK_EOL,
+	TK_LPAREN,
+	TK_RPAREN,
 }	t_token_type;
 
 typedef struct s_token
@@ -72,6 +74,7 @@ typedef enum e_ast_type
 	AST_AND,
 	AST_OR,
 	AST_PIPE,
+	AST_SUBSHELL,
 }	t_ast_type;
 
 typedef struct s_ast_node

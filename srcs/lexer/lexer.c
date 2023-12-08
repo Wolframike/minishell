@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 19:04:02 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/07 17:55:16 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/07 23:11:13 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ static t_token	*create_token(char *word, int type)
 
 static bool	parse_metacharacters(const char **line, t_token **token)
 {
-	const char	*ops[] = {"&&", "||", "|", "<<", ">>", "<", ">"};
+	const char	*ops[] = {"&&", "||", "|", "<<", ">>", "<", ">", "(", ")"};
 	const int	types[] = {TK_AND, TK_OR, TK_PIPE, TK_HEREDOC,
-		TK_APPEND, TK_IN, TK_OUT};
+		TK_APPEND, TK_IN, TK_OUT, TK_LPAREN, TK_RPAREN};
 	size_t		i;
 	char		*word;
 
