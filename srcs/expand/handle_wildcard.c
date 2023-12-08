@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 21:24:22 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/07 23:01:46 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/08 23:16:00 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,14 @@ static bool	merge_list(char *filename, bool flg, t_list **res)
 	return (true);
 }
 
+static bool	handle_no_match(t_list **res, char *pattern)
+{
+	*res = dup_string_to_list(pattern);
+	if (*res == NULL)
+		return (false);
+	return (true);
+}
+
 static bool	expand_filename(t_list **res, char *pattern)
 {
 	t_list	*head;
@@ -66,12 +74,7 @@ static bool	expand_filename(t_list **res, char *pattern)
 		return (NULL);
 	*res = NULL;
 	if (!get_filenames(&dir_filenames))
-	{
-		*res = dup_string_to_list(pattern);
-		if (*res == NULL)
-			return (false);
-		return (true);
-	}
+		return (handle_no_match(res, pattern));
 	if (dir_filenames == NULL)
 		return (false);
 	head = dir_filenames;
@@ -101,7 +104,8 @@ t_list	*expand_wildcard(t_list **input)
 		new = NULL;
 		if (ft_strchr((*input)->content, '*') != NULL)
 			if (!expand_filename(&new, (*input)->content))
-				return (ft_lstclear(&head, free), operation_failed("malloc"), NULL);
+				return (ft_lstclear(&head, free),
+					operation_failed("malloc"), NULL);
 		if (new == NULL)
 			new = dup_string_to_list((*input)->content);
 		if (new == NULL)

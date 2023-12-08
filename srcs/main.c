@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/08 22:56:00 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/08 23:05:44 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ static void	parse_and_execue(t_state *data, char *line, t_exec *config)
 	{
 		if (!set_env(&config->env, "?", "258"))
 			operation_failed("malloc");
+		g_signal = 0;
+		data->interrupted = false;
 		return ;
 	}
 	if (g_signal == SIGINT)

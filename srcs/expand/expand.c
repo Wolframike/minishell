@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:30:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/08 18:53:45 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/08 23:13:35 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,13 @@ bool	expand_variable(char *line, t_env *env, char **expanded)
 	cur_quote = '\0';
 	while (*line)
 	{
-		if (cur_quote == '\0' && (ft_strncmp(line, "$\'", 2) == 0 || ft_strncmp(line, "$\"", 2) == 0))
+		if (cur_quote == '\0' && (ft_strncmp(line, "$\'", 2) == 0
+				|| ft_strncmp(line, "$\"", 2) == 0))
 			line++;
 		else if (*line == '$' && cur_quote != '\'')
 		{
 			if (!expand_variable_for_one(&line, env, res, expanded))
 				return (free(res), false);
-			res = *expanded;
 		}
 		else
 		{
@@ -121,8 +121,8 @@ bool	expand_variable(char *line, t_env *env, char **expanded)
 				update_quote_expand(&cur_quote, *line);
 			if (!skip_line(&line, res, expanded))
 				return (free(res), false);
-			res = *expanded;
 		}
+		res = *expanded;
 	}
 	return (true);
 }
