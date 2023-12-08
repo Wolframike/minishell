@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:09 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/01 21:02:03 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:56:15 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ t_ast_node	*parse_and_or(t_token **token, t_state *data)
 {
 	t_ast_node	*res;
 
+	if (token == NULL || *token == NULL)
+		return (NULL);
 	if ((*token)->type == TK_AND || (*token)->type == TK_OR)
 		return (NULL);
 	res = parse_pipeline(token, data);

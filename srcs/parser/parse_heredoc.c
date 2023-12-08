@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:58:43 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/07 23:03:31 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/08 23:08:52 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,12 @@ static void	wait_heredoc(pid_t pid, t_state *data)
 	if (str_code == NULL)
 	{
 		operation_failed("malloc");
-		set_env(&(data->env), "?", "1");
+		if (!set_env(&(data->env), "?", "1"))
+			return (operation_failed("malloc"));
+		return ;
 	}
-	set_env(&(data->env), "?", str_code);
+	if (!set_env(&(data->env), "?", str_code))
+		operation_failed("malloc");
 	free(str_code);
 }
 
