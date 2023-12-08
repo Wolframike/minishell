@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 19:11:52 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/07 18:12:40 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/08 20:02:54 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ static bool	process_args(char **line, t_exec *config, bool *declare)
 			return (true);
 		if (!expand_variable_export(arg, config->env, &expanded))
 			return (operation_failed("malloc"), free(arg), false);
-		if ((ft_strcmp(expanded, "export") == 0) || (ft_strlen(expanded) == 0
-				&& ft_strcmp(arg, "\"\"") != 0 && ft_strcmp(arg, "\'\'") != 0))
+		if (ft_strlen(expanded) == 0
+			&& ft_strcmp(arg, "\"\"") != 0 && ft_strcmp(arg, "\'\'") != 0)
 		{
 			free(expanded);
 			free(arg);
@@ -132,11 +132,20 @@ int	bi_export(t_list *args, t_exec *config)
 		return (operation_failed("malloc"), EXIT_KO);
 	tmp = line;
 	declare = true;
-	if (!process_args(&line, config, &declare))
-		return (free(tmp), EXIT_KO);
-	if (declare)
+	if (ft_strlen(line) >= ft_strlen("export"))
+		line += ft_strlen("export");
+	else
+		*line = '\0';
+	if (*line == '\0')
+	{
 		if (!print_declare(config->env))
 			return (operation_failed("malloc"), free(tmp), EXIT_KO);
-	free(tmp);
-	return (EXIT_OK);
+		return (free(tmp), EXIT_OK);
+	}
+	line++;
+	if (!process_args(&line, config, &declare))
+		return (free(tmp), EXIT_KO);
+	if (declare && !print_declare(config->env))
+		return (operation_failed("malloc"), free(tmp), EXIT_KO);
+	return (free(tmp), EXIT_OK);
 }

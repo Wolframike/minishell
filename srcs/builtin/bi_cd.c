@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:18:54 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 17:25:24 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:46:45 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,6 @@ static void	general_error(const char *path)
 	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
-static char	*join_path(const char *path, const char *target)
-{
-	char	*new_path;
-	size_t	len;
-
-	if (path == NULL || target == NULL)
-		return (NULL);
-	len = ft_strlen(path) + ft_strlen(target) + 2;
-	new_path = malloc(sizeof(char) * len);
-	if (new_path == NULL)
-		return (NULL);
-	ft_strlcpy(new_path, path, len);
-	ft_strlcat(new_path, "/", len);
-	ft_strlcat(new_path, target, len);
-	return (new_path);
-}
-
 static char	*set_target_path(t_list *args, t_exec *config)
 {
 	char	*target_path;
@@ -54,7 +37,7 @@ static char	*set_target_path(t_list *args, t_exec *config)
 
 	if (args == NULL)
 	{
-		home = get_env(config->env, "HOME");
+			home = get_env(config->env, "HOME");
 		if (home == NULL)
 			return (not_set("HOME"), NULL);
 		target_path = ft_strdup(home);
@@ -67,12 +50,31 @@ static char	*set_target_path(t_list *args, t_exec *config)
 		target_path = ft_strdup(oldpwd);
 	}
 	else
-		target_path = join_path(config->cwd, args->content);
+		target_path = join_path_and_offset(config->cwd, args->content);
 	if (target_path == NULL && (args == NULL || !ft_strcmp(args->content, "-")))
 		return (operation_failed("malloc"), NULL);
 	if (target_path == NULL)
 		return (general_error(args->content), NULL);
 	return (target_path);
+}
+
+static void	print_error(const char *path, const char *cwd)
+{
+	if (errno == ENOENT && !is_dir(cwd))
+	{
+		error_retrieving_cd("cd");
+		return ;
+	}
+	ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+	ft_putstr_fd((char *)path, STDERR_FILENO);
+	if (errno == ENOTDIR)
+		ft_putstr_fd(": Not a directory\n", STDERR_FILENO);
+	if (errno == ENOENT)
+	{
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+	}
+	if (errno == EACCES)
+		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
 }
 
 int	bi_cd(t_list *args, t_exec *config)
@@ -87,9 +89,6 @@ int	bi_cd(t_list *args, t_exec *config)
 			if (config->cwd == NULL)
 				error_retrieving_cd("cd");
 		}
-		else
-			if (!is_dir(config->cwd))
-				error_retrieving_cd("cd");
 	}
 	if (args != NULL && ((char *)args->content)[0] == '/')
 		target_path = ft_strdup(args->content);
@@ -98,7 +97,8 @@ int	bi_cd(t_list *args, t_exec *config)
 	if (target_path == NULL)
 		return (EXIT_KO);
 	if (!move_to_path(target_path, config))
-		return (free(target_path), EXIT_KO);
+		return (print_error(target_path, config->cwd),
+			free(target_path), EXIT_KO);
 	if (args != NULL && ft_strcmp(args->content, "-") == 0)
 		ft_putendl_fd(config->cwd, STDOUT_FILENO);
 	return (free(target_path), EXIT_OK);

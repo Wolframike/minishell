@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_pipeline.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:32 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/07 23:45:01 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/08 20:52:50 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ t_ast_node	*parse_pipeline(t_token **token, t_state *data)
 	t_ast_node	*r_node;
 
 	if (consume_token(token, TK_LPAREN))
-		return (parse_subshell(token, data));
-	res = parse_simple_command(token, data);
+		res = parse_subshell(token, data);
+	else
+		res = parse_simple_command(token, data);
 	while (token != NULL && (res != NULL && res->type != TK_EOL)
 		&& consume_token(token, TK_PIPE))
 	{

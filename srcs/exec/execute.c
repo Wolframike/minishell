@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:35:17 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 21:59:16 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/08 20:53:29 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,9 @@ static t_exit_code	exec_simple_command(t_ast_node *root, t_exec *config)
 
 static	void	exec_simple_command_wrapper(t_ast_node *root, t_exec *config)
 {
-	int			in;
-	int			out;
+	const int	in = dup(STDIN_FILENO);
+	const int	out = dup(STDOUT_FILENO);
 
-	in = dup(STDIN_FILENO);
-	out = dup(STDOUT_FILENO);
 	if (!set_redir(root->redir, config->env))
 	{
 		config->exit_code = EXIT_KO;
@@ -83,31 +81,51 @@ static	void	exec_simple_command_wrapper(t_ast_node *root, t_exec *config)
 	close(out);
 }
 
-static void	exec_and_or(t_ast_node *root, t_exec *config)
+void	exec_subshell(t_ast_node *root, t_exec *config)
 {
+	const int	in = dup(STDIN_FILENO);
+	const int	out = dup(STDOUT_FILENO);
+
+	if (!set_redir(root->redir, config->env))
+	{
+		config->exit_code = EXIT_KO;
+		dup2(in, STDIN_FILENO);
+		dup2(out, STDOUT_FILENO);
+		close(in);
+		close(out);
+		return ;
+	}
 	execute(root->left, config);
-	if (root->type == AST_AND)
-	{
-		if (config->exit_code == EXIT_OK)
-			execute(root->right, config);
-	}
-	if (root->type == AST_OR)
-	{
-		if (config->exit_code != EXIT_OK)
-			execute(root->right, config);
-	}
+	dup2(in, STDIN_FILENO);
+	dup2(out, STDOUT_FILENO);
+	close(in);
+	close(out);
 }
 
 void	execute(t_ast_node *root, t_exec *config)
 {
 	if (root == NULL)
 		return ;
-	if (root->type == AST_CMD && root->command == NULL)
+	if (root->type == AST_SUBSHELL)
+		exec_subshell(root, config);
+	else if (root->type == AST_CMD && root->command == NULL)
 		only_redir(root->redir, config->env, config);
 	else if (root->type == AST_CMD)
 		exec_simple_command_wrapper(root, config);
 	else if ((root->type == AST_AND) || (root->type == AST_OR))
-		exec_and_or(root, config);
+	{
+		execute(root->left, config);
+		if (root->type == AST_AND)
+		{
+			if (config->exit_code == EXIT_OK)
+				execute(root->right, config);
+		}
+		if (root->type == AST_OR)
+		{
+			if (config->exit_code != EXIT_OK)
+				execute(root->right, config);
+		}
+	}
 	else if (root->type == AST_PIPE)
 		exec_pipeline(root, config);
 }
