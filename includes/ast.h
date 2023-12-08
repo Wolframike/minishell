@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:10:39 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/01 19:08:15 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/07 23:53:10 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_ast_node	*new_ast_node(t_ast_type type,
 t_redir		*new_redir(t_redir_type type, char *filename);
 
 t_ast_node	*parse_and_or(t_token **token, t_state *data);
+t_ast_node	*parse_subshell(t_token **token, t_state *data);
 t_ast_node	*parse_pipeline(t_token **token, t_state *data);
 t_ast_node	*parse_simple_command(t_token **token, t_state *data);
 bool		parse_cmd_suffix(t_token **token, t_ast_node *node, t_state *data);

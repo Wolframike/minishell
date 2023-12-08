@@ -6,7 +6,7 @@
 #    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/12/07 19:21:37 by knishiok         ###   ########.fr        #
+#    Updated: 2023/12/07 23:49:01 by knishiok         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ AST = 		srcs/ast/create_node.c \
 PARSER = 	srcs/parser/parser.c \
 			srcs/parser/parse_and_or.c \
 			srcs/parser/parse_simple_command.c \
+			srcs/parser/parse_subshell.c \
 			srcs/parser/parse_io_file.c \
 			srcs/parser/parse_heredoc.c \
 			srcs/parser/parse_pipeline.c \

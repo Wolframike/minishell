@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/07 19:28:59 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:00:33 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,10 @@ static void	initialize(t_exec *config, t_state *data, char **envp)
 	rl_outstream = stderr;
 	init_config(config, envp);
 	data->env = config->env;
+	data->interrupted = false;
 }
 
-static void	terminate(t_exec *config)
+static void	terminate(t_state *data, t_exec *config)
 {
 	char	*exit_code;
 
@@ -67,11 +68,8 @@ static void	terminate(t_exec *config)
 		return ;
 	}
 	set_env(&config->env, "?", exit_code);
-	// int fd = dup(STDOUT_FILENO);
-	// dprintf(STDERR_FILENO, "===debug===\nfd: %d\n", fd);
-	// dprintf(STDERR_FILENO, "exit_code: %s\n===========\n", exit_code);
-	// close(fd);
 	g_signal = 0;
+	data->interrupted = false;
 	free(exit_code);
 }
 
@@ -120,7 +118,7 @@ int	main(int argc, char **argv, char **envp)
 			add_history(line);
 		if (!parse_and_execue(&data, &line, &config))
 			continue ;
-		terminate(&config);
+		terminate(&data, &config);
 		set_term_config(&data);
 	}
 	set_term_config(&data);
