@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:34:44 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 16:55:43 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/08 20:59:25 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ typedef enum e_exit_code	t_exit_code;
 int			ft_execvp(const char *file, char *const argv[], char *const *envp);
 char		**t_list_to_array(const char *command, t_list *lst);
 
+//exec_single_pipe.c
+bool		exec_pipeline_list(t_list *head, t_exec *config);
+
 //exec_pipeline.c
 void		exec_pipeline(t_ast_node *root, t_exec *config);
 
@@ -50,6 +53,7 @@ void		operation_failed(const char *operation);
 t_exit_code	execvp_failed(const char *command);
 
 //execute.c
+void		exec_subshell(t_ast_node *root, t_exec *config);
 void		execute(t_ast_node *root, t_exec *config);
 
 //exec_util.c

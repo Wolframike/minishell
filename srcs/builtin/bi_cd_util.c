@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 23:16:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 14:26:46 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:47:20 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,7 @@ bool	move_to_path(const char *target_path, t_exec *config)
 	if (filename_check(target_path))
 		return (false);
 	if (!is_dir(target_path))
-	{
-		ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
-		ft_putstr_fd((char *)target_path, STDERR_FILENO);
-		if (errno == ENOTDIR)
-			ft_putstr_fd(": Not a directory\n", STDERR_FILENO);
-		if (errno == ENOENT)
-			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-		if (errno == EACCES)
-			ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
 		return (false);
-	}
 	if (config->cwd != NULL)
 	{
 		oldpwd = ft_strdup(config->cwd);
@@ -82,6 +72,63 @@ bool	move_to_path(const char *target_path, t_exec *config)
 			return (operation_failed("malloc"), false);
 	}
 	if (chdir(target_path) < 0)
-		return (free(oldpwd), operation_failed("chdir"), false);
+		return (free(oldpwd), false);
 	return (update_data(oldpwd, config));
+}
+
+static bool	move_single_layer(char **goal, const char *layer)
+{
+	char	*tmp;
+
+	if (ft_strcmp(layer, "..") == 0)
+	{
+		tmp = ft_strrchr(*goal, '/');
+		if (tmp == NULL)
+			*goal[0] = '\0';
+		else
+			*tmp = '\0';
+	}
+	else if (ft_strcmp(layer, ".") == 0)
+		;
+	else
+	{
+		tmp = *goal;
+		*goal = ft_strjoin(*goal, "/");
+		free(tmp);
+		if (*goal == NULL)
+			return (false);
+		tmp = *goal;
+		*goal = ft_strjoin(*goal, layer);
+		free(tmp);
+	}
+	return (true);
+}
+
+char	*join_path_and_offset(const char *cwd, const char *target)
+{
+	char	*goal;
+	char	*layer;
+	size_t	len;
+
+	goal = ft_strdup(cwd);
+	if (goal == NULL)
+		return (NULL);
+	while (*target != '\0')
+	{
+		len = 0;
+		while (target[len] != '\0' && target[len] != '/')
+			len++;
+		layer = ft_substr(target, 0, len);
+		if (layer == NULL)
+			return (free(goal), NULL);
+		if (!move_single_layer(&goal, layer))
+			return (free(layer), free(goal), NULL);
+		free(layer);
+		if (goal == NULL)
+			return (NULL);
+		if (target[len] == '\0')
+			break ;
+		target += len + 1;
+	}
+	return (goal);
 }

@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 01:28:00 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/01 19:15:03 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/07 22:36:02 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_exit_code	execvp_failed(const char *command)
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd((char *)command, STDERR_FILENO);
 		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-		return (EXIT_KO);
+		return (EXIT_NOENT);
 	}
 	else if (errno == ENOENT)
 	{

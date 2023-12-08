@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 12:15:01 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 18:09:41 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/07 22:39:59 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,12 @@ t_exit_code	pipeline_forks_destructor(t_exec *config)
 		if (wait(&status) < 0)
 			wait(&status);
 		if (WIFSIGNALED(status))
-			config->exit_code = WTERMSIG(status) + 128;
+		{
+			if (WTERMSIG(status) == SIGPIPE)
+				config->exit_code = 127;
+			else
+				config->exit_code = WTERMSIG(status) + 128;
+		}
 		if (WIFEXITED(status))
 			config->exit_code = WEXITSTATUS(status);
 		status = 0;

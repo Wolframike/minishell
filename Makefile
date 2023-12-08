@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+         #
+#    By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:34:48 by misargsy          #+#    #+#              #
-#    Updated: 2023/12/07 23:49:01 by knishiok         ###   ########.fr        #
+#    Updated: 2023/12/08 20:57:41 by misargsy         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,6 +56,7 @@ BUILTIN =	srcs/builtin/bi_echo.c \
 EXECUTE =	srcs/exec/execute.c \
 			srcs/exec/exec_util.c \
 			srcs/exec/exec_pipeline.c \
+			srcs/exec/exec_single_pipe.c \
 			srcs/exec/ft_execvp.c \
 			srcs/exec/set_redir.c \
 
@@ -76,8 +77,9 @@ LIBFT = libft.a
 
 OBJS = $(SRCS:.c=.o)
 
-CHECK		= \033[32m[✔]\033[0m
+CHECK		= \033[35m[✔]\033[0m
 BLUE		= \033[1;34m
+GREEN		= \033[1;32m
 RESET		= \033[0m
 
 SANITIZE = -fsanitize=address
@@ -97,8 +99,9 @@ valgrind: $(NAME)
 	@grep "definitely lost" valgrind.logs
 
 $(NAME): $(OBJS) $(LIBFT)
-	@printf "$(BLUE)Compiling minishell... $(RESET)"
-	cc $(FLAGS) $(RLFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	@printf "$(BLUE)Compiling minishell... $(RESET)\n"
+	@cc $(FLAGS) $(RLFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	@printf "$(CHECK) $(GREEN)$(NAME) successfuly complied!$(RESET)\n"
 	@clear
 
 $(LIBFT):
