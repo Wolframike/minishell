@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/08 18:54:28 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:00:33 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,62 +73,6 @@ static void	terminate(t_state *data, t_exec *config)
 	free(exit_code);
 }
 
-void	print_command_list(t_list *list)
-{
-	if (list == NULL)
-	{
-		puts("(null)");
-		puts("==========================");
-		return ;
-	}
-	printf("%s->", list->content);
-	print_command_list(list->next);
-}
-
-void	print_redir_list(t_list *list)
-{
-	t_redir	*redir;
-
-	if (list == NULL || list->content == NULL)
-	{
-		puts("(null)");
-		puts("==========================");
-		return ;
-	}
-	redir = (t_redir *)list->content;
-	printf("Redirection type: %d\n", redir->type);
-	if (redir->filename == NULL)
-		return ;
-	printf("Redirection filename: %s\n", redir->filename);
-	print_redir_list(list->next);
-}
-
-void	print_node(t_ast_node *node)
-{
-	if (node == NULL)
-	{
-		printf("(null)\n");
-		puts("==========================");
-		return ;
-	}
-	printf("ast node type: %d\n", node->type);
-	if (node->command != NULL)
-	{
-		printf("Command list: ");
-		print_command_list(node->command);
-	}
-	if (node->redir != NULL)
-	{
-		printf("Redirection list: ");
-		print_redir_list(node->redir);
-	}
-	puts("==========================");
-	printf("Left node: \n");
-	print_node(node->left);
-	printf("Right node\n");
-	print_node(node->right);
-}
-
 static bool	parse_and_execue(t_state *data, char **line, t_exec *config)
 {
 	t_ast_node	*node;
@@ -141,7 +85,6 @@ static bool	parse_and_execue(t_state *data, char **line, t_exec *config)
 		free(*line);
 		return (false);
 	}
-	print_node(node);
 	if (g_signal == SIGINT)
 	{
 		set_env(&config->env, "?", "1");
