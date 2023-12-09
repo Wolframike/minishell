@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 20:18:54 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/08 19:46:45 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/09 19:14:55 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	bi_cd(t_list *args, t_exec *config)
 		{
 			config->cwd = getcwd(NULL, 0);
 			if (config->cwd == NULL)
-				error_retrieving_cd("cd");
+				return (error_retrieving_cd("cd"), EXIT_OK);
 		}
 	}
 	if (args != NULL && ((char *)args->content)[0] == '/')
