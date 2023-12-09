@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 12:15:01 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/07 22:39:59 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/09 18:30:53 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,16 @@ t_exit_code	single_fork_destructor(pid_t pid, t_exec *config)
 
 t_exit_code	pipeline_forks_destructor(t_exec *config)
 {
-	int	status;
+	int		status;
+	pid_t	pid;
+	size_t	i;
 
+	i = 0;
 	while (config->fork_count > 0)
 	{
-		if (wait(&status) < 0)
-			wait(&status);
+		pid = config->pids[i++];
+		if (waitpid(pid, &status, 0) < 0)
+			waitpid(pid, &status, 0);
 		if (WIFSIGNALED(status))
 		{
 			if (WTERMSIG(status) == SIGPIPE)
@@ -80,6 +84,7 @@ t_exit_code	pipeline_forks_destructor(t_exec *config)
 		status = 0;
 		config->fork_count--;
 	}
-	config->fork_count = 0;
+	free(config->pids);
+	config->pids = NULL;
 	return (config->exit_code);
 }

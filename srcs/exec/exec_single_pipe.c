@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 20:56:52 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/08 20:58:56 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/09 18:24:13 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static bool	pipe_loop(t_ast_node *ast, t_exec *config, bool last)
 
 	if (pipe(fd) < 0)
 		return (operation_failed("pipe"), false);
-	config->fork_count++;
 	pid = fork();
 	if (last)
 		dup2(STDOUT_FILENO, fd[1]);
@@ -72,6 +71,8 @@ static bool	pipe_loop(t_ast_node *ast, t_exec *config, bool last)
 			exit(EXIT_KO);
 		exec_in_pipeline(ast, config);
 	}
+	config->pids[config->fork_count] = pid;
+	config->fork_count++;
 	close(fd[1]);
 	dup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
