@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 23:16:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/08 19:47:20 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/09 20:06:02 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ static bool	update_data(char *oldpwd, t_exec *config)
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 		return (operation_failed("getcwd"), false);
-	if (set_env(&config->env, "PWD", cwd) == false)
+	if (!set_env(&config->env, "PWD", cwd))
 		return (free(cwd), operation_failed("malloc"), false);
 	free(config->cwd);
 	config->cwd = cwd;
-	if (set_env(&config->env, "OLDPWD", oldpwd) == false)
-		return (operation_failed("malloc"), false);
+	if (!set_env(&config->env, "OLDPWD", oldpwd))
+		return (operation_failed("malloc"), free(oldpwd), false);
 	free(oldpwd);
 	return (true);
 }
@@ -65,6 +65,7 @@ bool	move_to_path(const char *target_path, t_exec *config)
 		return (false);
 	if (!is_dir(target_path))
 		return (false);
+	oldpwd = NULL;
 	if (config->cwd != NULL)
 	{
 		oldpwd = ft_strdup(config->cwd);
