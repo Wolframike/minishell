@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_into_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:56:45 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/09 21:21:47 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/09 21:28:58 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,28 +29,17 @@ static bool	split_line_to_list(char *line, t_list **res)
 	return (true);
 }
 
-bool	expand_variable_export(char *line, t_env *env, char **expanded)
+bool	expand_variable_export(char *line, t_env *env, t_list **res)
 {
-	char	*str_quote;
-	char	*head;
+	char	*expanded;
 
-	if (!expand_variable(line, env, &str_quote))
-		return (NULL);
-	*expanded = ft_strdup("");
-	if (*expanded == NULL)
+	if (!expand_variable(line, env, &expanded))
 		return (false);
-	head = str_quote;
-	while (*str_quote)
-	{
-		if (*str_quote == '\'' || *str_quote == '\"')
-			str_quote++;
-		else
-		{
-			if (!skip_line(&str_quote, *expanded, expanded))
-				return (free(*expanded), false);
-		}
-	}
-	free(head);
+	if (!split_line_to_list(expanded, res))
+		return (free(expanded), false);
+	free(expanded);
+	if (!remove_quotes_list(res))
+		return (ft_lstclear(res, free), false);
 	return (true);
 }
 
