@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:19:20 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 21:09:56 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/09 20:22:42 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static void	sort_envp(char **envp)
 	}
 }
 
-void	print_env_with_quotes(char *str)
+static void	print_env_with_quotes(char *str)
 {
 	size_t	i;
 

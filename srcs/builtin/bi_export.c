@@ -6,67 +6,11 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 19:11:52 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/08 20:02:54 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/09 21:45:22 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
-
-static char	*join_all_args(t_list *args)
-{
-	char	*res;
-	char	*tmp;
-
-	res = ft_strdup("");
-	if (res == NULL)
-		return (NULL);
-	while (args != NULL)
-	{
-		tmp = res;
-		res = ft_strjoin(res, args->content);
-		free(tmp);
-		if (res == NULL)
-			return (NULL);
-		args = args->next;
-		if (args != NULL)
-		{
-			tmp = res;
-			res = ft_strjoin(res, " ");
-			free(tmp);
-			if (res == NULL)
-				return (NULL);
-		}
-	}
-	return (res);
-}
-
-static bool	get_single_arg(char **line, char **arg)
-{
-	ssize_t	i;
-	bool	squote;
-	bool	dquote;
-
-	i = 0;
-	squote = false;
-	dquote = false;
-	while ((*line)[i] != '\0')
-	{
-		if ((*line)[i] == '\"')
-			dquote = !dquote;
-		if ((*line)[i] == '\'')
-			squote = !squote;
-		if ((*line)[i] == ' ' && !squote && !dquote)
-		{
-			*arg = ft_substr(*line, 0, i);
-			*line += i + 1;
-			return (*arg != NULL);
-		}
-		i++;
-	}
-	*arg = ft_strdup(*line);
-	*line += i;
-	return (*arg != NULL);
-}
 
 static bool	export_variable(t_exec *config, char *line)
 {
@@ -92,60 +36,45 @@ static bool	export_variable(t_exec *config, char *line)
 	return (free(key), true);
 }
 
-static bool	process_args(char **line, t_exec *config, bool *declare)
+static bool	expand_command_list_export(t_list *command,
+	t_env *env, t_list **head)
 {
-	char	*arg;
-	char	*expanded;
+	t_list	*new;
+	t_list	*orig;
 
-	while (**line != '\0')
+	orig = command;
+	*head = NULL;
+	while (command != NULL)
 	{
-		if (!get_single_arg(line, &arg))
-			return (false);
-		if (arg == NULL)
-			return (true);
-		if (!expand_variable_export(arg, config->env, &expanded))
-			return (operation_failed("malloc"), free(arg), false);
-		if (ft_strlen(expanded) == 0
-			&& ft_strcmp(arg, "\"\"") != 0 && ft_strcmp(arg, "\'\'") != 0)
-		{
-			free(expanded);
-			free(arg);
-			continue ;
-		}
-		free(arg);
-		*declare = false;
-		if (!export_variable(config, expanded))
-			return (free(expanded), false);
-		free(expanded);
+		if (!expand_variable_to_list(command->content, env, &new))
+			return (ft_lstclear(&orig, free), false);
+		ft_lstadd_back(head, new);
+		command = command->next;
 	}
 	return (true);
 }
 
 int	bi_export(t_list *args, t_exec *config)
 {
-	char	*line;
-	char	*tmp;
-	bool	declare;
+	t_list	*head;
+	t_list	*orig;
 
-	line = join_all_args(args);
-	if (line == NULL)
-		return (operation_failed("malloc"), EXIT_KO);
-	tmp = line;
-	declare = true;
-	if (ft_strlen(line) >= ft_strlen("export"))
-		line += ft_strlen("export");
-	else
-		*line = '\0';
-	if (*line == '\0')
+	if (!expand_command_list_export(args, config->env, &head))
+		return (EXIT_KO);
+	orig = head;
+	head = head->next;
+	if (head == NULL)
 	{
+		ft_lstclear(&orig, free);
 		if (!print_declare(config->env))
-			return (operation_failed("malloc"), free(tmp), EXIT_KO);
-		return (free(tmp), EXIT_OK);
+			return (operation_failed("malloc"), EXIT_KO);
+		return (EXIT_OK);
 	}
-	line++;
-	if (!process_args(&line, config, &declare))
-		return (free(tmp), EXIT_KO);
-	if (declare && !print_declare(config->env))
-		return (operation_failed("malloc"), free(tmp), EXIT_KO);
-	return (free(tmp), EXIT_OK);
+	while (head != NULL)
+	{
+		export_variable(config, head->content);
+		head = head->next;
+	}
+	ft_lstclear(&orig, free);
+	return (EXIT_OK);
 }
