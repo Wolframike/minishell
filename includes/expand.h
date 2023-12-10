@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 21:04:03 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/09 21:29:11 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/10 23:10:12 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ bool	get_filenames(t_list **res);
 bool	skip_line(char **line, char *res_old, char **res);
 
 char	*expand_variable_heredoc(char *line, t_env *env);
+bool	expand_variable_export(char *line, t_env *env, t_list **res);
 bool	expand_variable_export(char *line, t_env *env, t_list **res);
 bool	expand_variable(char *line, t_env *env, char **expanded);
 bool	expand_variable_to_list(char *line, t_env *env, t_list **res);

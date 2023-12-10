@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   split_into_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:56:45 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/09 21:28:58 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/10 23:11:30 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "expand.h"
 
