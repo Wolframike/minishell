@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:35:17 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/09 21:09:54 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/11 06:04:04 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ void	exec_subshell(t_ast_node *root, t_exec *config)
 
 void	execute(t_ast_node *root, t_exec *config)
 {
+	char	*exit_code;
+
 	if (root == NULL)
 		return ;
 	if (root->type == AST_SUBSHELL)
@@ -115,17 +117,15 @@ void	execute(t_ast_node *root, t_exec *config)
 	else if ((root->type == AST_AND) || (root->type == AST_OR))
 	{
 		execute(root->left, config);
-		if (root->type == AST_AND)
-		{
-			if (config->exit_code == EXIT_OK)
-				execute(root->right, config);
-		}
-		if (root->type == AST_OR)
-		{
-			if (config->exit_code != EXIT_OK)
-				execute(root->right, config);
-		}
+		if (root->type == AST_AND && config->exit_code == EXIT_OK)
+			execute(root->right, config);
+		if (root->type == AST_OR && config->exit_code != EXIT_OK)
+			execute(root->right, config);
 	}
 	else if (root->type == AST_PIPE)
 		exec_pipeline(root, config);
+	exit_code = ft_itoa(config->exit_code);
+	if (exit_code == NULL || !set_env(&config->env, "?", exit_code))
+		operation_failed("malloc");
+	free(exit_code);
 }

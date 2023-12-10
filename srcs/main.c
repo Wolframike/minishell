@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/11 00:46:07 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/11 06:01:42 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,10 @@ static void	initialize(t_exec *config, t_state *data, char **envp)
 
 static void	terminate(t_state *data, t_exec *config)
 {
-	char	*exit_code;
-
 	set_term_config(data);
 	ft_lstclear(&config->expanded, free);
-	exit_code = ft_itoa(config->exit_code);
-	if (exit_code == NULL)
-	{
-		operation_failed("malloc");
-		return ;
-	}
-	if (!set_env(&config->env, "?", exit_code))
-		operation_failed("malloc");
 	g_signal = 0;
 	data->interrupted = false;
-	free(exit_code);
 }
 
 static void	parse_and_execue(t_state *data, char *line, t_exec *config)
