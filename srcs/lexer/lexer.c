@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 19:04:02 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/07 23:11:13 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/11 02:48:30 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static bool	parse_non_metacharacters(const char **line, t_token **token)
 
 	head = *line;
 	tmp = *line;
-	while (*tmp && !is_space(*tmp) && !is_metacharacter(*tmp))
+	while (*tmp && !ft_strchr(" \n\t", *tmp) && !is_metacharacter(*tmp))
 	{
 		if (*tmp == '\'' || *tmp == '\"')
 		{
@@ -109,6 +109,11 @@ void	tokenize(t_state *data, const char *line)
 	t_token	*cur;
 	t_token	**t_head;
 
+	if (!has_valid_parentheses(line))
+	{
+		data->token = NULL;
+		return ;
+	}
 	cur = &head;
 	cur->next = NULL;
 	t_head = &(cur->next);
