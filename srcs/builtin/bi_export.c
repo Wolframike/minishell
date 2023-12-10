@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 19:11:52 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/09 21:45:22 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/11 02:35:21 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static bool	export_variable(t_exec *config, char *line)
 	if (key == NULL || (assign && (value == NULL)))
 		return (operation_failed("malloc"), false);
 	if (!is_valid_identifier(key))
-		return (not_a_valid_identifier("export", key), free(key), false);
+		return (not_a_valid_identifier("export", line), free(key), false);
 	if (!set_env(&config->env, key, value))
 		return (operation_failed("malloc"), free(key), false);
 	return (free(key), true);

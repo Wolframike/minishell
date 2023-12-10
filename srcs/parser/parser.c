@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 14:11:42 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/08 23:02:19 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/11 02:49:16 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_ast_node	*parse(t_state *data, char *line)
 
 	tokenize(data, line);
 	if (data->token == NULL)
-		return (NULL);
+		return (ft_putendl_fd("minishell: syntax error", STDERR_FILENO), NULL);
 	token = data->token;
 	res = parse_and_or(&token, data);
 	if (res == NULL && !data->interrupted)

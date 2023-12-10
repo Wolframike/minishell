@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:41:20 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/08 18:48:49 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/11 02:47:36 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,37 @@ void	destroy_token(t_token **token)
 	*token = NULL;
 }
 
-bool	is_space(const char c)
+bool	has_valid_parentheses(const char *line)
 {
-	return (c == ' ' || c == '\t' || c == '\n');
+	int		i;
+	int		cnt;
+	char	quote;
+
+	quote = '\0';
+	i = -1;
+	cnt = 0;
+	while (line[++i])
+	{
+		if (ft_strchr("\'\"", line[i]))
+		{
+			if (quote == '\0')
+				quote = line[i];
+			else if (quote == line[i])
+				quote = '\0';
+		}
+		if (line[i] == '(' && quote == '\0')
+			cnt++;
+		if (line[i] == ')' && quote == '\0')
+			cnt--;
+		if (cnt < 0)
+			return (false);
+	}
+	return (cnt == 0);
 }
 
 void	skip_spaces(const char **line)
 {
-	while (is_space(**line))
+	while (ft_strchr(" \n\t", **line))
 		(*line)++;
 }
 
