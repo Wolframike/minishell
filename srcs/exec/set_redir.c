@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_redir.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 02:06:23 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 17:05:32 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/11 01:43:53 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,16 +103,18 @@ bool	set_redir(t_list *redirects, t_env *env)
 
 void	only_redir(t_list *redirects, t_env *env, t_exec *config)
 {
-	t_redir	*redir;
-	int		fd_tmp;
+	t_redir		*redir;
+	int			fd_tmp;
 
 	while (redirects != NULL)
 	{
+		fd_tmp = -1;
 		redir = redirects->content;
 		if (!expand_and_check_ambiguous_redirect(&redir->filename, env)
 			|| !open_redir_file(redir->filename, redir->type, &fd_tmp))
 			config->exit_code = EXIT_KO;
-		close(fd_tmp);
+		if (fd_tmp != -1)
+			close(fd_tmp);
 		redirects = redirects->next;
 	}
 }

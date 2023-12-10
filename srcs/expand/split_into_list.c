@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:56:45 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/10 23:18:52 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/11 01:31:48 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ bool	expand_variable_to_list(char *line, t_env *env, t_list **res)
 {
 	char	*expanded;
 
+	expanded = NULL;
 	if (!expand_variable(line, env, &expanded))
 		return (false);
 	if (!split_line_to_list(expanded, res))

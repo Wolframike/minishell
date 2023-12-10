@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:30:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/08 23:13:35 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/11 01:50:59 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,14 @@ static bool	get_variable_name(char **line, char **varname)
 }
 
 static bool	expand_variable_for_one(char **line, t_env *env,
-		char *res_old, char **res_new)
+		char **res)
 {
-	char	*res;
 	char	*value;
 	char	*varname;
+	char	*res_old;
 
+	if (!strdup_case_null(&res_old, *res))
+		return (operation_failed("malloc"), false);
 	if (!get_variable_name(line, &varname))
 		return (free(res_old), false);
 	value = get_env(env, varname);
@@ -57,34 +59,29 @@ static bool	expand_variable_for_one(char **line, t_env *env,
 	value = ft_strdup(value);
 	if (value == NULL)
 		return (operation_failed("malloc"), free(res_old), false);
-	res = ft_strjoin(res_old, value);
-	free(res_old);
-	free(value);
+	free(*res);
+	*res = ft_strjoin(res_old, value);
 	if (res == NULL)
-		return (operation_failed("malloc"), free(res_old), false);
-	*res_new = res;
-	return (true);
+		return (operation_failed("malloc"), free(value), free(res_old), false);
+	return (free(value), free(res_old), true);
 }
 
 char	*expand_variable_heredoc(char *line, t_env *env)
 {
 	char	*res;
-	char	*new;
 
 	res = NULL;
 	while (*line)
 	{
 		if (*line == '$')
 		{
-			if (!expand_variable_for_one(&line, env, res, &new))
+			if (!expand_variable_for_one(&line, env, &res))
 				return (NULL);
-			res = new;
 		}
 		else
 		{
-			if (!skip_line(&line, res, &new))
+			if (!skip_line(&line, &res))
 				return (NULL);
-			res = new;
 		}
 	}
 	return (res);
@@ -100,10 +97,8 @@ static void	update_quote_expand(char *cur_quote, char c)
 
 bool	expand_variable(char *line, t_env *env, char **expanded)
 {
-	char	*res;
 	char	cur_quote;
 
-	res = NULL;
 	cur_quote = '\0';
 	while (*line)
 	{
@@ -112,17 +107,16 @@ bool	expand_variable(char *line, t_env *env, char **expanded)
 			line++;
 		else if (*line == '$' && cur_quote != '\'')
 		{
-			if (!expand_variable_for_one(&line, env, res, expanded))
-				return (free(res), false);
+			if (!expand_variable_for_one(&line, env, expanded))
+				return (false);
 		}
 		else
 		{
 			if (*line == '\'' || *line == '\"')
 				update_quote_expand(&cur_quote, *line);
-			if (!skip_line(&line, res, expanded))
-				return (free(res), false);
+			if (!skip_line(&line, expanded))
+				return (false);
 		}
-		res = *expanded;
 	}
 	return (true);
 }

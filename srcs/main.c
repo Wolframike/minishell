@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/09 20:31:42 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/11 00:46:07 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,9 @@ static void	parse_and_execue(t_state *data, char *line, t_exec *config)
 	free(line);
 	if (node == NULL)
 	{
-		if (!set_env(&config->env, "?", "258"))
+		if (data->interrupted && !set_env(&config->env, "?", "1"))
+			operation_failed("malloc");
+		if (!data->interrupted && !set_env(&config->env, "?", "258"))
 			operation_failed("malloc");
 		g_signal = 0;
 		data->interrupted = false;
