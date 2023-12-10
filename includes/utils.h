@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:30:33 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/01 19:02:27 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/11 01:51:12 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <dirent.h>
 # include <sys/stat.h>
 
+bool	strdup_case_null(char **res, const char *src);
 void	free2darr(char **arr);
 bool	is_dir(const char *path);
 

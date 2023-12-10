@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/25 21:04:03 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/10 23:16:33 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/11 01:37:35 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	remove_quotes_list(t_list **res_old);
 t_list	*dup_string_to_list(char *string);
 bool	get_filenames(t_list **res);
 
-bool	skip_line(char **line, char *res_old, char **res);
+bool	skip_line(char **line, char **res);
 
 char	*expand_variable_heredoc(char *line, t_env *env);
 bool	expand_variable_export(char *line, t_env *env, t_list **res);

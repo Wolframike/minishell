@@ -6,30 +6,25 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 21:08:48 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/11 00:17:15 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/11 01:55:04 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
 
-bool	skip_line(char **line, char *res_old, char **res)
+bool	skip_line(char **line, char **res)
 {
 	int		i;
 	int		src_len;
+	char	*res_old;
 
-	if (res_old == NULL)
-	{
-		res_old = ft_strdup("");
-		if (res_old == NULL)
-			return (false);
-	}
+	if (!strdup_case_null(&res_old, *res))
+		return (operation_failed("malloc"), false);
 	src_len = ft_strlen(res_old);
+	free(*res);
 	*res = ft_calloc(src_len + 2, sizeof(char));
 	if (*res == NULL)
-	{
-		free(res_old);
-		return (operation_failed("malloc"), false);
-	}
+		return (free(res_old), operation_failed("malloc"), false);
 	i = -1;
 	while (++i < src_len)
 		(*res)[i] = res_old[i];
@@ -70,7 +65,7 @@ t_list	*remove_quotes(char *line)
 	{
 		if ((*line == '\'' || *line == '\"') && update_quote(&line, &quote))
 			continue ;
-		if (!skip_line(&line, res_str, &res_str))
+		if (!skip_line(&line, &res_str))
 			return (free(res_str), NULL);
 	}
 	res = ft_lstnew(res_str);

@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 12:31:04 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/05 12:18:22 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/11 01:51:09 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+
+bool	strdup_case_null(char **res, const char *src)
+{
+	if (src == NULL)
+		*res = ft_strdup("");
+	else
+		*res = ft_strdup(src);
+	if (*res == NULL)
+		return (false);
+	return (true);
+}
 
 void	free2darr(char **arr)
 {
