@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 23:16:02 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/09 20:06:02 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/11 00:28:45 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,21 +60,28 @@ static bool	filename_check(const char *path)
 bool	move_to_path(const char *target_path, t_exec *config)
 {
 	char	*oldpwd;
+	char	*true_path;
 
-	if (filename_check(target_path))
-		return (false);
-	if (!is_dir(target_path))
-		return (false);
+	if (ft_strlen(target_path) == 0)
+		true_path = ft_strdup("/");
+	else
+		true_path = ft_strdup(target_path);
+	if (true_path == NULL)
+		return (operation_failed("malloc"), false);
+	if (filename_check(true_path))
+		return (free(true_path), false);
+	if (!is_dir(true_path))
+		return (free(true_path), false);
 	oldpwd = NULL;
 	if (config->cwd != NULL)
 	{
 		oldpwd = ft_strdup(config->cwd);
 		if (oldpwd == NULL)
-			return (operation_failed("malloc"), false);
+			return (operation_failed("malloc"), free(true_path), false);
 	}
-	if (chdir(target_path) < 0)
-		return (free(oldpwd), false);
-	return (update_data(oldpwd, config));
+	if (chdir(true_path) < 0)
+		return (free(oldpwd), free(true_path), false);
+	return (free(true_path), update_data(oldpwd, config));
 }
 
 static bool	move_single_layer(char **goal, const char *layer)
@@ -83,15 +90,15 @@ static bool	move_single_layer(char **goal, const char *layer)
 
 	if (ft_strcmp(layer, "..") == 0)
 	{
+		if (ft_strcmp(*goal, "/") == 0)
+			return (true);
 		tmp = ft_strrchr(*goal, '/');
 		if (tmp == NULL)
 			*goal[0] = '\0';
 		else
 			*tmp = '\0';
 	}
-	else if (ft_strcmp(layer, ".") == 0)
-		;
-	else
+	else if (ft_strcmp(layer, ".") != 0)
 	{
 		tmp = *goal;
 		*goal = ft_strjoin(*goal, "/");
