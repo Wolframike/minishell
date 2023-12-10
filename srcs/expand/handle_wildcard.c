@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 21:24:22 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/08 23:16:00 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/11 03:04:19 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static bool	expand_filename(t_list **res, char *pattern)
 
 	malloc_flg = false;
 	if (!contain_expansion(pattern, &malloc_flg) && !malloc_flg)
-		return (dup_string_to_list(pattern));
+		return (true);
 	if (malloc_flg)
 		return (NULL);
 	*res = NULL;
