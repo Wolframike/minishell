@@ -6,7 +6,7 @@
 /*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 01:11:55 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/11 04:28:23 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/11 06:12:29 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	exec_pipeline(t_ast_node *root, t_exec *config)
 		return ;
 	}
 	head = NULL;
-	// config->exit_code = EXIT_KO;
 	if (!create_pipeline_list(root, &head))
 		return (ft_lstclear(&head, NULL), operation_failed("malloc"));
 	config->pids = malloc(sizeof(pid_t) * (ft_lstsize(head) + 1));
