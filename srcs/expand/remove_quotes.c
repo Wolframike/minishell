@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 21:08:48 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/09 21:22:48 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/11 00:17:15 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static bool	update_quote(char **line, char *quote)
 		(*line)++;
 		return (true);
 	}
-	(*line)++;
 	return (false);
 }
 
@@ -71,11 +70,8 @@ t_list	*remove_quotes(char *line)
 	{
 		if ((*line == '\'' || *line == '\"') && update_quote(&line, &quote))
 			continue ;
-		else
-		{
-			if (!skip_line(&line, res_str, &res_str))
-				return (free(res_str), NULL);
-		}
+		if (!skip_line(&line, res_str, &res_str))
+			return (free(res_str), NULL);
 	}
 	res = ft_lstnew(res_str);
 	if (res == NULL)
@@ -96,10 +92,9 @@ bool	handle_quote(t_list **res, char **line)
 	{
 		if (ft_strchr(" \n\t", **line) && quote == '\0')
 			break ;
-		else if (ft_strchr("\'\"", **line))
-			update_quote(line, &quote);
-		else
-			(*line)++;
+		else if (ft_strchr("\'\"", **line) && update_quote(line, &quote))
+			continue ;
+		(*line)++;
 	}
 	chunk = ft_strndup(word_start, *line - word_start);
 	if (chunk == NULL)
