@@ -6,7 +6,7 @@
 /*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 16:58:43 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/08 23:08:52 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/10 23:09:03 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,5 @@ t_redir	*parse_heredoc(t_token **token, t_state *data)
 	free(delimiter);
 	if (g_signal == 0)
 		return (new_redir(REDIR_IN, filename));
-	return (data->interrupted = true, NULL);
+	return (free(filename), data->interrupted = true, NULL);
 }
