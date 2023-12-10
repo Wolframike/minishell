@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   termconf.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 21:28:30 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/08 21:07:30 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/10 23:19:09 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include "error.h"
 # include <term.h>
 # include <termios.h>
-# include <curses.h>
 
 # define PROMPT "\033[1;34mminishell\033[0m\033[1;33m|\033[0m\033[1;32m➜\033[0m  "
 
