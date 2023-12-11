@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_wildcard.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 21:24:22 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/11 03:04:19 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/11 11:10:33 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static bool	expand_filename(t_list **res, char *pattern)
 	if (!get_filenames(&dir_filenames))
 		return (handle_no_match(res, pattern));
 	if (dir_filenames == NULL)
-		return (false);
+		return (true);
 	head = dir_filenames;
 	while (dir_filenames)
 	{
