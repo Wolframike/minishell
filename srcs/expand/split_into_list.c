@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_into_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 14:56:45 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/11 01:31:48 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/11 11:25:44 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,10 @@ static bool	split_line_to_list(char *line, t_list **res)
 		return (true);
 	while (*line)
 	{
-		if (!handle_quote(res, &line))
-			return (false);
-		if (*line == '\0')
-			break ;
-		if (ft_strchr(" \n\t", *line) != NULL)
+		while (*line && ft_strchr(" \n\t", *line) != NULL)
 			line++;
+		if (*line && !handle_quote(res, &line))
+			return (false);
 	}
 	return (true);
 }

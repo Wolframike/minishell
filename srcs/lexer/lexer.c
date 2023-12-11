@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
+/*   By: knishiok <knishiok@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 19:04:02 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/11 04:15:36 by misargsy         ###   ########.fr       */
+/*   Updated: 2023/12/11 11:31:10 by knishiok         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void	tokenize(t_state *data, const char *line)
 	if (!has_valid_parentheses(line))
 	{
 		data->token = NULL;
+		ft_putendl_fd("minishell: syntax error", STDERR_FILENO);
 		return ;
 	}
 	cur = &head;
