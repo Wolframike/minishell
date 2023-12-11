@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 18:45:48 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/11 00:46:07 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/11 06:48:01 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,8 @@ static void	init_config(t_exec *config, char **envp)
 	config->env = env_init(envp);
 	config->exit_code = 0;
 	shlvl = get_env(config->env, "SHLVL");
-	if (shlvl == NULL)
-	{
-		set_env(&config->env, "SHLVL", "1");
-	}
+	if (shlvl == NULL && !set_env(&config->env, "SHLVL", "1"))
+		operation_failed("malloc");
 	else
 	{
 		shlvl = ft_itoa(ft_atoi(shlvl) + 1);
@@ -42,7 +40,8 @@ static void	init_config(t_exec *config, char **envp)
 			operation_failed("malloc");
 			return ;
 		}
-		set_env(&config->env, "SHLVL", shlvl);
+		if (!set_env(&config->env, "SHLVL", shlvl))
+			operation_failed("malloc");
 		free(shlvl);
 	}
 }
@@ -58,21 +57,10 @@ static void	initialize(t_exec *config, t_state *data, char **envp)
 
 static void	terminate(t_state *data, t_exec *config)
 {
-	char	*exit_code;
-
 	set_term_config(data);
 	ft_lstclear(&config->expanded, free);
-	exit_code = ft_itoa(config->exit_code);
-	if (exit_code == NULL)
-	{
-		operation_failed("malloc");
-		return ;
-	}
-	if (!set_env(&config->env, "?", exit_code))
-		operation_failed("malloc");
 	g_signal = 0;
 	data->interrupted = false;
-	free(exit_code);
 }
 
 static void	parse_and_execue(t_state *data, char *line, t_exec *config)

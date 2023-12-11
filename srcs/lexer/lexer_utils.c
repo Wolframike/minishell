@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:41:20 by knishiok          #+#    #+#             */
-/*   Updated: 2023/12/11 02:47:36 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/11 04:15:06 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ bool	has_valid_parentheses(const char *line)
 
 void	skip_spaces(const char **line)
 {
-	while (ft_strchr(" \n\t", **line))
+	while (**line && ft_strchr(" \n\t", **line))
 		(*line)++;
 }
 

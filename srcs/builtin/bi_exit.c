@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: knishiok <knishiok@student.42.jp>          +#+  +:+       +#+        */
+/*   By: misargsy <misargsy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:38:14 by misargsy          #+#    #+#             */
-/*   Updated: 2023/12/06 22:48:17 by knishiok         ###   ########.fr       */
+/*   Updated: 2023/12/11 06:10:19 by misargsy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,23 @@
 
 static bool	isnum(char *arg)
 {
+	while (*arg == ' ')
+		arg++;
 	if (*arg == '-' || *arg == '+')
 		arg++;
+	if (*arg == '\0')
+		return (false);
 	while (*arg != '\0')
 	{
+		if (*arg == ' ')
+			break ;
 		if (!ft_isdigit(*arg))
 			return (false);
 		arg++;
 	}
-	return (true);
+	while (*arg == ' ' && *arg != '\0')
+		arg++;
+	return (*arg == '\0');
 }
 
 static bool	isoverflow(char *arg)
@@ -31,6 +39,8 @@ static bool	isoverflow(char *arg)
 	long	prev;
 
 	excode = 0;
+	while (*arg == ' ')
+		arg++;
 	if (*arg == '-' || *arg == '+')
 		arg++;
 	while (*arg != '\0')
@@ -60,7 +70,7 @@ int	bi_exit(t_list *args, bool parent, t_exec *config)
 	if (args->next != NULL)
 	{
 		too_many_arguments("exit");
-		return (EXIT_INVAL);
+		return (EXIT_KO);
 	}
 	exit(ft_atoi(args->content) % 256);
 }
